@@ -21,7 +21,7 @@ You can randomize the following:
 
 If you race the randomizer, it gives you a `.setgoal` line to paste into the SRL channel, which updates the goal automatically, as well as shares the seed with all racers.
 
-##Research
+## Research
 
 Will be coming soon (TM).
 
