@@ -8,6 +8,10 @@
 * A ROM of Super Mario Land 2
 * A way to play (emulator or EverDrive)
 
+## What To Do
+
+Plug in your ROM of SML2, either select your options or input a custom seed, and press `Randomize ROM`. If successful, the result is saved in the same location as the selected ROM.
+
 ## What Does It Do
 
 You can randomize the following:
