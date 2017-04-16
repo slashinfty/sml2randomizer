@@ -28,6 +28,7 @@ public class RandomGeneration {
     }
     
     /** 
+     * Used only for testing
         public static void main(String[] args) throws IOException {
         RandomizerConfig config = new RandomizerConfig(true, true, true, true, true, true);
         Scanner userInput = new Scanner(System.in);
@@ -146,10 +147,12 @@ public class RandomGeneration {
         for ( int i = 0x1F91; i <= 0x1FB0; i++ ) {
             switch ( rom[i] ) {
                 case 0x00:
-                    if ( rngNum.nextFloat() < 0.03 ) {
-                        rom[i] = 0x01; //normal physics to space physics
-                    } else if ( rngNum.nextFloat() < 0.052 ) { //.05
-                        rom[i] = 0x08; //normal physics to moon physics
+                    if ( i != 0x1F98 && i !=  0x1FA6 ) { //no changing physics for levels 07 and 15
+                        if ( rngNum.nextFloat() < 0.03 ) {
+                            rom[i] = 0x01; //normal physics to space physics
+                        } else if ( rngNum.nextFloat() < 0.052 ) { //.05
+                            rom[i] = 0x08; //normal physics to moon physics
+                        } 
                     }
                     break;
                 case 0x01:
@@ -221,7 +224,7 @@ public class RandomGeneration {
         byte[] piranhaPlants = {0x0C, 0x0D};
         for ( int i = 0xE077; i < 0xEBB5; i += 3) {
             byte sprite = extractSprite(rom[i], rom[i+1], rom[i+2]);
-            if ( ( i < 0xE30C) || ( ( i > 0xE384 ) && ( i < 0xE3D4 ) ) || ( i > 0xE431) ) { //skipping level 07 and 09
+            if ( ( i < 0xE30C) || ( ( i > 0xE384 ) && ( i < 0xE3D4 ) ) || ( ( i > 0xE431) && ( i < 0xE8F7 ) ) || ( i > 0xE954 ) ) { //skipping levels 07, 09, and 16
                 if ( rom[i] == (byte) 0xFF ) {
                     i -= 2;
                 } else if ( binarySearch(piranhaPlants, sprite) >= 0 ) {

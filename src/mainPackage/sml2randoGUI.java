@@ -60,6 +60,7 @@ public class sml2randoGUI extends javax.swing.JFrame {
         fileChooser.setFileFilter(new gbFilter());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Super Mario Land 2 Randomizer");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Original ROM", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
@@ -230,6 +231,7 @@ public class sml2randoGUI extends javax.swing.JFrame {
 
         status.setEditable(false);
         status.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        status.setText("Version 1.0.1 - 16 April 2017");
         status.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 statusActionPerformed(evt);
