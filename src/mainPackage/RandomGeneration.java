@@ -121,17 +121,20 @@ public class RandomGeneration {
         byte[] inGameMusic = {0x01, 0x0B, 0x0E, 0x11, 0x13, 0x14, 0x17, 0x1D, 0x1F, 0x28};
         byte[] overworldMusic = {0x05, 0x06, 0x10, 0x12, 0x1B, 0x1C, 0x1E};
         int[] overworldOffsets = {0x3004F, 0x3EA9B, 0x3D186, 0x3D52B, 0x3D401, 0x3D297, 0x3D840, 0x3D694, 0x3D758};
-        for ( int i = 0x5619; i <= 0x580D; i += 0x14 ) { //in-game offsets loop
-            if ( rngNum.nextFloat() < 0.005 ) {
-                rom[i] = 0x1D; //all levels have 1D as music .5% of the time
-            } else {
+        for (int i = 0; i < overworldOffsets.length; i++) {
+            int r = rngNum.nextInt(overworldMusic.length);
+            rom[overworldOffsets[i]] = overworldMusic[r];
+        }
+        if (rngNum.nextFloat() < 0.01) {
+            rom[0x3004F] = 0x1D;
+            for (int i = 0x5619; i <= 0x580D; i += 0x14) { //in-game offsets loop
+                rom[i] = 0x1D; //all levels have 1D as music 1% of the time
+            }
+        } else {
+            for (int i = 0x5619; i <= 0x580D; i += 0x14) {
                 int r = rngNum.nextInt(inGameMusic.length);
                 rom[i] = inGameMusic[r];
             }
-        }
-        for ( int i = 0; i < overworldOffsets.length; i++ ) {
-            int r = rngNum.nextInt(overworldMusic.length);
-            rom[overworldOffsets[i]] = overworldMusic[r];
         }
     }
     

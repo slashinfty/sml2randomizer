@@ -369,7 +369,7 @@
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Version 1.0.2 - 20 April 2017"/>
+            <Property name="text" type="java.lang.String" value="Version 1.0.2a - 21 April 2017"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="statusActionPerformed"/>
