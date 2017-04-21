@@ -227,7 +227,7 @@ Each level has a sprite table containing all the sprites. Sprite tables end when
 | Macro Zone Special  	| 0xEB3F               	       	| 0xEB54               	      |
 | Pumpkin Zone Special 2| 0xEB55               	       	| 0xEBB5               	      |
 
-A complete list of all sprites is available as a .csv.
+A complete list of all sprites is available as a [.csv](https://github.com/slashinfty/sml2randomizer/blob/master/research/SML2%20Sprite%20Data.csv).
 
 ## Miscellaneous Randomization
 
