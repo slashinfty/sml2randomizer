@@ -231,7 +231,7 @@ public class sml2randoGUI extends javax.swing.JFrame {
 
         status.setEditable(false);
         status.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        status.setText("Version 1.0.1 - 16 April 2017");
+        status.setText("Version 1.0.2 - 20 April 2017");
         status.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 statusActionPerformed(evt);
