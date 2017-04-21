@@ -28,7 +28,7 @@ If you race the randomizer, it gives you a `.setgoal` line to paste into the SRL
 
 ## Research
 
-All research that has been compiled during the creation of this randomizer is available here.
+All research that has been compiled during the creation of this randomizer is available [here](https://github.com/slashinfty/sml2randomizer/blob/master/research/research.md).
 
 ## Special Thanks
 
