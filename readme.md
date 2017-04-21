@@ -5,6 +5,7 @@
 ## What Do You Need
 
 * The randomizer
+* Java (JRE) 8
 * A ROM of Super Mario Land 2
 * A way to play (emulator or EverDrive)
 
@@ -27,7 +28,14 @@ If you race the randomizer, it gives you a `.setgoal` line to paste into the SRL
 
 ## Research
 
-Will be coming soon (TM).
+All research that has been compiled during the creation of this randomizer is available here.
+
+## Special Thanks
+
+* veearr - without you the programming of this would have taken me all Summer, rather than just Spring break
+* Raccoon Sam, smellymoo - almost all of the ROM data came from existing knowledge found by the two of you, and I am eternally thankful for that
+* dotsarecool, authorblues - the two of you were my inspiration and my first seeds of knowledge
+* oh_deer, typwo, beastfrisian, wolfrune - the SML2 community has been nothing short of wonderful in helping me test this and further refine it
 
 ## Contact
 

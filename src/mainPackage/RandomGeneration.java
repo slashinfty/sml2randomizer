@@ -122,8 +122,12 @@ public class RandomGeneration {
         byte[] overworldMusic = {0x05, 0x06, 0x10, 0x12, 0x1B, 0x1C, 0x1E};
         int[] overworldOffsets = {0x3004F, 0x3EA9B, 0x3D186, 0x3D52B, 0x3D401, 0x3D297, 0x3D840, 0x3D694, 0x3D758};
         for ( int i = 0x5619; i <= 0x580D; i += 0x14 ) { //in-game offsets loop
-            int r = rngNum.nextInt(inGameMusic.length);
-            rom[i] = inGameMusic[r];
+            if ( rngNum.nextFloat() < 0.005 ) {
+                rom[i] = 0x1D; //all levels have 1D as music .5% of the time
+            } else {
+                int r = rngNum.nextInt(inGameMusic.length);
+                rom[i] = inGameMusic[r];
+            }
         }
         for ( int i = 0; i < overworldOffsets.length; i++ ) {
             int r = rngNum.nextInt(overworldMusic.length);
@@ -135,12 +139,12 @@ public class RandomGeneration {
      * Randomize scrolling and physics
      */
     public void extraRandomizing(byte[] rom) {
-        int[] scrollingLevels = {0x1F71, 0x1F72, 0x1F73, 0x1F74, 0x1F75, 0x1F76, 0x1F79, 0x1F7A, 0x1F7B, 0x1F7C, 0x1F7D, 0x1F7E, 0x1F7F, 0x1F81, 0x1F82, 0x1F83, 0x1F84, 0x1F85, 0x1F88, 0x1F90};
+        int[] scrollingLevels = {0x1F71, 0x1F72, 0x1F73, 0x1F74, 0x1F76, 0x1F79, 0x1F7A, 0x1F7B, 0x1F7C, 0x1F7D, 0x1F7E, 0x1F7F, 0x1F81, 0x1F82, 0x1F83, 0x1F84, 0x1F85, 0x1F88, 0x1F90};
         for ( int i = 0; i < scrollingLevels.length; i++ ) {
             if( rom[scrollingLevels[i]] == 0x00 && rngNum.nextFloat() < 0.05) {
                 rom[scrollingLevels[i]] = 0x01; //non-scrolling to scrolling
             }
-            else if ( rom[scrollingLevels[i]] == 0x01 && rngNum.nextFloat() < 0.1 ) {
+            else if ( rom[scrollingLevels[i]] == 0x01 && rngNum.nextFloat() < 0.15 ) {
                 rom[scrollingLevels[i]] = 0x00; //scrolling to non-scrolling
             }
         }
