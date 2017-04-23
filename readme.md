@@ -6,7 +6,7 @@
 
 * The randomizer
 * Java (JRE) 8
-* A ROM of Super Mario Land 2
+* A version 1.0 ROM of Super Mario Land 2
 * A way to play (emulator or EverDrive)
 
 ## What To Do
