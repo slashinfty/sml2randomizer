@@ -1,5 +1,5 @@
 <center>
-![alt text](https://github.com/slashinfty/sml2randomizer/raw/master/screenshot.png "Screenshot of Super Mario Land 2 Randomizer")
+![Screenshot of Super Mario Land 2 Randomizer](https://github.com/slashinfty/sml2randomizer/raw/master/screenshot.png)
 
 [Download](https://github.com/slashinfty/sml2randomizer/raw/master/dist/sml2randomizer.jar) version 1.0.3 of the randomizer.
 </center>
