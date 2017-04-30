@@ -16,18 +16,20 @@ import java.util.Arrays;
  * @author Matt
  */
 public class RomCheck {
-    
+
     /**
      * Lazy check for original ROM
      */
-    
+
     public final boolean originalRom;
-    
+    public final boolean versionOneRom;
+
     public RomCheck(String rom) throws IOException {
-        originalRom = check(rom);
+        originalRom = checkOriginal(rom);
+        versionOneRom = checkVersion(rom);
     }
-    
-    private boolean check(String inputFilename) throws IOException {
+
+    private boolean checkOriginal(String inputFilename) throws IOException {
         Path romPath;
         romPath = Paths.get(inputFilename);
         byte[] randomizerROM = Files.readAllBytes(romPath);
@@ -37,6 +39,18 @@ public class RomCheck {
             romCheckBytes[i] = randomizerROM[0x134 + i];
         }
         return Arrays.equals(confirmedBytes, romCheckBytes);
-    } 
-    
+    }
+
+    private boolean checkVersion(String inputFilename) throws IOException {
+        Path romPath;
+        romPath = Paths.get(inputFilename);
+        byte[] randomizerROM = Files.readAllBytes(romPath);
+        byte[] romCheckBytes = new byte[4];
+        byte[] confirmedBytes = {0x1A, 0x28, 0x02, 0x07};
+        for ( int i = 0; i < 4; i++ ) {
+            romCheckBytes[i] = randomizerROM[0x14 + i];
+        }
+        return Arrays.equals(confirmedBytes, romCheckBytes);
+    }
+
 }

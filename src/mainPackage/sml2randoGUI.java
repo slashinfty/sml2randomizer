@@ -63,7 +63,7 @@ public class sml2randoGUI extends javax.swing.JFrame {
         setTitle("Super Mario Land 2 Randomizer");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Original ROM", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Original ROM", 0, 0, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
         browse.setText("Browse for ROM");
         browse.addActionListener(new java.awt.event.ActionListener() {
@@ -71,6 +71,8 @@ public class sml2randoGUI extends javax.swing.JFrame {
                 browseActionPerformed(evt);
             }
         });
+
+        foundFileText.setEditable(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -93,7 +95,7 @@ public class sml2randoGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "SRL Information", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "SRL Information", 0, 0, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
         buttonGroup1.add(srlGlitchless);
         srlGlitchless.setSelected(true);
@@ -106,6 +108,8 @@ public class sml2randoGUI extends javax.swing.JFrame {
 
         buttonGroup1.add(srlAllLevels);
         srlAllLevels.setText("All Levels");
+
+        srlSetGoalText.setEditable(false);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -231,7 +235,7 @@ public class sml2randoGUI extends javax.swing.JFrame {
 
         status.setEditable(false);
         status.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        status.setText("Version 1.0.2a - 21 April 2017");
+        status.setText("Version 1.0.3 - 29 April 2017");
         status.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 statusActionPerformed(evt);
@@ -251,7 +255,7 @@ public class sml2randoGUI extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 42, Short.MAX_VALUE)
+            .addGap(0, 58, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -291,7 +295,7 @@ public class sml2randoGUI extends javax.swing.JFrame {
             return "All Levels";
         }
     }
-    
+
     private void browseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseActionPerformed
         int returnVal = fileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -301,18 +305,22 @@ public class sml2randoGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_browseActionPerformed
 
     private void srlGlitchlessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_srlGlitchlessActionPerformed
-        
+
     }//GEN-LAST:event_srlGlitchlessActionPerformed
 
     private void randomSeedGenerationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomSeedGenerationActionPerformed
         try {
             RomCheck check = new RomCheck(foundFileText.getText());
             if ( check.originalRom) {
-                RandomizerConfig config = new RandomizerConfig(levelsCheck.isSelected(), exitsCheck.isSelected(), enemiesCheck.isSelected(), powerUpsCheck.isSelected(), platformsCheck.isSelected(), extraCheck.isSelected());
-                RandomGeneration generator = new RandomGeneration(config);
-                srlSetGoalText.setText( ".setgoal Randomizer - " + srlRaceType() + " - Seed: " + generator.seedName );
-                generator.romGenerator(foundFileText.getText());
-                status.setText("Success!");
+                if ( check.versionOneRom ) {
+                    RandomizerConfig config = new RandomizerConfig(levelsCheck.isSelected(), exitsCheck.isSelected(), enemiesCheck.isSelected(), powerUpsCheck.isSelected(), platformsCheck.isSelected(), extraCheck.isSelected());
+                    RandomGeneration generator = new RandomGeneration(config);
+                    srlSetGoalText.setText( ".setgoal Randomizer - " + srlRaceType() + " - Seed: " + generator.seedName );
+                    generator.romGenerator(foundFileText.getText());
+                    status.setText("Success!");
+                } else {
+                    status.setText("Not Version 1.0 ROM");
+                }
             } else {
                 status.setText("Invalid ROM selected");
             }
@@ -325,14 +333,18 @@ public class sml2randoGUI extends javax.swing.JFrame {
         try {
             RomCheck check = new RomCheck(foundFileText.getText());
             if ( check.originalRom) {
-                if ( isLong(customSeed.getText()) ) {
-                    RandomizerConfig config = new RandomizerConfig(Long.parseLong(customSeed.getText(),16));
-                    RandomGeneration generator = new RandomGeneration(config);
-                    srlSetGoalText.setText( ".setgoal Randomizer - " + srlRaceType() + " - Seed: " + generator.seedName );
-                    generator.romGenerator(foundFileText.getText());
-                    status.setText("Success!");
+                if ( check.versionOneRom ) {
+                    if ( isLong(customSeed.getText()) ) {
+                        RandomizerConfig config = new RandomizerConfig(Long.parseLong(customSeed.getText(),16));
+                        RandomGeneration generator = new RandomGeneration(config);
+                        srlSetGoalText.setText( ".setgoal Randomizer - " + srlRaceType() + " - Seed: " + generator.seedName );
+                        generator.romGenerator(foundFileText.getText());
+                        status.setText("Success!");
+                    } else {
+                        status.setText("Invalid seed number");
+                    }
                 } else {
-                    status.setText("Invalid seed number");
+                    status.setText("Not Version 1.0 ROM");
                 }
             } else {
                 status.setText("Invalid ROM selected");
@@ -345,7 +357,7 @@ public class sml2randoGUI extends javax.swing.JFrame {
     private void statusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_statusActionPerformed
-    
+
     private boolean isLong(String seed) {
         try {
             long l = Long.parseLong(customSeed.getText(),16);
@@ -355,7 +367,7 @@ public class sml2randoGUI extends javax.swing.JFrame {
         }
         return true;
     }
-    
+
     class gbFilter extends javax.swing.filechooser.FileFilter{
         @Override
         public boolean accept(File file) {
@@ -366,7 +378,7 @@ public class sml2randoGUI extends javax.swing.JFrame {
             return "GB ROMs (*.gb)";
         }
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -374,7 +386,7 @@ public class sml2randoGUI extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
