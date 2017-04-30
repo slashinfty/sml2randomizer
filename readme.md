@@ -1,6 +1,8 @@
-# Super Mario Land 2 Randomizer
+<center>
+![alt text](https://github.com/slashinfty/sml2randomizer/raw/master/screenshot.png "Screenshot of Super Mario Land 2 Randomizer")
 
 [Download](https://github.com/slashinfty/sml2randomizer/raw/master/dist/sml2randomizer.jar) version 1.0.3 of the randomizer.
+</center>
 
 ## What Do You Need
 
