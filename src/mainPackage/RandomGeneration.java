@@ -144,7 +144,7 @@ public class RandomGeneration {
     public void extraRandomizing(byte[] rom) {
         int[] scrollingLevels = {0x1F71, 0x1F72, 0x1F73, 0x1F74, 0x1F76, 0x1F79, 0x1F7A, 0x1F7B, 0x1F7C, 0x1F7D, 0x1F7E, 0x1F7F, 0x1F81, 0x1F82, 0x1F83, 0x1F84, 0x1F85, 0x1F88, 0x1F90};
         for ( int i = 0; i < scrollingLevels.length; i++ ) {
-            if( rom[scrollingLevels[i]] == 0x00 && rngNum.nextFloat() < 0.05) {
+            if( rom[scrollingLevels[i]] == 0x00 && rngNum.nextFloat() < 0.07) {
                 rom[scrollingLevels[i]] = 0x01; //non-scrolling to scrolling
             }
             else if ( rom[scrollingLevels[i]] == 0x01 && rngNum.nextFloat() < 0.15 ) {
@@ -155,22 +155,22 @@ public class RandomGeneration {
             switch ( rom[i] ) {
                 case 0x00:
                     if ( i != 0x1F98 && i !=  0x1FA6 ) { //no changing physics for levels 07 and 15
-                        if ( rngNum.nextFloat() < 0.03 ) {
+                        if ( rngNum.nextFloat() < 0.05 ) {
                             rom[i] = 0x01; //normal physics to space physics
-                        } else if ( rngNum.nextFloat() < 0.052 ) { //.05
+                        } else if ( rngNum.nextFloat() < 0.074 && i != 0x1F99 ) { //.07 and no moon physics for level 08
                             rom[i] = 0x08; //normal physics to moon physics
                         } 
                     }
                     break;
                 case 0x01:
-                    if ( rngNum.nextFloat() < 0.03 ) {
+                    if ( rngNum.nextFloat() < 0.05 ) {
                         rom[i] = 0x00; //space physics to normal physics
-                    } else if ( rngNum.nextFloat() < 0.031 ) { //.03
+                    } else if ( rngNum.nextFloat() < 0.084 ) { //.08
                         rom[i] = 0x08; //space physics to moon physics
                     }
                     break;
                 case 0x08:
-                    if ( rngNum.nextFloat() < 0.05 ) {
+                    if ( rngNum.nextFloat() < 0.07 ) {
                         rom[i] = 0x00; //moon physics to normal physics
                     } else if ( rngNum.nextFloat() < 0.032 ) { //.03
                         rom[i] = 0x01; //moon physics to space physics
