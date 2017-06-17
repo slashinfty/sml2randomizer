@@ -1,15 +1,15 @@
 <div style="text-align:center">
 <p><img src="https://github.com/slashinfty/sml2randomizer/raw/master/screenshot.png" alt="Screenshot of Super Mario Land 2 Randomizer" /></p>
 
-<p><a href="https://github.com/slashinfty/sml2randomizer/raw/master/dist/sml2randomizer.jar">Download</a> version 1.0.3 of the randomizer.</p>
+<p><a href="https://github.com/slashinfty/sml2randomizer/raw/master/dist/sml2randomizer.jar">Download</a> version 1.0.5 of the randomizer.</p>
 </div>
 
 ## What Do You Need
 
-* The randomizer
-* Java (JRE) 8
-* A version 1.0 ROM of Super Mario Land 2
-* A way to play (emulator or EverDrive)
+* The randomizer (download link above)
+* Java (JRE) 8 (get it [here](https://www.java.com/download/))
+* A ~~version 1.0~~ ROM of Super Mario Land 2 (any version allowed starting with v1.0.5)
+* A way to play (emulator (like bgb or gambatte) or Game Boy EverDrive)
 
 ## What To Do
 

@@ -21,6 +21,7 @@ public class RandomGeneration {
     private final Random rngNum = new Random();
     private final RandomizerConfig config;
     public final String seedName;
+    private RomCheck check;
     
     public RandomGeneration(RandomizerConfig config) {
         this.config = config;
@@ -43,6 +44,7 @@ public class RandomGeneration {
      * Sets seed, accepts ROM, performs randomization, creates new ROM
      */
     public void romGenerator(String inputFilename) throws IOException {
+        check = new RomCheck(inputFilename);
         rngNum.setSeed(config.randomSeed);
         Path romPath;
         romPath = Paths.get(inputFilename);
@@ -126,7 +128,7 @@ public class RandomGeneration {
             rom[overworldOffsets[i]] = overworldMusic[r];
         }
         if (rngNum.nextFloat() < 0.01) {
-            rom[0x3004F] = 0x1D;
+            rom[0x3004F] = 0x1D; //file select screen
             for (int i = 0x5619; i <= 0x580D; i += 0x14) { //in-game offsets loop
                 rom[i] = 0x1D; //all levels have 1D as music 1% of the time
             }
@@ -142,35 +144,45 @@ public class RandomGeneration {
      * Randomize scrolling and physics
      */
     public void extraRandomizing(byte[] rom) {
+        int vAdj; //v1.2 ROM has these tables shifted by 0x3
+        if( check.versionOneRom ) {
+            vAdj = 0x0;
+        } else {
+            vAdj = 0x3;
+        }
         int[] scrollingLevels = {0x1F71, 0x1F72, 0x1F73, 0x1F74, 0x1F76, 0x1F79, 0x1F7A, 0x1F7B, 0x1F7C, 0x1F7D, 0x1F7E, 0x1F7F, 0x1F81, 0x1F82, 0x1F83, 0x1F84, 0x1F85, 0x1F88, 0x1F90};
         for ( int i = 0; i < scrollingLevels.length; i++ ) {
-            if( rom[scrollingLevels[i]] == 0x00 && rngNum.nextFloat() < 0.05) {
-                rom[scrollingLevels[i]] = 0x01; //non-scrolling to scrolling
+            int currentLevel = scrollingLevels[i] + vAdj;
+            if( rom[currentLevel] == 0x00 && rngNum.nextFloat() < 0.07) {
+                rom[currentLevel] = 0x01; //non-scrolling to scrolling
             }
-            else if ( rom[scrollingLevels[i]] == 0x01 && rngNum.nextFloat() < 0.15 ) {
-                rom[scrollingLevels[i]] = 0x00; //scrolling to non-scrolling
+            else if ( rom[currentLevel] == 0x01 && rngNum.nextFloat() < 0.15 ) {
+                rom[currentLevel] = 0x00; //scrolling to non-scrolling
             }
         }
-        for ( int i = 0x1F91; i <= 0x1FB0; i++ ) {
+        if ( rom[0x1F83] == 0x01 ) {
+            rom[0xE7A6] = 0x27; //if level 12 is scrolling, swap midway bell for heart
+        }
+        for ( int i = (0x1F91 + vAdj); i <= (0x1FB0 + vAdj); i++ ) {
             switch ( rom[i] ) {
                 case 0x00:
-                    if ( i != 0x1F98 && i !=  0x1FA6 ) { //no changing physics for levels 07 and 15
-                        if ( rngNum.nextFloat() < 0.03 ) {
+                    if ( i != (0x1F98 + vAdj) && i !=  (0x1FA6 + vAdj) ) { //no changing physics for levels 07 and 15
+                        if ( rngNum.nextFloat() < 0.05 ) {
                             rom[i] = 0x01; //normal physics to space physics
-                        } else if ( rngNum.nextFloat() < 0.052 ) { //.05
+                        } else if ( rngNum.nextFloat() < 0.074 && i != (0x1F99 + vAdj) ) { //.07 and no moon physics for level 08
                             rom[i] = 0x08; //normal physics to moon physics
                         } 
                     }
                     break;
                 case 0x01:
-                    if ( rngNum.nextFloat() < 0.03 ) {
+                    if ( rngNum.nextFloat() < 0.05 ) {
                         rom[i] = 0x00; //space physics to normal physics
-                    } else if ( rngNum.nextFloat() < 0.031 ) { //.03
+                    } else if ( rngNum.nextFloat() < 0.084 ) { //.08
                         rom[i] = 0x08; //space physics to moon physics
                     }
                     break;
                 case 0x08:
-                    if ( rngNum.nextFloat() < 0.05 ) {
+                    if ( rngNum.nextFloat() < 0.07 ) {
                         rom[i] = 0x00; //moon physics to normal physics
                     } else if ( rngNum.nextFloat() < 0.032 ) { //.03
                         rom[i] = 0x01; //moon physics to space physics

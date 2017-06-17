@@ -63,7 +63,7 @@ public class sml2randoGUI extends javax.swing.JFrame {
         setTitle("Super Mario Land 2 Randomizer");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Original ROM", 0, 0, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Original ROM", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
         browse.setText("Browse for ROM");
         browse.addActionListener(new java.awt.event.ActionListener() {
@@ -95,7 +95,7 @@ public class sml2randoGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "SRL Information", 0, 0, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "SRL Information", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
         buttonGroup1.add(srlGlitchless);
         srlGlitchless.setSelected(true);
@@ -235,7 +235,7 @@ public class sml2randoGUI extends javax.swing.JFrame {
 
         status.setEditable(false);
         status.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        status.setText("Version 1.0.3 - 29 April 2017");
+        status.setText("Version 1.0.5 - 17 June 2017");
         status.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 statusActionPerformed(evt);
@@ -312,15 +312,11 @@ public class sml2randoGUI extends javax.swing.JFrame {
         try {
             RomCheck check = new RomCheck(foundFileText.getText());
             if ( check.originalRom) {
-                if ( check.versionOneRom ) {
-                    RandomizerConfig config = new RandomizerConfig(levelsCheck.isSelected(), exitsCheck.isSelected(), enemiesCheck.isSelected(), powerUpsCheck.isSelected(), platformsCheck.isSelected(), extraCheck.isSelected());
-                    RandomGeneration generator = new RandomGeneration(config);
-                    srlSetGoalText.setText( ".setgoal Randomizer - " + srlRaceType() + " - Seed: " + generator.seedName );
-                    generator.romGenerator(foundFileText.getText());
-                    status.setText("Success!");
-                } else {
-                    status.setText("Not Version 1.0 ROM");
-                }
+                RandomizerConfig config = new RandomizerConfig(levelsCheck.isSelected(), exitsCheck.isSelected(), enemiesCheck.isSelected(), powerUpsCheck.isSelected(), platformsCheck.isSelected(), extraCheck.isSelected());
+                RandomGeneration generator = new RandomGeneration(config);
+                srlSetGoalText.setText( ".setgoal Randomizer - " + srlRaceType() + " - Seed: " + generator.seedName );
+                generator.romGenerator(foundFileText.getText());
+                status.setText("Success!");                
             } else {
                 status.setText("Invalid ROM selected");
             }
@@ -333,18 +329,14 @@ public class sml2randoGUI extends javax.swing.JFrame {
         try {
             RomCheck check = new RomCheck(foundFileText.getText());
             if ( check.originalRom) {
-                if ( check.versionOneRom ) {
-                    if ( isLong(customSeed.getText()) ) {
-                        RandomizerConfig config = new RandomizerConfig(Long.parseLong(customSeed.getText(),16));
-                        RandomGeneration generator = new RandomGeneration(config);
-                        srlSetGoalText.setText( ".setgoal Randomizer - " + srlRaceType() + " - Seed: " + generator.seedName );
-                        generator.romGenerator(foundFileText.getText());
-                        status.setText("Success!");
-                    } else {
-                        status.setText("Invalid seed number");
-                    }
+                if ( isLong(customSeed.getText()) ) {
+                    RandomizerConfig config = new RandomizerConfig(Long.parseLong(customSeed.getText(),16));
+                    RandomGeneration generator = new RandomGeneration(config);
+                    srlSetGoalText.setText( ".setgoal Randomizer - " + srlRaceType() + " - Seed: " + generator.seedName );
+                    generator.romGenerator(foundFileText.getText());
+                    status.setText("Success!");
                 } else {
-                    status.setText("Not Version 1.0 ROM");
+                    status.setText("Invalid seed number");
                 }
             } else {
                 status.setText("Invalid ROM selected");
