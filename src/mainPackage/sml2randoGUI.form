@@ -375,7 +375,11 @@
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="horizontalAlignment" type="int" value="0"/>
+<<<<<<< HEAD
             <Property name="text" type="java.lang.String" value="Version 1.0.5 - 17 June 2017"/>
+=======
+            <Property name="text" type="java.lang.String" value="Version 1.0.4 - 16 June 2017"/>
+>>>>>>> origin/master
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="statusActionPerformed"/>

@@ -152,9 +152,14 @@ public class RandomGeneration {
         }
         int[] scrollingLevels = {0x1F71, 0x1F72, 0x1F73, 0x1F74, 0x1F76, 0x1F79, 0x1F7A, 0x1F7B, 0x1F7C, 0x1F7D, 0x1F7E, 0x1F7F, 0x1F81, 0x1F82, 0x1F83, 0x1F84, 0x1F85, 0x1F88, 0x1F90};
         for ( int i = 0; i < scrollingLevels.length; i++ ) {
+<<<<<<< HEAD
             int currentLevel = scrollingLevels[i] + vAdj;
             if( rom[currentLevel] == 0x00 && rngNum.nextFloat() < 0.07) {
                 rom[currentLevel] = 0x01; //non-scrolling to scrolling
+=======
+            if( rom[scrollingLevels[i]] == 0x00 && rngNum.nextFloat() < 0.07) {
+                rom[scrollingLevels[i]] = 0x01; //non-scrolling to scrolling
+>>>>>>> origin/master
             }
             else if ( rom[currentLevel] == 0x01 && rngNum.nextFloat() < 0.15 ) {
                 rom[currentLevel] = 0x00; //scrolling to non-scrolling
@@ -166,10 +171,17 @@ public class RandomGeneration {
         for ( int i = (0x1F91 + vAdj); i <= (0x1FB0 + vAdj); i++ ) {
             switch ( rom[i] ) {
                 case 0x00:
+<<<<<<< HEAD
                     if ( i != (0x1F98 + vAdj) && i !=  (0x1FA6 + vAdj) ) { //no changing physics for levels 07 and 15
                         if ( rngNum.nextFloat() < 0.05 ) {
                             rom[i] = 0x01; //normal physics to space physics
                         } else if ( rngNum.nextFloat() < 0.074 && i != (0x1F99 + vAdj) ) { //.07 and no moon physics for level 08
+=======
+                    if ( i != 0x1F98 && i !=  0x1FA6 ) { //no changing physics for levels 07 and 15
+                        if ( rngNum.nextFloat() < 0.05 ) {
+                            rom[i] = 0x01; //normal physics to space physics
+                        } else if ( rngNum.nextFloat() < 0.074 && i != 0x1F99 ) { //.07 and no moon physics for level 08
+>>>>>>> origin/master
                             rom[i] = 0x08; //normal physics to moon physics
                         } 
                     }
