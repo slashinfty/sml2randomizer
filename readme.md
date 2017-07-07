@@ -8,7 +8,7 @@
 
 * The randomizer (download link above)
 * Java (JRE) 8 (get it [here](https://www.java.com/download/))
-* A ~~version 1.0~~ ROM of Super Mario Land 2 (any version allowed starting with v1.0.5)
+* A  ROM of Super Mario Land 2 (v1.0 and v1.2 both allowed)
 * A way to play (emulator (like bgb or gambatte) or Game Boy EverDrive)
 
 ## What To Do
