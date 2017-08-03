@@ -27,19 +27,7 @@ public class RandomGeneration {
         this.config = config;
         seedName = String.format("%08X", config.randomSeed);
     }
-    
-    /** 
-     * Used only for testing
-        public static void main(String[] args) throws IOException {
-        RandomizerConfig config = new RandomizerConfig(true, true, true, true, true, true);
-        Scanner userInput = new Scanner(System.in);
-        System.out.print("File:");
-        String romFilename = userInput.nextLine();
-        RandomGeneration x = new RandomGeneration(config);
-        x.romGenerator(romFilename);
-    }
-    */
-    
+      
     /**
      * Sets seed, accepts ROM, performs randomization, creates new ROM
      */
@@ -153,38 +141,66 @@ public class RandomGeneration {
         int[] scrollingLevels = {0x1F71, 0x1F72, 0x1F73, 0x1F74, 0x1F76, 0x1F79, 0x1F7A, 0x1F7B, 0x1F7C, 0x1F7D, 0x1F7E, 0x1F7F, 0x1F81, 0x1F82, 0x1F83, 0x1F84, 0x1F85, 0x1F88, 0x1F90};
         for ( int i = 0; i < scrollingLevels.length; i++ ) {
             int currentLevel = scrollingLevels[i] + vAdj;
-            if( rom[currentLevel] == 0x00 && rngNum.nextFloat() < 0.07) {
-                rom[currentLevel] = 0x01; //non-scrolling to scrolling
-            }
-            else if ( rom[currentLevel] == 0x01 && rngNum.nextFloat() < 0.15 ) {
-                rom[currentLevel] = 0x00; //scrolling to non-scrolling
+            if ( config.hardModeSetting ) {
+                if (rom[currentLevel] == 0x00 && rngNum.nextFloat() < 0.07) {
+                    rom[currentLevel] = 0x01; //non-scrolling to scrolling
+                } else if (rom[currentLevel] == 0x01 && rngNum.nextFloat() < 0.75) {
+                    rom[currentLevel] = 0x00; //scrolling to non-scrolling
+                } 
+            } else {
+                if( rom[currentLevel] == 0x00 && rngNum.nextFloat() < 0.07) {
+                    rom[currentLevel] = 0x01; //non-scrolling to scrolling
+                }
+                else if ( rom[currentLevel] == 0x01 && rngNum.nextFloat() < 0.15 ) {
+                    rom[currentLevel] = 0x00; //scrolling to non-scrolling
+                }
             }
         }
-        if ( rom[0x1F83] == 0x01 ) {
+        if ( rom[0x1F83 + vAdj] == 0x01 ) {
             rom[0xE7A6] = 0x27; //if level 12 is scrolling, swap midway bell for heart
         }
         for ( int i = (0x1F91 + vAdj); i <= (0x1FB0 + vAdj); i++ ) {
             switch ( rom[i] ) {
                 case 0x00:
-                    if ( i != (0x1F98 + vAdj) && i !=  (0x1FA6 + vAdj) ) { //no changing physics for levels 07 and 15
-                        if ( rngNum.nextFloat() < 0.05 ) {
+                    if (config.hardModeSetting) {
+                        if (i != (0x1F98 + vAdj) && i != (0x1FA6 + vAdj)) { //no changing physics for levels 07 and 15
+                            if (rngNum.nextFloat() < 0.05) {
+                                rom[i] = 0x01; //normal physics to space physics
+                            } else if (rngNum.nextFloat() < 0.126 && i != (0x1F99 + vAdj)) { //.12 and no moon physics for level 08
+                                rom[i] = 0x08; //normal physics to moon physics
+                            }
+                        }
+                    } else if (i != (0x1F98 + vAdj) && i != (0x1FA6 + vAdj)) { //no changing physics for levels 07 and 15
+                        if (rngNum.nextFloat() < 0.05) {
                             rom[i] = 0x01; //normal physics to space physics
-                        } else if ( rngNum.nextFloat() < 0.074 && i != (0x1F99 + vAdj) ) { //.07 and no moon physics for level 08
+                        } else if (rngNum.nextFloat() < 0.074 && i != (0x1F99 + vAdj)) { //.07 and no moon physics for level 08
                             rom[i] = 0x08; //normal physics to moon physics
-                        } 
+                        }
                     }
                     break;
                 case 0x01:
-                    if ( rngNum.nextFloat() < 0.05 ) {
+                    if (config.hardModeSetting) {
+                        if (rngNum.nextFloat() < 0.15) {
+                            rom[i] = 0x00; //space physics to normal physics
+                        } else if (rngNum.nextFloat() < 0.412) { //.35
+                            rom[i] = 0x08; //space physics to moon physics
+                        }
+                    } else if (rngNum.nextFloat() < 0.05) {
                         rom[i] = 0x00; //space physics to normal physics
-                    } else if ( rngNum.nextFloat() < 0.084 ) { //.08
+                    } else if (rngNum.nextFloat() < 0.084) { //.08
                         rom[i] = 0x08; //space physics to moon physics
                     }
                     break;
                 case 0x08:
-                    if ( rngNum.nextFloat() < 0.07 ) {
+                    if (config.hardModeSetting) {
+                        if (rngNum.nextFloat() < 0.35) {
+                            rom[i] = 0x00; //moon physics to normal physics
+                        } else if (rngNum.nextFloat() < 0.077) { //.05
+                            rom[i] = 0x01; //moon physics to space physics
+                        }
+                    } else if (rngNum.nextFloat() < 0.07) {
                         rom[i] = 0x00; //moon physics to normal physics
-                    } else if ( rngNum.nextFloat() < 0.032 ) { //.03
+                    } else if (rngNum.nextFloat() < 0.032) { //.03
                         rom[i] = 0x01; //moon physics to space physics
                     }
                     break;
@@ -218,7 +234,13 @@ public class RandomGeneration {
                     System.arraycopy(newSprite, 0, rom, i, 3);
                 }
             } else if ( binarySearch(blockPowerUps, sprite) >= 0 ) {
-                byte[] newSprite = insertSprite(rom[i], rom[i+1], rom[i+2], blockPowerUps[rngNum.nextInt(blockPowerUps.length)]);
+                byte[] newSprite;
+                if ( config.hardModeSetting ) {
+                    double[] blockProbabilities = {0.2, 0.05, 0.15, 0.05, 0.05, 0.5};
+                    newSprite = insertSprite(rom[i], rom[i + 1], rom[i + 2], randomSprite(blockPowerUps, blockProbabilities));
+                } else {
+                    newSprite = insertSprite(rom[i], rom[i + 1], rom[i + 2], blockPowerUps[rngNum.nextInt(blockPowerUps.length)]);
+                }                
                 System.arraycopy(newSprite, 0, rom, i, 3);
             }
         }
@@ -247,7 +269,13 @@ public class RandomGeneration {
                 if ( rom[i] == (byte) 0xFF ) {
                     i -= 2;
                 } else if ( binarySearch(piranhaPlants, sprite) >= 0 ) {
-                    byte[] newSprite = insertSprite(rom[i], rom[i+1], rom[i+2], piranhaPlants[rngNum.nextInt(piranhaPlants.length)]);
+                    byte[] newSprite;
+                    if (config.hardModeSetting) {
+                        double[] piranhaProbs = {0.15, 0.85};
+                        newSprite = insertSprite(rom[i], rom[i + 1], rom[i + 2], randomSprite(piranhaPlants, piranhaProbs));
+                    } else {
+                        newSprite = insertSprite(rom[i], rom[i + 1], rom[i + 2], piranhaPlants[rngNum.nextInt(piranhaPlants.length)]);
+                    }
                     System.arraycopy(newSprite, 0, rom, i, 3);
                 }
             }
@@ -259,11 +287,21 @@ public class RandomGeneration {
         spriteRandomizing(rom, level19_1BBytes, 0xEA2F, 0xEA7D);
         spriteRandomizing(rom, level19_1BBytes, 0xEAA3, 0xEACD);
         byte[] level01Bytes = {0x1F, 0x20, 0x21, 0x22};
-        spriteRandomizing(rom, level01Bytes, 0xE0BD, 0xE123);
+        if( config.hardModeSetting ) {
+            double[] level01Probs = {0.3, 0.15, 0.2, 0.35};
+            spriteRandomizing(rom, level01Bytes, 0xE0BD, 0xE123, level01Probs);
+        } else {
+            spriteRandomizing(rom, level01Bytes, 0xE0BD, 0xE123);
+        }
         byte[] level02Bytes = {0x44, 0x58};
         spriteRandomizing(rom, level02Bytes, 0xE124, 0xE181);
         byte[] level03Bytes = {0x35, 0x3E, 0x40, 0x41, 0x42};
-        spriteRandomizing(rom, level03Bytes, 0xE182, 0xE1EE);
+        if ( config.hardModeSetting ) {
+            double[] level03Probs = {0.15, 0.25, 0.25, 0.1, 0.25};
+            spriteRandomizing(rom, level03Bytes, 0xE182, 0xE1EE, level03Probs);
+        } else {
+            spriteRandomizing(rom, level03Bytes, 0xE182, 0xE1EE);
+        }
         byte[] level04Bytes = {0x33, 0x34, 0x5D};
         spriteRandomizing(rom, level04Bytes, 0xE1EF, 0xE249);
         byte[] level05Bytes = {0x08, 0x39, 0x3A};
@@ -291,26 +329,58 @@ public class RandomGeneration {
             }
         }
         byte[] level07Bytes = {0x4D, 0x54, 0x55, 0x56, 0x5E, 0x5F};
-        spriteRandomizing(rom, level07Bytes, 0xE30C, 0xE384);
+        if ( config.hardModeSetting ) {
+            double[] level07Probs = {0.25, 0.1, 0.25, 0.1, 0.15, 0.15};
+            spriteRandomizing(rom, level07Bytes, 0xE30C, 0xE384, level07Probs);
+        } else{
+            spriteRandomizing(rom, level07Bytes, 0xE30C, 0xE384);
+        }       
         byte[] level08Bytes = {0x4D, 0x57};
         spriteRandomizing(rom, level08Bytes, 0xE385, 0xE3D3);
         byte[] level09Bytes = {0x4D, 0x53, 0x5A, 0x5C};
-        spriteRandomizing(rom, level09Bytes, 0xE3D4, 0xE431);
+        if ( config.hardModeSetting ) {
+            double[] level09Probs = {0.35, 0.1, 0.4, 0.15};
+            spriteRandomizing(rom, level09Bytes, 0xE3D4, 0xE431, level09Probs);
+        } else {
+            spriteRandomizing(rom, level09Bytes, 0xE3D4, 0xE431);
+        }        
         byte[] level0ABytes = {0x01, 0x40, 0x4B};
-        spriteRandomizing(rom, level0ABytes, 0xE432, 0xE49B);
+        if ( config.hardModeSetting ) {
+            double[] level0AProbs = {0.2, 0.35, 0.45};
+            spriteRandomizing(rom, level0ABytes, 0xE432, 0xE49B, level0AProbs);
+        } else {
+            spriteRandomizing(rom, level0ABytes, 0xE432, 0xE49B);
+        }
         byte[] level0BBytes = {0x08, 0x09, 0x3A, 0x44, 0x4D};
-        spriteRandomizing(rom, level0BBytes, 0xE49C, 0xE4F9);
+        if ( config.hardModeSetting ) {
+            double[] level0BProbs = {0.3, 0.05, 0.3, 0.1, 0.25};
+            spriteRandomizing(rom, level0BBytes, 0xE49C, 0xE4F9, level0BProbs);
+        } else {
+            spriteRandomizing(rom, level0BBytes, 0xE49C, 0xE4F9);
+        }
         for ( int i = 0xE4FA; i < 0xE560; i += 3 ) {
             byte sprite = extractSprite(rom[i], rom[i+1], rom[i+2]);
             switch ( sprite ) {
                 case 0x49:
                     byte[] level0Ca = {0x01, 0x47, 0x48, 0x49, 0x53};
-                    byte[] sprite0Ca = insertSprite(rom[i], rom[i+1], rom[i+2], level0Ca[rngNum.nextInt(level0Ca.length)]);
+                    byte[] sprite0Ca;
+                    if ( config.hardModeSetting ) {
+                        double[] level0CaProbs = {0.25, 0.1, 0.25, 0.1, 0.3};
+                        sprite0Ca = insertSprite(rom[i], rom[i+1], rom[i+2], randomSprite(level0Ca, level0CaProbs));
+                    } else {
+                        sprite0Ca = insertSprite(rom[i], rom[i+1], rom[i+2], level0Ca[rngNum.nextInt(level0Ca.length)]);
+                    }                    
                     System.arraycopy(sprite0Ca, 0, rom, i, 3);
                     break;
                 case 0x01: case 0x47: case 0x48:
                     byte[] level0Cb = {0x01, 0x47, 0x48, 0x53};
-                    byte[] sprite0Cb = insertSprite(rom[i], rom[i+1], rom[i+2], level0Cb[rngNum.nextInt(level0Cb.length)]);
+                    byte[] sprite0Cb;
+                    if ( config.hardModeSetting ) {
+                        double[] level0CbProbs = {0.25, 0.1, 0.3, 0.35};
+                        sprite0Cb = insertSprite(rom[i], rom[i+1], rom[i+2], randomSprite(level0Cb, level0CbProbs));
+                    } else {
+                        sprite0Cb = insertSprite(rom[i], rom[i+1], rom[i+2], level0Cb[rngNum.nextInt(level0Cb.length)]);
+                    }
                     System.arraycopy(sprite0Cb, 0, rom, i, 3);
                     break;
                 default:
@@ -322,17 +392,35 @@ public class RandomGeneration {
             switch ( sprite ) {
                 case 0x43:
                     byte[] level0Da = {0x09, 0x43, 0x4D, 0x53};
-                    byte[] sprite0Da = insertSprite(rom[i], rom[i+1], rom[i+2], level0Da[rngNum.nextInt(level0Da.length)]);
+                    byte[] sprite0Da;
+                    if ( config.hardModeSetting ) {
+                        double[] level0DaProbs = {0.2, 0.25, 0.2, 0.35};
+                        sprite0Da = insertSprite(rom[i], rom[i+1], rom[i+2], randomSprite(level0Da, level0DaProbs));
+                    } else {
+                        sprite0Da = insertSprite(rom[i], rom[i+1], rom[i+2], level0Da[rngNum.nextInt(level0Da.length)]);
+                    }
                     System.arraycopy(sprite0Da, 0, rom, i, 3);
                     break;
                 case 0x4C:
                     byte[] level0Db = {0x09, 0x4C, 0x4D, 0x53};
-                    byte[] sprite0Db = insertSprite(rom[i], rom[i+1], rom[i+2], level0Db[rngNum.nextInt(level0Db.length)]);
+                    byte[] sprite0Db;
+                    if (config.hardModeSetting) {
+                        double[] level0DbProbs = {0.1, 0.25, 0.3, 0.35};
+                        sprite0Db = insertSprite(rom[i], rom[i + 1], rom[i + 2], randomSprite(level0Db, level0DbProbs));
+                    } else {
+                        sprite0Db = insertSprite(rom[i], rom[i + 1], rom[i + 2], level0Db[rngNum.nextInt(level0Db.length)]);
+                    }
                     System.arraycopy(sprite0Db, 0, rom, i, 3);
                     break;
                 case 0x09: case 0x4D:
                     byte[] level0Dc = {0x09, 0x4D, 0x53};
-                    byte[] sprite0Dc = insertSprite(rom[i], rom[i+1], rom[i+2], level0Dc[rngNum.nextInt(level0Dc.length)]);
+                    byte[] sprite0Dc;
+                    if (config.hardModeSetting) {
+                        double[] level0DcProbs = {0.15, 0.4, 0.45};
+                        sprite0Dc = insertSprite(rom[i], rom[i + 1], rom[i + 2], randomSprite(level0Dc, level0DcProbs));
+                    } else {
+                        sprite0Dc = insertSprite(rom[i], rom[i + 1], rom[i + 2], level0Dc[rngNum.nextInt(level0Dc.length)]);
+                    }
                     System.arraycopy(sprite0Dc, 0, rom, i, 3);
                     break;
                 default:
@@ -346,17 +434,35 @@ public class RandomGeneration {
             switch ( sprite ) {
                 case 0x01:
                     byte[] level0Fa = {0x01, 0x06, 0x53, 0x55, 0x56};
-                    byte[] sprite0Fa = insertSprite(rom[i], rom[i+1], rom[i+2], level0Fa[rngNum.nextInt(level0Fa.length)]);
+                    byte[] sprite0Fa;
+                    if (config.hardModeSetting) {
+                        double[] level0FaProbs = {0.15, 0.25, 0.25, 0.25, 0.1};
+                        sprite0Fa = insertSprite(rom[i], rom[i + 1], rom[i + 2], randomSprite(level0Fa, level0FaProbs));
+                    } else {
+                        sprite0Fa = insertSprite(rom[i], rom[i + 1], rom[i + 2], level0Fa[rngNum.nextInt(level0Fa.length)]);
+                    }
                     System.arraycopy(sprite0Fa, 0, rom, i, 3);
                     break;
                 case 0x21:
                     byte[] level0Fb = {0x06, 0x21, 0x53, 0x55, 0x56};
-                    byte[] sprite0Fb = insertSprite(rom[i], rom[i+1], rom[i+2], level0Fb[rngNum.nextInt(level0Fb.length)]);
+                    byte[] sprite0Fb;
+                    if (config.hardModeSetting) {
+                        double[] level0FbProbs = {0.25, 0.1, 0.25, 0.3, 0.1};
+                        sprite0Fb = insertSprite(rom[i], rom[i + 1], rom[i + 2], randomSprite(level0Fb, level0FbProbs));
+                    } else {
+                        sprite0Fb = insertSprite(rom[i], rom[i + 1], rom[i + 2], level0Fb[rngNum.nextInt(level0Fb.length)]);
+                    }
                     System.arraycopy(sprite0Fb, 0, rom, i, 3);
                     break;
                 case 0x06: case 0x55: case 0x56:
                     byte[] level0Fc = {0x06, 0x53, 0x55, 0x56};
-                    byte[] sprite0Fc = insertSprite(rom[i], rom[i+1], rom[i+2], level0Fc[rngNum.nextInt(level0Fc.length)]);
+                    byte[] sprite0Fc;
+                    if (config.hardModeSetting) {
+                        double[] level0FcProbs = {0.25, 0.3, 0.25, 0.2};
+                        sprite0Fc = insertSprite(rom[i], rom[i + 1], rom[i + 2], randomSprite(level0Fc, level0FcProbs));
+                    } else {
+                        sprite0Fc = insertSprite(rom[i], rom[i + 1], rom[i + 2], level0Fc[rngNum.nextInt(level0Fc.length)]);
+                    }
                     System.arraycopy(sprite0Fc, 0, rom, i, 3);
                     break;
                 default:
@@ -400,17 +506,33 @@ public class RandomGeneration {
             }
         }
         byte[] level13Bytes = {0x5C, 0x5E, 0x5F};
-        spriteRandomizing(rom, level13Bytes, 0xE7C8, 0xE822);
+        if (config.hardModeSetting) {
+            double[] level13Probs = {0.02, 0.49, 0.49};
+            spriteRandomizing(rom, level13Bytes, 0xE7C8, 0xE822, level13Probs);
+        } else {
+            spriteRandomizing(rom, level13Bytes, 0xE7C8, 0xE822);
+        }
         byte[] level14Bytes = {0x22, 0x23, 0x25, 0x27};
-        spriteRandomizing(rom, level14Bytes, 0xE823, 0xE88F);
+        if (config.hardModeSetting) {
+            double[] level14Probs = {0.1, 0.35, 0.2, 0.35};
+            spriteRandomizing(rom, level14Bytes, 0xE823, 0xE88F, level14Probs);
+        } else {
+            spriteRandomizing(rom, level14Bytes, 0xE823, 0xE88F);
+        }
         byte[] level15Bytes = {0x07, 0x33, 0x34, 0x3D, 0x5D};
         spriteRandomizing(rom, level15Bytes, 0xE890, 0xE8F6);
         byte[] level16Bytes = {0x01, 0x08, 0x09, 0x34, 0x3A, 0x55};
         spriteRandomizing(rom, level16Bytes, 0xE8F7, 0xE954);
         byte[] level18BytesA = {0x68, 0x69};
         byte[] level18BytesB = {0x6E, 0x6F};
-        spriteRandomizing(rom ,level18BytesA, 0xE99E, 0xEA2E);
-        spriteRandomizing(rom ,level18BytesB, 0xE99E, 0xEA2E);
+        if (config.hardModeSetting) {
+            double[] level18Probs = {0.8, 0.2};
+            spriteRandomizing(rom, level18BytesA, 0xE99E, 0xEA2E, level18Probs);
+            spriteRandomizing(rom, level18BytesB, 0xE99E, 0xEA2E, level18Probs);
+        } else {
+            spriteRandomizing(rom, level18BytesA, 0xE99E, 0xEA2E);
+            spriteRandomizing(rom, level18BytesB, 0xE99E, 0xEA2E);
+        }
         byte[] level1FBytes = {0x01, 0x09};
         spriteRandomizing(rom, level1FBytes, 0xEB55, 0xEBB5);
     }
@@ -467,6 +589,29 @@ public class RandomGeneration {
                 System.arraycopy(newSprite, 0, rom, i, 3);
             }
         }
+    }
+    
+    private void spriteRandomizing(byte[] rom, byte[] possibleBytes, int startOffset, int endOffset, double[] probabilities) {
+        for (int i = startOffset; i < endOffset; i += 3) {
+            byte sprite = extractSprite(rom[i], rom[i + 1], rom[i + 2]);
+            if (rom[i] == (byte) 0xFF) {
+                i -= 2;
+            } else if (binarySearch(possibleBytes, sprite) >= 0) {
+                byte[] newSprite = insertSprite(rom[i], rom[i + 1], rom[i + 2], randomSprite(possibleBytes, probabilities));
+                System.arraycopy(newSprite, 0, rom, i, 3);
+            }
+        }
+    }
+    
+    private byte randomSprite(byte[] sprites, double[] probs) {
+        float r = rngNum.nextFloat();
+        float p = 0;
+        int i = -1;
+        do {
+            i++;
+            p += (float)probs[i];
+        } while ( p < r );
+        return sprites[i];
     }
 }
 

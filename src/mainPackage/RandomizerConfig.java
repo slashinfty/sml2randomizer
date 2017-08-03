@@ -19,16 +19,18 @@ public class RandomizerConfig {
     public final boolean powerUpsSetting;
     public final boolean platformsSetting;
     public final boolean extraSetting;
+    public final boolean hardModeSetting;
     public final long randomSeed;
     
-    public RandomizerConfig(boolean levelCheck, boolean exitCheck, boolean enemyCheck, boolean powerUpCheck, boolean platformCheck, boolean extraCheck) {
-       randomSeed = createSeed(levelCheck, exitCheck, enemyCheck, powerUpCheck, platformCheck, extraCheck);
+    public RandomizerConfig(boolean levelCheck, boolean exitCheck, boolean enemyCheck, boolean powerUpCheck, boolean platformCheck, boolean extraCheck, boolean hardModeCheck) {
+       randomSeed = createSeed(levelCheck, exitCheck, enemyCheck, powerUpCheck, platformCheck, extraCheck, hardModeCheck);
        levelsSetting = levelCheck;
        exitsSetting = exitCheck;
        enemiesSetting = enemyCheck;
        powerUpsSetting = powerUpCheck;
        platformsSetting = platformCheck;
        extraSetting = extraCheck;
+       hardModeSetting = hardModeCheck;
     }
     
     public RandomizerConfig(long userSeed) {
@@ -39,9 +41,10 @@ public class RandomizerConfig {
         enemiesSetting = (userSeed & 0x8000000) != 0;
         exitsSetting = (userSeed & 0x10000000) != 0;
         levelsSetting = (userSeed & 0x20000000) != 0;
+        hardModeSetting = (userSeed & 0x40000000) != 0;
     }
     
-    private static long createSeed(boolean levels, boolean exits, boolean enemies, boolean powerUps, boolean platforms, boolean extra) {
+    private static long createSeed(boolean levels, boolean exits, boolean enemies, boolean powerUps, boolean platforms, boolean extra, boolean hardMode) {
         Random seedGen = new Random();
         long newSeed = seedGen.nextLong();
         newSeed &= 0xFFFFFF;
@@ -62,6 +65,9 @@ public class RandomizerConfig {
         }
         if ( levels ) {
             newSeed |= 0x20000000;
+        }
+        if ( hardMode ) {
+            newSeed |= 0x40000000;
         }
         return newSeed;
     }

@@ -5,10 +5,13 @@
  */
 package mainPackage;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 
 /**
@@ -22,6 +25,11 @@ public class sml2randoGUI extends javax.swing.JFrame {
      */
     public sml2randoGUI() {
         initComponents();
+        hardModeCheck.addActionListener(new selectAll());
+        ActionListener unselectAll = new unselectAll();
+        enemiesCheck.addActionListener(unselectAll);
+        extraCheck.addActionListener(unselectAll);
+        powerUpsCheck.addActionListener(unselectAll);
     }
 
     /**
@@ -51,6 +59,7 @@ public class sml2randoGUI extends javax.swing.JFrame {
         powerUpsCheck = new javax.swing.JCheckBox();
         extraCheck = new javax.swing.JCheckBox();
         randomSeedGeneration = new javax.swing.JButton();
+        hardModeCheck = new javax.swing.JCheckBox();
         jPanel5 = new javax.swing.JPanel();
         customSeed = new javax.swing.JTextField();
         customSeedGeneration = new javax.swing.JButton();
@@ -156,6 +165,9 @@ public class sml2randoGUI extends javax.swing.JFrame {
             }
         });
 
+        hardModeCheck.setText("Hard Mode");
+        hardModeCheck.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -163,6 +175,8 @@ public class sml2randoGUI extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(hardModeCheck, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(randomSeedGeneration, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(exitsCheck)
@@ -173,8 +187,7 @@ public class sml2randoGUI extends javax.swing.JFrame {
                             .addComponent(extraCheck)
                             .addComponent(powerUpsCheck)
                             .addComponent(platformsCheck))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(randomSeedGeneration, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -192,6 +205,8 @@ public class sml2randoGUI extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(enemiesCheck)
                     .addComponent(extraCheck))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(hardModeCheck)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(randomSeedGeneration)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -224,7 +239,7 @@ public class sml2randoGUI extends javax.swing.JFrame {
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap(36, Short.MAX_VALUE)
+                .addContainerGap(79, Short.MAX_VALUE)
                 .addComponent(customSeed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(33, 33, 33)
                 .addComponent(customSeedGeneration)
@@ -235,7 +250,7 @@ public class sml2randoGUI extends javax.swing.JFrame {
 
         status.setEditable(false);
         status.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        status.setText("Version 1.0.5 - 17 June 2017");
+        status.setText("Version 1.1 - 3 August 2017");
         status.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 statusActionPerformed(evt);
@@ -277,8 +292,8 @@ public class sml2randoGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -312,7 +327,7 @@ public class sml2randoGUI extends javax.swing.JFrame {
         try {
             RomCheck check = new RomCheck(foundFileText.getText());
             if ( check.originalRom) {
-                RandomizerConfig config = new RandomizerConfig(levelsCheck.isSelected(), exitsCheck.isSelected(), enemiesCheck.isSelected(), powerUpsCheck.isSelected(), platformsCheck.isSelected(), extraCheck.isSelected());
+                RandomizerConfig config = new RandomizerConfig(levelsCheck.isSelected(), exitsCheck.isSelected(), enemiesCheck.isSelected(), powerUpsCheck.isSelected(), platformsCheck.isSelected(), extraCheck.isSelected(), hardModeCheck.isSelected());
                 RandomGeneration generator = new RandomGeneration(config);
                 srlSetGoalText.setText( ".setgoal Randomizer - " + srlRaceType() + " - Seed: " + generator.seedName );
                 generator.romGenerator(foundFileText.getText());
@@ -370,7 +385,7 @@ public class sml2randoGUI extends javax.swing.JFrame {
             return "GB ROMs (*.gb)";
         }
     }
-
+    
     /**
      * @param args the command line arguments
      */
@@ -403,6 +418,27 @@ public class sml2randoGUI extends javax.swing.JFrame {
             new sml2randoGUI().setVisible(true);
         });
     }
+    
+    class selectAll implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if ( hardModeCheck.isSelected() ) {
+                enemiesCheck.setSelected(true);
+                extraCheck.setSelected(true);
+                powerUpsCheck.setSelected(true);
+            }
+        }
+    }
+    
+    class unselectAll implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JCheckBox check = (JCheckBox)e.getSource();
+            if ( !check.isSelected() ) {
+                hardModeCheck.setSelected(false);
+            }
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton browse;
@@ -414,6 +450,7 @@ public class sml2randoGUI extends javax.swing.JFrame {
     private javax.swing.JCheckBox extraCheck;
     private javax.swing.JFileChooser fileChooser;
     private javax.swing.JTextField foundFileText;
+    private javax.swing.JCheckBox hardModeCheck;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
