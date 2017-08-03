@@ -1,7 +1,7 @@
 <div style="text-align:center">
 <p><img src="https://github.com/slashinfty/sml2randomizer/raw/master/screenshot.png" alt="Screenshot of Super Mario Land 2 Randomizer" /></p>
 
-<p><a href="https://github.com/slashinfty/sml2randomizer/raw/master/dist/sml2randomizer.jar">Download</a> version 1.0.5 of the randomizer.</p>
+<p><a href="https://github.com/slashinfty/sml2randomizer/raw/master/dist/sml2randomizer.jar">Download</a> version 1.1 of the randomizer.</p>
 </div>
 
 ## What Do You Need
