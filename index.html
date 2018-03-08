@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="us">
+<head>
+	<meta charset="utf-8">
+	<title>SML2 Randomizer</title>
+	<link href="jqueryui/jquery-ui.css" rel="stylesheet">
+	<link href="css/index.css" rel="stylesheet">
+	<link rel="icon" type="image/x-icon" href="images/favicon.png">
+	<style>
+	.content {
+    	max-width: 800px;
+    	margin: auto;
+	}
+	body{
+		font-family: Monospace, sans-serif;
+	}
+	#dialog-link {
+		padding: .4em 1em .4em 20px;
+		text-decoration: none;
+		position: relative;
+	}
+	#dialog-link span.ui-icon {
+		margin: 0 5px 0 0;
+		position: absolute;
+		left: .2em;
+		top: 50%;
+		margin-top: -8px;
+	}
+	</style>
+</head>
+<body>
+<div class="content">
+<table class="tstyle">
+	<tr>
+		<td><h1>Super Mario Land 2 Randomizer</h1></td>
+		<td class="ralign"><a href="#" title="v2.0 released 9 March 2018"><img src="images/FriendlyFinger.png" alt="Wario giving thumbs up" style="width:81px;height:65px;"></a></td>
+	</tr>
+</table>
+
+<table class="tstyle">
+	<tr>
+		<td><div class="upload"><input type="file" id="fileupload" name="upload" accept=".gb" /><p></p></div></td>
+		<td class="calign"><p id="romVersion"></p></td>
+		<td class="ralign"><button id="randomizeRom" disabled>Randomize</button></td>
+	</tr>
+</table>
+<br>
+<table class="tstyle">
+	<tr>
+		<td><label for="seed">Seed:</label><input type="text" name="seed-input" id="seed" placeholder="Leave blank for random seed" /></td>
+		<td class="ralign"><label for="flags">Flags:</label><input type="text" name="flags-input" id="flags" placeholder="Leave blank if selecting options" /></td>
+	</tr>
+</table>
+
+<div class="ui-widget hidden" id="warning">
+	<div class="ui-state-highlight ui-corner-all" style="padding: 0 .5em;">
+		<p align="center"><strong>Note:</strong> Using a DX ROM and selecting "Randomize Bosses" may produce glitchy boss fights.</p>
+	</div>
+</div>
+
+<h2>Options:</h2>
+
+<table class="tstyle">
+	<tr>
+		<td>
+			<fieldset>
+				<legend>Levels</legend>
+				<div id="controlgroup1">
+					<label for="randomizeLevels">Randomize Levels</label>
+					<input type="checkbox" name="level" id="randomizeLevels">
+					<label for="swapExits">Swap Dual Exits</label>
+					<input type="checkbox" name="level" id="swapExits">
+					<label for="randomizeBosses">Randomize Bosses</label>
+					<input type="checkbox" name="level" id="randomizeBosses">
+				</div>
+			</fieldset>
+		</td>
+		<td>
+			<fieldset>
+				<legend>Sprites</legend>
+				<div id="controlgroup2">
+					<label for="randomizeEnemies">Randomize Enemies</label>
+					<input type="checkbox" name="sprite" id="randomizeEnemies">
+					<label for="randomizePowerups">Randomize Power-Ups</label>
+					<input type="checkbox" name="sprite" id="randomizePowerups">
+					<label for="randomizePlatforms">Randomize Various Platforms</label>
+					<input type="checkbox" name="sprite" id="randomizePlatforms">
+				</div>
+			</fieldset>
+		</td>
+		<td>
+			<fieldset>
+				<legend>Enhancements</legend>
+				<div id="controlgroup3">
+					<label for="randomizePhysics">Randomize Physics</label>
+					<input type="checkbox" name="enhance" id="randomizePhysics">
+					<label for="randomizeScrolling">Randomize Scrolling</label>
+					<input type="checkbox" name="enhance" id="randomizeScrolling">
+					<label for="randomizeMusic">Randomize Music</label>
+					<input type="checkbox" name="enhance" id="randomizeMusic">
+				</div>
+			</fieldset>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+			<fieldset>
+				<legend>Challenges</legend>
+				<div id="controlgroup4">
+					<label for="beastMode">Beast Mode</label>
+					<input type="checkbox" name="challenge" id="beastMode">
+				</div>
+			</fieldset>
+		</td>
+		<td></td>
+	</tr>
+</table>
+<div class="ui-widget hidden" id="beastNote">
+	<div class="ui-state-highlight ui-corner-all" style="padding: 0 .5em;">
+		<p align="center"><strong>Note:</strong> Beast Mode affects enemies, power-ups, and all enhancements.<br>You must check those boxes which you would like to affect.</p>
+	</div>
+</div>
+<br>
+<table class="tstyle">
+	<tr>
+		<td><a href="https://github.com/slashinfty/sml2randomizer"><button id="button">View Source on GitHub</button></a></td>
+		<td class="ralign"><button id="changelog-link" class="ui-button ui-corner-all ui-widget">
+		<span class="ui-icon ui-icon-newwin"></span>View Changelog</button>
+	</tr>
+</table>
+<br>
+<table class="tstyle">
+	<tr>
+		<td>
+			<font size="1">slashinfty - <a href="https://twitter.com/slashinfty">twitter</a> - <a href="https://discord.gg/EX8VASd">discord</a></font>
+		</td>
+		<td class="calign">
+			<font size="1"><a href="https://github.com/slashinfty/sml2randomizer/blob/master/LICENSE">GNU General Public License v3.0</a></font>
+		</td>
+		<td class="ralign">
+			<font size="1">randomizer <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSLKbiVvQclYn4cZACg39MlHjU57R-BM_nmjybxuGn5Qh_QLNFi5RCBm9fv5A_7khxOqnOrgWG4Zv3F/pubhtml">league</a> hosted on <a href="https://twitch.tv/randomania">RandoMania</a></font>
+		</td>
+	</tr>
+</table>
+
+<div id="changelog" title="Changelog">
+	<h3>v2.0</h3>
+	<ui>
+		<li>Rewritten in JavaScript; now available online.</li>
+		<li>Options are now saved as flags, rather than integrated into the seed number.</li>
+		<li>If a DX ROM is randomized, it will be reflected in the output file name.</li>
+		<li>Boss levels can now be randomized. The golden coin shown corresponds to the level (not boss) beat, but will be saved as the zone that was completed.</li>
+		<li>Bosses can be randomized within boss levels.</li>
+		<li>Boss health can be randomized.</li>
+		<li>Power-ups during the Wario fight are randomized.</li>
+		<li>Hurry-up music is now an option for level music.</li>
+	</ui>
+</div>
+</div>
+<script src="jqueryui/external/jquery/jquery.js"></script>
+<script src="jqueryui/jquery-ui.js"></script>
+<script src="js/FileSaver.min.js"></script>
+<script src="js/logistics.js"></script>
+<script src="js/randomizer.js"></script>
+<script>
+
+$("#controlgroup1").controlgroup({
+	direction: "vertical"
+});
+$("#controlgroup2").controlgroup({
+	direction: "vertical"
+});
+$("#controlgroup3").controlgroup({
+	direction: "vertical"
+});
+$("#controlgroup4").controlgroup({
+	direction: "vertical"
+});
+
+$("#changelog-link").click(function( event ) {
+	$("#changelog").dialog("open");
+	event.preventDefault();
+});
+
+$("#changelog").dialog({
+	autoOpen: false,
+	width: 400,
+	buttons: [
+		{
+			text: "Close",
+			click: function() {
+				$( this ).dialog("close");
+			}
+		}
+	]
+});
+
+$("#beastMode").change(function() {
+	if(this.checked) {
+		$("#beastNote").removeClass('hidden');
+	} else {
+		$("#beastNote").addClass('hidden');
+	}
+});
+
+</script>
+</body>
+</html>

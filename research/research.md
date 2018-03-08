@@ -1,5 +1,7 @@
 The following is all of the information I collected in the process of creating of the randomizer. I have preserved as much as possible so others may use it to further hack Super Mario Land 2.
 
+**This is currently incomplete since the v2.0 release. It is a work in progress.**
+
 ## Randomizing Levels
 
 Looking at Raccoon Sam's [overworld data](http://raccoonsam.byethost8.com/Overworld.txt), dotsarecool pointed out that level bytes listed there were likely pointers for the overworld, and swapping them may be enough. This turned out to be correct.
@@ -14,8 +16,8 @@ Looking at Raccoon Sam's [overworld data](http://raccoonsam.byethost8.com/Overwo
 | Tree Zone 5 		      | 05	       	| 0x3C238		            |
 | Pumpkin Zone 1	      | 06	      	| 0x3C240		            |
 | Pumpkin Zone 2	      | 07	      	| 0x3C241		            |
-| Pumpkin Zone 4	      | 09       		| 0x3C243		            |
-| Pumpkin Zone 3	      | 08	      	| 0x3C242		            |
+| Pumpkin Zone 3	      | 08       		| 0x3C242		            |
+| Pumpkin Zone 4	      | 09	      	| 0x3C243		            |
 | Mario Zone 1		      | 0A	       	| 0x3C268		            |
 | Mario Zone 2	       	| 0B	       	| 0x3C269		            |
 | Mario Zone 3	       	| 0C	      	| 0x3C26A		            |
@@ -38,6 +40,26 @@ Looking at Raccoon Sam's [overworld data](http://raccoonsam.byethost8.com/Overwo
 | Tree Zone Special	    | 1D		      | 0x3C23E		            |
 | Macro Zone Special  	| 1E		      | 0x3C282		            |
 | Pumpkin Zone Special 2| 1F		      | 0x3C292		            |
+
+Changing the levels with bosses, with no other changes, will end up yielding two Golden Coins (one for the level beaten, and one for the zone beaten). Toruzz was able to locate the offsets for which zone gets cleared, and we determined it should be based on the level, and not the boss (important because we randomized bosses).
+
+| Level Name     | Level Offset  |
+| :---           | :---:         |
+| Tree Zone 5    | 0x304F6       |
+| Pumpkin Zone 4 | 0x304FA       |
+| Mario Zone 4   | 0x304FE       |
+| Turtle Zone 3  | 0x30501       |
+| Space Zone 2   | 0x30504       |
+| Macro Zone 4   | 0x30508       |
+
+| Zone Name     | Zone Clear Byte |
+| :---          | :---:           |
+| Tree Zone     | 0x05            |
+| Pumpkin Zone  | 0x09            |
+| Mario Zone    | 0x1D            |
+| Turtle Zone   | 0x17            |
+| Space Zone    | 0x11            |
+| Macro Zone    | 0x0E            |
 
 ## Swapping Level Exits
 
@@ -228,6 +250,20 @@ Each level has a sprite table containing all the sprites. Sprite tables end when
 | Pumpkin Zone Special 2| 0xEB55               	       	| 0xEBB5               	      |
 
 A complete list of all sprites is available as a [.csv](https://github.com/slashinfty/sml2randomizer/blob/master/research/SML2%20Sprite%20Data.csv).
+
+Toruzz was able to find that power-ups in the Wario fight are located at 0xA9A9 and 0xACA7 for the first and second phase, respectively. The bytes for the power-ups are as follows:
+
+| Power-up    | Byte  |
+| :---        | :---: |
+| Heart       | 0x0F  |
+| Mushroom    | 0x1B  |
+| Flower      | 0x1C  |
+| Carrot      | 0x1D  |
+| Money Bag   | 0x1F  |
+
+## Randomizing bosses
+
+
 
 ## Miscellaneous Randomization
 
