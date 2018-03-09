@@ -25,15 +25,9 @@ function romCheck(buffer) {
     var romTest = new Uint8Array(buffer);
     var print = "Not a ROM of MARIOLAND2";
     var origRom = [0x4D, 0x41, 0x52, 0x49, 0x4F, 0x4C, 0x41, 0x4E, 0x44, 0x32];
-    var cSum = [0xE0, 0xF9];
-    var romVerify = 12;
+    var romVerify = 10;
     for (var i = 0; i < origRom.length; i++) {
         if (romTest[0x134 + i] == origRom[i]) {
-            romVerify--;
-        }
-    }
-    for (var i = 0; i < cSum.length; i++) {
-        if (romTest[0x14E + i] == cSum[i]) {
             romVerify--;
         }
     }
