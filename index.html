@@ -33,7 +33,7 @@
 <table class="tstyle">
 	<tr>
 		<td><h1>Super Mario Land 2 Randomizer</h1></td>
-		<td class="ralign"><a href="#" title="v2.0 released 8 March 2018"><img src="images/FriendlyFinger.png" alt="Wario giving thumbs up" style="width:81px;height:65px;"></a></td>
+		<td class="ralign"><a href="#" title="v2.0.1 released 11 March 2018"><img src="images/FriendlyFinger.png" alt="Wario giving thumbs up" style="width:81px;height:65px;"></a></td>
 	</tr>
 </table>
 
@@ -145,6 +145,9 @@
 </table>
 
 <div id="changelog" title="Changelog">
+	<h3>v2.0.1</h3>
+	<ui>
+		<li>Accepts seed and flags via URL in the format "#seed-flags" after .html.</li>
 	<h3>v2.0</h3>
 	<ui>
 		<li>Rewritten in JavaScript; now available online.</li>
@@ -201,6 +204,16 @@ $("#beastMode").change(function() {
 		$("#beastNote").removeClass('hidden');
 	} else {
 		$("#beastNote").addClass('hidden');
+	}
+});
+
+$(document).ready(function() {
+	var url = document.createElement('a');
+	url.href = window.location.href;
+	if (url.hash != null) {
+		var hash = url.hash;
+		document.getElementById("seed").value = hash.substr(1,8).toUpperCase();
+		document.getElementById("flags").value = hash.substr(10,3).toUpperCase();
 	}
 });
 
