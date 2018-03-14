@@ -176,9 +176,9 @@ function doRandomize(buffer) {
         randomizeBossHealth(rom);
     }
     checksum(rom);
-	var flags = document.getElementById("flags").value;
-	document.getElementById("romVersion").innerHTML = "sml2r.download/?s=" + prng.printSeed + "&f=" + flags;
-	$("#romVersion").addClass('clickable');
+    var flags = document.getElementById("flags").value;
+    document.getElementById("romVersion").innerHTML = "sml2r.download/?s=" + prng.printSeed + "&f=" + flags;
+    $("#romVersion").addClass('clickable');
     var ifDx = rom[0x148] == 0x05 ? "DX-" : "";
     var filename = "sml2r-" + ifDx + prng.printSeed + "-" + flags + ".gb";
     saveAs(new Blob([buffer], {type: "octet/stream"}), filename);
