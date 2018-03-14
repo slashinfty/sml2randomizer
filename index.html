@@ -216,7 +216,7 @@ $("#beastMode").change(function() {
 
 $("#flags").change(function() {
 	var ftext = $("#flags").val().toUpperCase();
-	if (ftext.length == 3 && parseInt(ftext, 16).toString(16).toUpperCase() === ftext) {
+	if (ftext.length == 3 && ("00" + parseInt(ftext, 16).toString(16).toUpperCase()).substr(-3) === ftext) {
 		checkboxes();
 	}
 });
@@ -236,7 +236,7 @@ $(document).ready(function() {
 		if (seed.length == 8 && parseInt(seed, 16).toString(16).toUpperCase() === seed) {
 			document.getElementById("seed").value = seed;
 		}
-		if (flags.length == 3 && parseInt(flags, 16).toString(16).toUpperCase() === flags) {
+		if (flags.length == 3 && ("00" + parseInt(ftext, 16).toString(16).toUpperCase()).substr(-3) === flags) {
 			document.getElementById("flags").value = flags;
 			checkboxes();
 		}
