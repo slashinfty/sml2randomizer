@@ -33,7 +33,7 @@
 <table class="tstyle">
 	<tr>
 		<td><h1>Super Mario Land 2 Randomizer</h1></td>
-		<td class="ralign"><a href="#" title="v2.0.1 released 11 March 2018"><img src="images/FriendlyFinger.png" alt="Wario giving thumbs up" style="width:81px;height:65px;"></a></td>
+		<td class="ralign"><a href="#" title="v2.0.2 released 13 March 2018"><img src="images/FriendlyFinger.png" alt="Wario giving thumbs up" style="width:81px;height:65px;"></a></td>
 	</tr>
 </table>
 
@@ -145,9 +145,14 @@
 </table>
 
 <div id="changelog" title="Changelog">
+	<h3>v2.0.2</h3>
+	<ui>
+		<li>Changes the ROM version text to the URL with the seed and flag numbers, and clicking it copies it to the user's clipboard.</li>
+		<li>After flags are inserted in the flags field, the checkboxes are checked automatically.</li>
+		<li>Seed and flag fields only accept valid inputs via URL, and only output what would be valid inputs.</li>
 	<h3>v2.0.1</h3>
 	<ui>
-		<li>Accepts seed and flags via URL in the format "#seed-flags" after .html.</li>
+		<li>Accepts seed and flags via URL in the format "/?s=SEED&f=FLAGS" at the end of the URL.</li>
 	<h3>v2.0</h3>
 	<ui>
 		<li>Rewritten in JavaScript; now available online.</li>
@@ -166,6 +171,7 @@
 <script src="https://fastcdn.org/FileSaver.js/1.1.20151003/FileSaver.min.js"></script>
 <script src="js/logistics.js"></script>
 <script src="js/randomizer.js"></script>
+<script src="js/copy.js"></script>
 <script>
 
 $("#controlgroup1").controlgroup({
@@ -188,7 +194,8 @@ $("#changelog-link").click(function( event ) {
 
 $("#changelog").dialog({
 	autoOpen: false,
-	width: 400,
+	width: 450,
+	height: 500,
 	buttons: [
 		{
 			text: "Close",
@@ -207,13 +214,32 @@ $("#beastMode").change(function() {
 	}
 });
 
+$("#flags").change(function() {
+	var ftext = $("#flags").val().toUpperCase();
+	if (ftext.length == 3 && parseInt(ftext, 16).toString(16).toUpperCase() === ftext) {
+		checkboxes();
+	}
+});
+
+$("#romVersion").click(function() {
+	if ($("#romVersion").hasClass('clickable')) {
+		var url = $("#romVersion").text();
+		copy(url);
+	}
+});
+
 $(document).ready(function() {
-	var url = document.createElement('a');
-	url.href = window.location.href;
-	if (url.hash != null) {
-		var hash = url.hash;
-		document.getElementById("seed").value = hash.substr(1,8).toUpperCase();
-		document.getElementById("flags").value = hash.substr(10,3).toUpperCase();
+	var url = new URL(window.location.href);
+	if (url.searchParams.has("s") && url.searchParams.has("f")) {
+		var seed = url.searchParams.get("s").toUpperCase();
+		var flags = url.searchParams.get("f").toUpperCase();
+		if (seed.length == 8 && parseInt(seed, 16).toString(16).toUpperCase() === seed) {
+			document.getElementById("seed").value = seed;
+		}
+		if (flags.length == 3 && parseInt(flags, 16).toString(16).toUpperCase() === flags) {
+			document.getElementById("flags").value = flags;
+			checkboxes();
+		}
 	}
 });
 
