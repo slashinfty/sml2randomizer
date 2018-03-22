@@ -176,6 +176,7 @@ function doRandomize(buffer) {
         randomizeBossHealth(rom);
     }
     fileSelectScreen(rom);
+    credits(rom);
     checksum(rom);
     var flags = document.getElementById("flags").value;
     document.getElementById("romVersion").innerHTML = "sml2r.download/?s=" + prng.printSeed + "&f=" + flags;
