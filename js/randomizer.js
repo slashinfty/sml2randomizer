@@ -214,7 +214,7 @@ function randomizeMusic(rom) {
         var fastOffsets = [0x1205C, 0x1251F, 0x12B45, 0x12CF2, 0x12E9B, 0x131A6,
         0x13879, 0x13A38, 0x13EC6];
         for (var i = 0; i < fastOffsets.length; i++) {
-            if (prng.nextFloat() < 0.2) {
+            if (prng.nextFloat() < 0.3) {
                 rom[fastOffsets[i]] += 0x04;
                 rom[fastOffsets[i] + 0x01] = rom[fastOffsets[i] + 0x03];
             }
