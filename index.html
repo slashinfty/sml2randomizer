@@ -242,7 +242,7 @@ $(document).ready(function() {
 	if (url.searchParams.has("s") && url.searchParams.has("f")) {
 		var seed = url.searchParams.get("s").toUpperCase();
 		var flags = url.searchParams.get("f").toUpperCase();
-		if (seed.length == 8 && parseInt(seed, 16).toString(16).toUpperCase() === seed) {
+		if (seed.length == 8 && ("000" + parseInt(seed, 16).toString(16).toUpperCase()).substr(-8) === seed) {
 			document.getElementById("seed").value = seed;
 		}
 		if (flags.length == 3 && ("00" + parseInt(flags, 16).toString(16).toUpperCase()).substr(-3) === flags) {
