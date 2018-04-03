@@ -46,7 +46,7 @@ function fileSelectScreen(rom) {
 
 function credits(rom) {
     function writeSentence(sentence, dest) {
-        for (i = 0; i < sentence.length; i++) {
+        for (var i = 0; i < sentence.length; i++) {
             rom[dest + i] = sentence.charCodeAt(i);
         }
     }
@@ -98,39 +98,8 @@ function credits(rom) {
              line7: " AND UNTIL NEXT TIME", line8: "      GOOD BYE      "}
         ]
     }
-    var sentence01 = "  SML2 RANDO STAFF  ";
-    var sentence02 = "      CREATOR       ";
-    var sentence03 = "     SLASHINFTY     ";
-    var sentence04 = "      ROMHACKER     ";
-    var sentence05 = "       TORUZZ       ";
-    var sentence06 = "     RACCOON SAM    ";
-    var sentence07 = "      SMELLYMOO     ";
-    var sentence08 = "     PROGRAMMER     ";
-    var sentence09 = "       VEEARR       ";
-    var sentence10 = "     DRJOEYHUGS     ";
-    var sentence11 = "  TESTING  PLAYERS  ";
-    var sentence12 = "      OH DEER       ";
-    var sentence13 = "    BEASTFRISIAN    ";
-    var sentence14 = "       TYPWO        ";
-    var sentence15 = "      RAVETUBA      ";
-    var sentence16 = "      WOLFRUNE      ";
-    var sentence17 = "   I PLAYED THIS    ";
-    var sentence18 = "   GAME AS A KID    ";
-    var sentence19 = " THANK YOU EVERYONE ";
-    var sentence20 = "WHO MADE THIS HAPPEN";
-    var sentence21 = "   MY FRIENDS AND   ";
-    var sentence22 = "      MY FAMILY     ";
-    var sentence23 = "  SPEEDRUNNERS AND  ";
-    var sentence24 = "  RANDO COMMUNITY   ";
-    var sentence25 = " NOW FOR SOME FACTS ";
-    var sentence26 = "   THATS ALL FOR    ";
-    var sentence27 = "  THIS SEEDS FACTS  ";
-    var sentence28 = "      TIME FOR      ";
-    var sentence29 = "    ICEPLUG SINGS   ";
     var intLim = document.getElementById("beastMode").checked ? (randomSentences.quotes.length - 1) : randomSentences.quotes.length;
     var quoteIndex = prng.nextInt(intLim);
-    var quote01 = randomSentences.quotes[quoteIndex].line1;
-    var quote02 = randomSentences.quotes[quoteIndex].line2;
     function randomizeFacts() {
         var allFacts = randomSentences.facts.slice(0);
         for (var i = 0; i < 3; i++) {
@@ -141,72 +110,60 @@ function credits(rom) {
         return allFacts.slice(-3);
     }
     var randomFacts = randomizeFacts();
-    var fact01 = randomFacts[0].line1;
-    var fact02 = randomFacts[0].line2;
-    var fact03 = randomFacts[0].line3;
-    var fact04 = randomFacts[1].line1;
-    var fact05 = randomFacts[1].line2;
-    var fact06 = randomFacts[1].line3;
-    var fact07 = randomFacts[2].line1;
-    var fact08 = randomFacts[2].line2;
-    var fact09 = randomFacts[2].line3;
     var songIndex = prng.nextInt(randomSentences.songs.length);
-    var song01 = randomSentences.songs[songIndex].line1;
-    var song02 = randomSentences.songs[songIndex].line2;
-    var song03 = randomSentences.songs[songIndex].line3;
-    var song04 = randomSentences.songs[songIndex].line4;
-    var song05 = randomSentences.songs[songIndex].line5;
-    var song06 = randomSentences.songs[songIndex].line6;
-    var song07 = randomSentences.songs[songIndex].line7;
-    var song08 = randomSentences.songs[songIndex].line8;
-    writeSentence(quote01, 0x696CF);
-    writeSentence(quote02, 0x696E3);
-    writeSentence(sentence01, 0x6974D);
-    writeSentence(sentence02, 0x69763);
-    writeSentence(sentence03, 0x69778);
-    writeSentence(sentence04, 0x6978D);
-    writeSentence(sentence05, 0x697A2);
-    writeSentence(sentence04, 0x697B7);
-    writeSentence(sentence06, 0x697CC);
-    writeSentence(sentence04, 0x697E1);
-    writeSentence(sentence07, 0x697F6);
-    writeSentence(sentence09, 0x69820);
-    writeSentence(sentence08, 0x69835);
-    writeSentence(sentence10, 0x6984A);
-    writeSentence(sentence11, 0x698AF);
-    writeSentence(sentence12, 0x698C4);
-    writeSentence(sentence13, 0x698D9);
-    writeSentence(sentence14, 0x698EE);
-    writeSentence(sentence15, 0x69903);
-    writeSentence(sentence16, 0x69918);
-    writeSentence(sentence17, 0x6997D);
-    writeSentence(sentence18, 0x69992);
-    writeSentence(sentence19, 0x699F7);
-    writeSentence(sentence20, 0x69A0C);
-    writeSentence(sentence21, 0x69A21);
-    writeSentence(sentence22, 0x69A36);
-    writeSentence(sentence23, 0x69A4B);
-    writeSentence(sentence24, 0x69A60);
-    writeSentence(sentence25, 0x69AC6);
-    writeSentence(fact01, 0x69ADC);
-    writeSentence(fact02, 0x69AF0);
-    writeSentence(fact03, 0x69B04);
-    writeSentence(fact04, 0x69B19);
-    writeSentence(fact05, 0x69B2D);
-    writeSentence(fact06, 0x69B41);
-    writeSentence(fact07, 0x69B56);
-    writeSentence(fact08, 0x69B6A);
-    writeSentence(fact09, 0x69B7E);
-    writeSentence(sentence26, 0x69B93);
-    writeSentence(sentence27, 0x69BA8);
-    writeSentence(sentence28, 0x69C0E);
-    writeSentence(sentence29, 0x69C22);
-    writeSentence(song01, 0x69C37);
-    writeSentence(song02, 0x69C4C);
-    writeSentence(song03, 0x69C61);
-    writeSentence(song04, 0x69C76);
-    writeSentence(song05, 0x69C8B);
-    writeSentence(song06, 0x69CA0);
-    writeSentence(song07, 0x69CB5);
-    writeSentence(song08, 0x69CCA);
+    const sentences = {
+        "sentence01": {line: "  SML2 RANDO STAFF  ", offsets: [0x6974D]},
+        "sentence02": {line: "      CREATOR       ", offsets: [0x69763]},
+        "sentence03": {line: "     SLASHINFTY     ", offsets: [0x69778]},
+        "sentence04": {line: "      ROMHACKER     ", offsets: [0x6978D, 0x697B7, 0x697E1]},
+        "sentence05": {line: "       TORUZZ       ", offsets: [0x697A2]},
+        "sentence06": {line: "     RACCOON SAM    ", offsets: [0x697CC]},
+        "sentence07": {line: "      SMELLYMOO     ", offsets: [0x697F6]},
+        "sentence08": {line: "     PROGRAMMER     ", offsets: [0x69835]},
+        "sentence09": {line: "       VEEARR       ", offsets: [0x69820]},
+        "sentence10": {line: "     DRJOEYHUGS     ", offsets: [0x6984A]},
+        "sentence11": {line: "  TESTING  PLAYERS  ", offsets: [0x698AF]},
+        "sentence12": {line: "      OH DEER       ", offsets: [0x698C4]},
+        "sentence13": {line: "    BEASTFRISIAN    ", offsets: [0x698D9]},
+        "sentence14": {line: "       TYPWO        ", offsets: [0x698EE]},
+        "sentence15": {line: "      RAVETUBA      ", offsets: [0x69903]},
+        "sentence16": {line: "      WOLFRUNE      ", offsets: [0x69918]},
+        "sentence17": {line: "   I PLAYED THIS    ", offsets: [0x6997D]},
+        "sentence18": {line: "   GAME AS A KID    ", offsets: [0x69992]},
+        "sentence19": {line: " THANK YOU EVERYONE ", offsets: [0x699F7]},
+        "sentence20": {line: "WHO MADE THIS HAPPEN", offsets: [0x69A0C]},
+        "sentence21": {line: "   MY FRIENDS AND   ", offsets: [0x69A21]},
+        "sentence22": {line: "      MY FAMILY     ", offsets: [0x69A36]},
+        "sentence23": {line: "  SPEEDRUNNERS AND  ", offsets: [0x69A4B]},
+        "sentence24": {line: "  RANDO COMMUNITY   ", offsets: [0x69A60]},
+        "sentence25": {line: " NOW FOR SOME FACTS ", offsets: [0x69AC6]},
+        "sentence26": {line: "   THATS ALL FOR    ", offsets: [0x69B93]},
+        "sentence27": {line: "  THIS SEEDS FACTS  ", offsets: [0x69BA8]},
+        "sentence28": {line: "      TIME FOR      ", offsets: [0x69C0E]},
+        "sentence29": {line: "    ICEPLUG SINGS   ", offsets: [0x69C22]},
+        "quote01": {line: randomSentences.quotes[quoteIndex].line1, offsets: [0x696CF]},
+        "quote02": {line: randomSentences.quotes[quoteIndex].line2, offsets: [0x696E3]},
+        "fact01": {line: randomFacts[0].line1, offsets: [0x69ADC]},
+        "fact02": {line: randomFacts[0].line2, offsets: [0x69AF0]},
+        "fact03": {line: randomFacts[0].line3, offsets: [0x69B04]},
+        "fact04": {line: randomFacts[1].line1, offsets: [0x69B19]},
+        "fact05": {line: randomFacts[1].line2, offsets: [0x69B2D]},
+        "fact06": {line: randomFacts[1].line3, offsets: [0x69B41]},
+        "fact07": {line: randomFacts[2].line1, offsets: [0x69B56]},
+        "fact08": {line: randomFacts[2].line2, offsets: [0x69B6A]},
+        "fact09": {line: randomFacts[2].line3, offsets: [0x69B7E]},
+        "song01": {line: randomSentences.songs[songIndex].line1, offsets: [0x69C37]},
+        "song02": {line: randomSentences.songs[songIndex].line2, offsets: [0x69C4C]},
+        "song03": {line: randomSentences.songs[songIndex].line3, offsets: [0x69C61]},
+        "song04": {line: randomSentences.songs[songIndex].line4, offsets: [0x69C76]},
+        "song05": {line: randomSentences.songs[songIndex].line5, offsets: [0x69C8B]},
+        "song06": {line: randomSentences.songs[songIndex].line6, offsets: [0x69CA0]},
+        "song07": {line: randomSentences.songs[songIndex].line7, offsets: [0x69CB5]},
+        "song08": {line: randomSentences.songs[songIndex].line8, offsets: [0x69CCA]}
+    }
+    for (x in sentences) {
+        for (var i = 0; i < sentences[x].offsets.length; i++) {
+            writeSentence(sentences[x].line, sentences[x].offsets[i]);
+        }
+    }
 }
