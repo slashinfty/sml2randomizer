@@ -227,6 +227,9 @@ function randomizeScrolling(rom) {
     var levels = [0x1F71, 0x1F72, 0x1F73, 0x1F74, 0x1F76, 0x1F79, 0x1F7A,
     0x1F7B, 0x1F7C, 0x1F7D, 0x1F7E, 0x1F7F, 0x1F81, 0x1F82, 0x1F83, 0x1F84,
     0x1F85, 0x1F88, 0x1F90];
+    if ((0x1FA3 + version) == 0x08) {
+        levels.splice(levels.indexOf(0x1F83), 1);
+    }
     for (var i = 0; i < levels.length; i++) {
         var a = levels[i] + version;
         if (beastMode) {
