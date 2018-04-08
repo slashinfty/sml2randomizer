@@ -162,9 +162,9 @@ function randomizeBosses(rom) {
 }
 
 function randomizeBossHealth(rom) {
-    var healthSetOne = [0x8FBB, 0x8FA9, 0x8E58];
-    var healthSetTwo = [0x8E52, 0x8E5B, 0x8E61];
-    var healthSetThree = [0x8E5E, 0x8E55, 0x8E64, 0x8E67, 0x8E6A];
+    var healthSetOne = [0x8FBB, 0x8FA9, 0x8E58]; //pigs
+    var healthSetTwo = [0x8E52, 0x8E5B, 0x8E61]; //bird, octopus, rat
+    var healthSetThree = [0x8E5E, 0x8E55, 0x8E64, 0x8E67, 0x8E6A]; //tatanga, witch, wario
     for (var i = 0; i < healthSetOne.length; i++) {
         rom[healthSetOne[i]] = (0x02 * (prng.nextInt(2) + 2));
     }
@@ -201,11 +201,11 @@ function randomizeMusic(rom) {
     }
     if (prng.nextFloat() < 0.01) {
         rom[0x3004F] = 0x1D;
-        for (var i = 0x5619; i <= 0x580D; i += 0x14) {
+        for (var i = 0x5619; i <= 0x5885; i += 0x14) {
             rom[i] = 0x1D;
         }
     } else {
-        for (var i = 0x5619; i <= 0x580D; i += 0x14) {
+        for (var i = 0x5619; i <= 0x5885; i += 0x14) {
             var r = prng.nextInt(levelMusic.length);
             rom[i] = levelMusic[r];
         }
@@ -227,6 +227,10 @@ function randomizeScrolling(rom) {
     var levels = [0x1F71, 0x1F72, 0x1F73, 0x1F74, 0x1F76, 0x1F79, 0x1F7A,
     0x1F7B, 0x1F7C, 0x1F7D, 0x1F7E, 0x1F7F, 0x1F81, 0x1F82, 0x1F83, 0x1F84,
     0x1F85, 0x1F88, 0x1F90];
+    //if level 12 has moon physics, remove from scrolling possibilities
+    if ((0x1FA3 + version) == 0x08) {
+        levels.splice(levels.indexOf(0x1F83), 1);
+    }
     for (var i = 0; i < levels.length; i++) {
         var a = levels[i] + version;
         if (beastMode) {
@@ -519,7 +523,8 @@ function randomizeEnemies(rom) {
                 break;
         }
     }
-    for (var i = 0xE62C; i < 0xE6BF; i += 3) {
+    var lv0Fend = beastMode ? 0xE6A1 : 0xE6BF;
+    for (var i = 0xE62C; i < lv0Fend; i += 3) {
         var s = sprite.extract(rom[i], rom[i + 1]);
         switch (s) {
             case 0x01:
@@ -541,6 +546,14 @@ function randomizeEnemies(rom) {
                 break;
             default:
                 break;
+        }
+    }
+    if (beastMode) {
+        var lv0Fg = [0x06, 0x53, 0x55, 0x56];
+        var probs = [0.35, 0.35, 0.15, 0.15];
+        for (var i = 0xE6A4; i < 0xE6BF; i += 3) {
+            var a = sprite.insert(rom[i], rom[i + 1], sprite.bias(lv0Fg, probs));
+            sprite.copy(a, rom, i);
         }
     }
     for (var i = 0xE6C0; i < 0xE705; i += 3) {
@@ -593,6 +606,42 @@ function randomizeEnemies(rom) {
                 var p = beastMode ? sprite.bias(piranha, prob) : piranha[prng.nextInt(piranha.length)];
                 var n = sprite.insert(rom[i], rom[i + 1], p);
                 sprite.copy(n, rom, i);
+            }
+        }
+    }
+    if (beastMode) {
+        const midwayEnemies = {
+            "level00": {enemies: [0x01, 0x09], start: 0xE077, stop: 0xE0BC},
+            "level01": {enemies: [0x1F, 0x22], start: 0xE0BD, stop: 0xE123},
+            "level02": {enemies: [0x44, 0x58], start: 0xE124, stop: 0xE181},
+            "level03": {enemies: [0x35, 0x3E, 0x40, 0x41, 0x42], start: 0xE182, stop: 0xE1EE},
+            "level05": {enemies: [0x39, 0x3A], start: 0xE24A, stop: 0xE2A1},
+            "level06": {enemies: [0x4D, 0x53], start: 0xE2A2, stop: 0xE30B},
+            "level07": {enemies: [0x4D, 0x55, 0x5E, 0x5F], start: 0xE30C, stop: 0xE384},
+            "level08": {enemies: [0x4D, 0x57], start: 0xE385, stop: 0xE3D3},
+            "level09": {enemies: [0x4D, 0x53, 0x5A, 0x5C], start: 0xE3D4, stop: 0xE431},
+            "level0A": {enemies: [0x01], start: 0xE432, stop: 0xE49B},
+            "level0B": {enemies: [0x09, 0x3A], start: 0xE49C, stop: 0xE4F9},
+            "level0C": {enemies: [0x01, 0x48], start: 0xE4FA, stop: 0xE560},
+            "level0D": {enemies: [0x09, 0x43, 0x4D], start: 0xE561, stop: 0xE5C1},
+            "level0E": {enemies: [0x05, 0x06, 0x07, 0x09, 0x0B, 0x3D], start: 0xE5C2, stop: 0xE62B},
+            "level0F": {enemies: [0x01, 0x06, 0x21, 0x55, 0x56], start: 0xE62C, stop: 0xE6BF},
+            "level10": {enemies: [0x20, 0x21, 0x3A, 0x55], start: 0xE6C0, stop: 0xE705},
+            "level12": {enemies: [0x4D, 0x58, 0x5A], start: 0xE77C, stop: 0xE7C7},
+            "level13": {enemies: [0x5E, 0x5F], start: 0xE7C8, stop: 0xE822},
+            "level14": {enemies: [0x23], start: 0xE823, stop: 0xE88F},
+            "level15": {enemies: [0x07, 0x33, 0x34, 0x3D], start: 0xE890, stop: 0xE8F6},
+            "level16": {enemies: [0x01, 0x08, 0x09, 0x34, 0x3A, 0x42, 0x55], start: 0xE8F7, stop: 0xE954},
+            "level17": {enemies: [0x01, 0x08, 0x09, 0x42], start: 0xE955, stop: 0xE99D}
+        }
+        var midway = [0x17];
+        for (x in midwayEnemies) {
+            for (var i = midwayEnemies[x].start; i < midwayEnemies[x].stop; i += 3) {
+                var s = sprite.extract(rom[i], rom[i + 1]);
+                if (midway.indexOf(s) > -1) {
+                    var n = sprite.insert(rom[i], rom[i + 1], midwayEnemies[x].enemies[prng.nextInt(midwayEnemies[x].enemies.length)]);
+                    sprite.copy(n, rom, i);
+                }
             }
         }
     }
