@@ -31,8 +31,15 @@ function fileSelectScreen(rom) {
         0xEA, 0x00, 0x21, 0x01, 0x80, 0x03, 0x21, 0xCA, 0x6A, 0x16, 0x8B,
         0xCD, 0x36, 0x03, 0xC9];
     var writeToScreen = prng.printSeed + " " + document.getElementById("flags").value;
+    var offsetForAlpha = rom[0x14C] == 0x00 ? 0x2B8B : 0x2B8E;
+    if (rom[0x14C] != 0x00) {
+        alphaOnFileSelectScreen[3] = 0x0F;
+        alphaOnFileSelectScreen[31] = 0x0F;
+        alphaOnFileSelectScreen[46] = 0x0F;
+        alphaOnFileSelectScreen[58] = 0x0F;
+    }
     for (var i = 0; i < alphaOnFileSelectScreen.length; i++) {
-        rom[0x2B8B + i] = alphaOnFileSelectScreen[i];
+        rom[offsetForAlpha + i] = alphaOnFileSelectScreen[i];
     }
     //give numbers the same background as letters
     for (var i = 0; i < 161; i++) {
