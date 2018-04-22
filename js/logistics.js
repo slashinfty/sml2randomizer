@@ -53,7 +53,7 @@ function romCheck(buffer) {
 }
 
 function seedGenerator(custom = null) {
-    if (custom != null && (parseInt(custom, 16).toString(16).toUpperCase() == custom) && custom.length == 8) {
+    if (custom != null && ("000" + parseInt(custom, 16).toString(16).toUpperCase()).substr(-8) == custom && custom.length == 8) {
         prng.setSeed(custom);
     } else {
         var partA = (Math.floor(Math.random() * 3839) + 256).toString(16).toUpperCase();
