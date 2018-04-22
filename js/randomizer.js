@@ -228,7 +228,7 @@ function randomizeScrolling(rom) {
     0x1F7B, 0x1F7C, 0x1F7D, 0x1F7E, 0x1F7F, 0x1F81, 0x1F82, 0x1F83, 0x1F84,
     0x1F85, 0x1F88, 0x1F90];
     //if level 12 has moon physics, remove from scrolling possibilities
-    if ((0x1FA3 + version) == 0x08) {
+    if (rom[0x1FA3 + version] == 0x08) {
         levels.splice(levels.indexOf(0x1F83), 1);
     }
     for (var i = 0; i < levels.length; i++) {
