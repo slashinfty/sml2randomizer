@@ -361,6 +361,15 @@ function randomizePlatforms(rom) {
     sprite.randomize(rom, lv04, 0xE1EF, 0xE249);
     sprite.randomize(rom, lv05, 0xE24A, 0xE2A1);
     sprite.randomize(rom, lv18, 0xE99E, 0xEA2E);
+    if (beastMode) {
+      for (var i = 0xE9A3; i < 0xE9CE; i += 3) { //randomizing height of platforms in Castle
+        if (rom[i] == 0x5E) {
+          rom[i] = prng.nextInt(0x8) + 0x57;
+        } else {
+          rom[i] = prng.nextInt(0x8) + 0x38;
+        }
+      }
+    }
 }
 
 function randomizeEnemies(rom) {
@@ -594,6 +603,10 @@ function randomizeEnemies(rom) {
             default:
                 break;
         }
+    }
+    var lv18karamenbo = [0xE9D6, 0xE9D9, 0xE9DF, 0xE9E2, 0xE9E5];
+    for (var i = 0; i < lv18karamenbo.length; i++) {
+        rom[lv18karamenbo[i]] = prng.nextInt(0xB) + 0x34;
     }
     for (var i = 0xE077; i < 0xEBB5; i += 3) {
         //skipping levels 07, 09, and 16
