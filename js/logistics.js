@@ -84,7 +84,7 @@ function checkboxes() {
 	$("#randomizePlatforms").prop("checked", function() {
 		return (flags & 0x020) != 0;
 	}).checkboxradio('refresh');
-	$("#randomizePhysics").prop("checked", function() {
+	$("#randomizeGravity").prop("checked", function() {
 		return (flags & 0x040) != 0;
 	}).checkboxradio('refresh');
 	$("#randomizeScrolling").prop("checked", function() {
@@ -124,8 +124,8 @@ function flagGenerator() {
         doPlatforms = true;
         flags |= 0x020;
     }
-    if (document.getElementById("randomizePhysics").checked) {
-        doPhysics = true;
+    if (document.getElementById("randomizeGravity").checked) {
+        doGravity = true;
         flags |= 0x040;
     }
     if (document.getElementById("randomizeScrolling").checked) {
@@ -163,8 +163,8 @@ function doRandomize(buffer) {
     if (doPlatforms) {
         randomizePlatforms(rom);
     }
-    if (doPhysics) {
-        randomizePhysics(rom);
+    if (doGravity) {
+        randomizeGravity(rom);
     }
     if (doScrolling) {
         randomizeScrolling(rom);
@@ -175,6 +175,7 @@ function doRandomize(buffer) {
     if (beastMode) {
         randomizeBossHealth(rom);
     }
+    randomizeMarioPhysics(rom); //TODO testing feature
     fileSelectScreen(rom);
     credits(rom);
     checksum(rom);
