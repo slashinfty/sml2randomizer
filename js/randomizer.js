@@ -613,7 +613,7 @@ function randomizeEnemies(rom) {
     }
     var lv18karamenbo = [0xE9D6, 0xE9D9, 0xE9DF, 0xE9E2, 0xE9E5];
     for (var i = 0; i < lv18karamenbo.length; i++) {
-        rom[lv18karamenbo[i]] = prng.nextInt(0xB) + 0x34;
+        rom[lv18karamenbo[i]] = prng.nextFloat() < 0.1 ? 0x35 : 0x34;
     }
     for (var i = 0xE077; i < 0xEBB5; i += 3) {
         //skipping levels 07, 09, and 16
