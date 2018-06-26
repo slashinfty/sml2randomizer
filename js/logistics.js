@@ -1,3 +1,4 @@
+var doLog;
 var warningDiv = 0x04;
 
 $("#fileupload").change(function() {
@@ -66,36 +67,56 @@ function seedGenerator(custom = null) {
 function checkboxes() {
 	var f = document.getElementById("flags").value;
 	var flags = parseInt(f, 16);
-	$("#randomizeLevels").prop("checked", function() {
-		return (flags & 0x001) != 0;
-	}).checkboxradio('refresh');
-	$("#swapExits").prop("checked", function() {
-		return (flags & 0x002) != 0;
-	}).checkboxradio('refresh');
-	$("#randomizeBosses").prop("checked", function() {
-		return (flags & 0x004) != 0;
-	}).checkboxradio('refresh');
-	$("#randomizeEnemies").prop("checked", function() {
-		return (flags & 0x008) != 0;
-	}).checkboxradio('refresh');
-	$("#randomizePowerups").prop("checked", function() {
-		return (flags & 0x010) != 0;
-	}).checkboxradio('refresh');
-	$("#randomizePlatforms").prop("checked", function() {
-		return (flags & 0x020) != 0;
-	}).checkboxradio('refresh');
-	$("#randomizeGravity").prop("checked", function() {
-		return (flags & 0x040) != 0;
-	}).checkboxradio('refresh');
-	$("#randomizeScrolling").prop("checked", function() {
-		return (flags & 0x080) != 0;
-	}).checkboxradio('refresh');
-	$("#randomizeMusic").prop("checked", function() {
-		return (flags & 0x100) != 0;
-	}).checkboxradio('refresh');
-	$("#beastMode").prop("checked", function() {
-		return (flags & 0x200) != 0;
-	}).checkboxradio('refresh');
+    if ((flags & 0x004) != 0 && (flags & 0x008) != 0) {
+        document.getElementById("flags").value = "";
+        alert("Invalid flags - can not set swapping exits to two different settings.");
+    } else if ((flags & 0x100) != 0 && (flags & 0x200) != 0){
+        document.getElementById("flags").value = "";
+        alert("Invalid flags - can not set physics to two different settings.");
+    } else {
+        $("#randomizeLevels").prop("checked", function() {
+    		return (flags & 0x001) != 0;
+    	}).checkboxradio('refresh');
+    	$("#randomizeBosses").prop("checked", function() {
+    		return (flags & 0x002) != 0;
+    	}).checkboxradio('refresh');
+        if ((flags & 0x004) != 0) {
+            $("#swapExits").val("gauntlet").selectmenu('refresh');
+        }
+        if ((flags & 0x008) != 0) {
+            $("#swapExits").val("randomSwap").selectmenu('refresh');
+        }
+    	$("#randomizeEnemies").prop("checked", function() {
+    		return (flags & 0x010) != 0;
+    	}).checkboxradio('refresh');
+    	$("#randomizePowerups").prop("checked", function() {
+    		return (flags & 0x020) != 0;
+    	}).checkboxradio('refresh');
+    	$("#randomizePlatforms").prop("checked", function() {
+    		return (flags & 0x040) != 0;
+    	}).checkboxradio('refresh');
+    	$("#randomizeGravity").prop("checked", function() {
+    		return (flags & 0x080) != 0;
+    	}).checkboxradio('refresh');
+        if ((flags & 0x100) != 0) {
+            $("#characterPhysics").val("bothPhysics").selectmenu('refresh');
+        }
+        if ((flags & 0x200) != 0) {
+            $("#characterPhysics").val("luigiPhysics").selectmenu('refresh');
+        }
+        $("#randomizeIce").prop("checked", function() {
+    		return (flags & 0x400) != 0;
+    	}).checkboxradio('refresh');
+    	$("#randomizeScrolling").prop("checked", function() {
+    		return (flags & 0x800) != 0;
+    	}).checkboxradio('refresh');
+    	$("#randomizeMusic").prop("checked", function() {
+    		return (flags & 0x1000) != 0;
+    	}).checkboxradio('refresh');
+    	$("#beastMode").prop("checked", function() {
+    		return (flags & 0x2000) != 0;
+    	}).checkboxradio('refresh');
+    }
 }
 
 function flagGenerator() {
@@ -104,43 +125,59 @@ function flagGenerator() {
         doLevels = true;
         flags |= 0x001;
     }
-    if (document.getElementById("swapExits").checked) {
-        doExits = true;
-        flags |= 0x002;
-    }
     if (document.getElementById("randomizeBosses").checked) {
         doBosses = true;
+        flags |= 0x002;
+    }
+    if (document.getElementById("swapExits").value == "gauntlet") {
+        doGauntlet = true;
         flags |= 0x004;
+    }
+    if (document.getElementById("swapExits").value == "randomSwap") {
+        doSwap = true;
+        flags |= 0x008;
     }
     if (document.getElementById("randomizeEnemies").checked) {
         doEnemies = true;
-        flags |= 0x008;
+        flags |= 0x010;
     }
     if (document.getElementById("randomizePowerups").checked) {
         doPowerups = true;
-        flags |= 0x010;
+        flags |= 0x020;
     }
     if (document.getElementById("randomizePlatforms").checked) {
         doPlatforms = true;
-        flags |= 0x020;
+        flags |= 0x040;
     }
     if (document.getElementById("randomizeGravity").checked) {
         doGravity = true;
-        flags |= 0x040;
+        flags |= 0x080;
+    }
+    if (document.getElementById("characterPhysics").value == "bothPhysics") {
+        doBothPhysics = true;
+        flags |= 0x100;
+    }
+    if (document.getElementById("characterPhysics").value == "luigiPhysics") {
+        doLuigiPhysics = true;
+        flags |= 0x200;
+    }
+    if (document.getElementById("randomizeIce").checked) {
+        doIcePhysics = true;
+        flags |= 0x400;
     }
     if (document.getElementById("randomizeScrolling").checked) {
         doScrolling = true;
-        flags |= 0x080;
+        flags |= 0x800;
     }
     if (document.getElementById("randomizeMusic").checked) {
         doMusic = true;
-        flags |= 0x100;
+        flags |= 0x1000;
     }
     if (document.getElementById("beastMode").checked) {
         beastMode = true;
-        flags |= 0x200;
+        flags |= 0x2000;
     }
-    document.getElementById("flags").value = ("00" + flags.toString(16).toUpperCase()).substr(-3);
+    document.getElementById("flags").value = ("0000" + flags.toString(16).toUpperCase()).substr(-4);
 };
 
 function doRandomize(buffer) {
@@ -148,7 +185,7 @@ function doRandomize(buffer) {
     if (doLevels) {
         randomizeLevels(rom);
     }
-    if (doExits) {
+    if (doGauntlet || doSwap) {
         swapExits(rom);
     }
     if (doBosses) {
@@ -166,6 +203,9 @@ function doRandomize(buffer) {
     if (doGravity) {
         randomizeGravity(rom);
     }
+    if (doBothPhysics || doLuigiPhysics || doIcePhysics) {
+        randomizePhysics(rom);
+    }
     if (doScrolling) {
         randomizeScrolling(rom);
     }
@@ -175,7 +215,7 @@ function doRandomize(buffer) {
     if (beastMode) {
         randomizeBossHealth(rom);
     }
-    randomizeMarioPhysics(rom); //TODO testing feature
+    //patch(patchPhysicsScrolling, rom); //TODO testing feature
     fileSelectScreen(rom);
     credits(rom);
     checksum(rom);
@@ -183,6 +223,10 @@ function doRandomize(buffer) {
     document.getElementById("romVersion").innerHTML = "sml2r.download/?s=" + prng.printSeed + "&f=" + flags;
     $("#romVersion").addClass('clickable');
     var ifDx = rom[0x148] == 0x05 ? "DX-" : "";
-    var filename = "sml2r-" + ifDx + prng.printSeed + "-" + flags + ".gb";
-    saveAs(new Blob([buffer], {type: "octet/stream"}), filename);
+    var filename = "sml2r-" + ifDx + prng.printSeed + "-" + flags;
+    if (doLog){
+        createLog(rom, filename, flags);
+    } else {
+        saveAs(new Blob([buffer], {type: "octet/stream"}), filename + ".gb");
+    }
 }

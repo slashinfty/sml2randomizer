@@ -33,7 +33,7 @@
 <table class="tstyle">
 	<tr>
 		<td><h1>Super Mario Land 2 Randomizer</h1></td>
-		<td class="ralign"><a href="#" title="v2.02 released 8 June 2018"><img src="images/FriendlyFinger.png" alt="Wario giving thumbs up" style="width:81px;height:65px;"></a></td>
+		<td class="ralign"><a href="#" title="v2.03 released X July 2018"><img src="images/FriendlyFinger.png" alt="Wario giving thumbs up" style="width:81px;height:65px;"></a></td>
 	</tr>
 </table>
 
@@ -68,10 +68,13 @@
 				<div id="controlgroup1">
 					<label for="randomizeLevels">Randomize Levels</label>
 					<input type="checkbox" name="level" id="randomizeLevels">
-					<label for="swapExits">Swap Dual Exits</label>
-					<input type="checkbox" name="level" id="swapExits">
 					<label for="randomizeBosses">Randomize Bosses</label>
 					<input type="checkbox" name="level" id="randomizeBosses">
+					<select name="swapExits" id="swapExits">
+						<option value="noSwap" selected="selected">Do Not Randomize Exits</option>
+						<option value="gauntlet">Mandatory Gauntlet</option>
+						<option value="randomSwap">Randomly Swap Exits</option>
+					</select>
 				</div>
 			</fieldset>
 		</td>
@@ -83,17 +86,33 @@
 					<input type="checkbox" name="sprite" id="randomizeEnemies">
 					<label for="randomizePowerups">Randomize Power-Ups</label>
 					<input type="checkbox" name="sprite" id="randomizePowerups">
-					<label for="randomizePlatforms">Randomize Various Platforms</label>
+					<label for="randomizePlatforms">Randomize Platforms</label>
 					<input type="checkbox" name="sprite" id="randomizePlatforms">
 				</div>
 			</fieldset>
 		</td>
 		<td>
 			<fieldset>
-				<legend>Enhancements</legend>
-				<div id="controlgroup3">
+				<legend>Movement</legend>
+				<div id="controlgroup5">
 					<label for="randomizeGravity">Randomize Gravity</label>
 					<input type="checkbox" name="enhance" id="randomizeGravity">
+					<label for="randomizeIce">Randomize Ice Physics</label>
+					<input type="checkbox" name="enhance" id="randomizeIce">
+					<select name="characterPhysics" id="characterPhysics">
+						<option value="marioPhysics" selected="selected">Mario Physics</option>
+						<option value="bothPhysics">Mario/Luigi Physics</option>
+						<option value="luigiPhysics">Luigi Physics</option>
+					</select>
+				</div>
+			</fieldset>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<fieldset>
+				<legend>Enhancements</legend>
+				<div id="controlgroup3">
 					<label for="randomizeScrolling">Randomize Scrolling</label>
 					<input type="checkbox" name="enhance" id="randomizeScrolling">
 					<label for="randomizeMusic">Randomize Music</label>
@@ -101,8 +120,6 @@
 				</div>
 			</fieldset>
 		</td>
-	</tr>
-	<tr>
 		<td></td>
 		<td>
 			<fieldset>
@@ -113,7 +130,6 @@
 				</div>
 			</fieldset>
 		</td>
-		<td></td>
 	</tr>
 </table>
 <div class="ui-widget hidden" id="beastNote">
@@ -145,6 +161,14 @@
 </table>
 
 <div id="changelog" title="Changelog">
+	<h3>v2.03</h3>
+	<ui>
+		<li>Physics can be randomized between Mario and Luigi (or Luigi only), in addition to ice physics.</li>
+		<li>Autoscrollers on certain levels can be sped up under Beast Mode.</li>
+		<li>For levels with dual exits, either they can all be randomly swapped, or only Turtle Zone 2 can be forced to be swapped.</li>
+		<li>Flags now have a length of 4 hexadecimal characters.</li>
+		<li>UI changes: rearranged some elements, physics renamed gravity, does not allow flags that pick both physics options or both exit options.</li>
+	</ui>
 	<h3>v2.02</h3>
 	<ui>
 		<li>Karamenbos ("thwomps") in Wario's Castle have randomized starting heights if enemies are randomized.</li>
@@ -203,6 +227,7 @@
 <script src="js/enemies.js"></script>
 <script src="js/copy.js"></script>
 <script src="js/credits.js"></script>
+<script src="js/log.js"></script>
 <script>
 
 $("#controlgroup1").controlgroup({
@@ -216,6 +241,16 @@ $("#controlgroup3").controlgroup({
 });
 $("#controlgroup4").controlgroup({
 	direction: "vertical"
+});
+$("#controlgroup5").controlgroup({
+	direction: "vertical"
+});
+
+$( function() {
+	$("#characterPhysics").selectmenu();
+});
+$( function() {
+	$("#swapExits").selectmenu();
 });
 
 $("#changelog-link").click(function( event ) {
@@ -247,7 +282,7 @@ $("#beastMode").change(function() {
 
 $("#flags").change(function() {
 	var ftext = $("#flags").val().toUpperCase();
-	if (ftext.length == 3 && ("00" + parseInt(ftext, 16).toString(16).toUpperCase()).substr(-3) === ftext) {
+	if (ftext.length == 4 && ("0000" + parseInt(ftext, 16).toString(16).toUpperCase()).substr(-4) === ftext) {
 		checkboxes();
 	}
 });
@@ -267,10 +302,13 @@ $(document).ready(function() {
 		if (seed.length == 8 && ("000" + parseInt(seed, 16).toString(16).toUpperCase()).substr(-8) === seed) {
 			document.getElementById("seed").value = seed;
 		}
-		if (flags.length == 3 && ("00" + parseInt(flags, 16).toString(16).toUpperCase()).substr(-3) === flags) {
+		if (flags.length == 4 && ("0000" + parseInt(flags, 16).toString(16).toUpperCase()).substr(-4) === flags) {
 			document.getElementById("flags").value = flags;
 			checkboxes();
 		}
+	}
+	if (url.searchParams.has("log")) {
+		doLog = true;
 	}
 });
 

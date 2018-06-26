@@ -36,11 +36,17 @@ function swapExits(rom) {
     var exitOffsets = [[0x2A385, 0x29947], [0x4C8EB, 0x4CA7F], [0x4DA53,
     0x4D27B], [0x54ACE, 0x5475A], [0x49215, 0x4949E], [0x49F61, 0x499A7],
     [0x51D99, 0x51D29]];
-    for (var i = 0; i < exitOffsets.length; i++) {
-        if (prng.nextBool()) {
-            var a = rom[exitOffsets[i][0]];
-            rom[exitOffsets[i][0]] = rom[exitOffsets[i][1]];
-            rom[exitOffsets[i][1]] = a;
+    if (doGauntlet && rom[0x3C24A] != 0x0F) {
+        var a = rom[exitOffsets[6][0]];
+        rom[exitOffsets[6][0]] = rom[exitOffsets[6][1]];
+        rom[exitOffsets[6][1]] = a;
+    } else {
+        for (var i = 0; i < exitOffsets.length; i++) {
+            if (prng.nextBool()) {
+                var a = rom[exitOffsets[i][0]];
+                rom[exitOffsets[i][0]] = rom[exitOffsets[i][1]];
+                rom[exitOffsets[i][1]] = a;
+            }
         }
     }
 }
