@@ -166,14 +166,18 @@ function createLog(rom, filename, flags) {
 		const gravityObj = gravity.lookup.find(grav => grav.byte == gravityByte);
 		l.gravity = gravityObj.name;
 		if (doBothPhysics || doLuigiPhysics || doIcePhysics) {
-			var physicsByte = rom[0x33020 + levelByte];
+			var physicsTable = rom[0x148] == 0x05 ? 0x93D20 : 0x33020;
+			var physicsByte = rom[physicsTable + levelByte];
 			const physicsObj = physics.lookup.find(phys => phys.byte == physicsByte);
-			l.physics = physicsObj.name;
+			if (physicsObj !== undefined) {
+				l.physics = physicsObj.name;
+			}
 		}
 		var autoscroller = rom[0x1F71 + levelByte + version] == 0x01;
 		l.autoscroller = autoscroller;
 		if (autoscroller) {
-			l.autoscroller_speed = rom[0x33040 + levelByte];
+			var speedTable = rom[0x148] == 0x05 ? 0x93D40 : 0x33040;
+			l.autoscroller_speed = rom[speedTable + levelByte];
 		}
 		obj.levels.push(l);
 	}

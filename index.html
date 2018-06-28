@@ -39,7 +39,7 @@
 
 <table class="tstyle">
 	<tr>
-		<td><div class="upload"><input type="file" id="fileupload" name="upload" accept=".gb" /><p></p></div></td>
+		<td><div class="upload"><input type="file" id="fileupload" name="upload" accept=".gb,.gbc" /><p></p></div></td>
 		<td class="calign"><p id="romVersion"></p></td>
 		<td class="ralign"><button id="randomizeRom" disabled>Randomize</button></td>
 	</tr>
@@ -51,12 +51,6 @@
 		<td class="ralign"><label for="flags">Flags:</label><input type="text" name="flags-input" id="flags" placeholder="Leave blank if selecting options" /></td>
 	</tr>
 </table>
-
-<div class="ui-widget hidden" id="warning">
-	<div class="ui-state-highlight ui-corner-all" style="padding: 0 .5em;">
-		<p align="center"><strong>Note:</strong> Using a DX ROM and selecting "Randomize Bosses" may produce glitchy boss fights.</p>
-	</div>
-</div>
 
 <h2>Options:</h2>
 
@@ -134,7 +128,7 @@
 </table>
 <div class="ui-widget hidden" id="beastNote">
 	<div class="ui-state-highlight ui-corner-all" style="padding: 0 .5em;">
-		<p align="center"><strong>Note:</strong> Beast Mode affects enemies, power-ups, and all enhancements.<br>You must check those boxes which you would like to affect.</p>
+		<p align="center"><strong>Note:</strong> Beast Mode affects enemies, power-ups, bosses, gravity, and all enhancements.<br>You must check those boxes which you would like to affect.</p>
 	</div>
 </div>
 <br>
@@ -167,6 +161,7 @@
 		<li>Autoscrollers on certain levels can be sped up under Beast Mode.</li>
 		<li>For levels with dual exits, either they can all be randomly swapped, or only Turtle Zone 2 can be forced to be swapped.</li>
 		<li>Flags now have a length of 4 hexadecimal characters.</li>
+		<li>v1.8 DX ROMs are fully supported.</li>
 		<li>UI changes: rearranged some elements, physics renamed gravity, does not allow flags that pick both physics options or both exit options.</li>
 	</ui>
 	<h3>v2.02</h3>
@@ -273,7 +268,7 @@ $("#changelog").dialog({
 });
 
 $("#beastMode").change(function() {
-	if(this.checked) {
+	if (this.checked) {
 		$("#beastNote").removeClass('hidden');
 	} else {
 		$("#beastNote").addClass('hidden');

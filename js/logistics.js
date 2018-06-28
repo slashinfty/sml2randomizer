@@ -1,5 +1,4 @@
 var doLog;
-var warningDiv = 0x04;
 
 $("#fileupload").change(function() {
     var file = document.getElementById("fileupload").files[0];
@@ -12,14 +11,18 @@ $("#fileupload").change(function() {
 });
 
 $("#randomizeRom").click(function(){
-    seedGenerator(document.getElementById("seed").value.toUpperCase());
-    flagGenerator();
-    var file = document.getElementById("fileupload").files[0];
-    var reader = new FileReader();
-    reader.onloadend = function(e) {
-        doRandomize(reader.result);
-    };
-    reader.readAsArrayBuffer(file);
+    if (checkpoint_one()) {
+        alert("Luigi Physics does not work with DX ROMs. Select another physics option.");
+    } else {
+        seedGenerator(document.getElementById("seed").value.toUpperCase());
+        flagGenerator();
+        var file = document.getElementById("fileupload").files[0];
+        var reader = new FileReader();
+        reader.onloadend = function(e) {
+            doRandomize(reader.result);
+        };
+        reader.readAsArrayBuffer(file);
+    }
 });
 
 function romCheck(buffer) {
@@ -33,24 +36,25 @@ function romCheck(buffer) {
         }
     }
     if (romVerify == 0) {
-        if (romTest[0x148] != warningDiv) {
-            $("#warning").toggleClass('hidden');
-            warningDiv = romTest[0x148];
+        if (romTest[0x148] == 0x05 && romTest[0xC2000] < 0x12) {
+            print = "DX ROM must be v1.8"
+            document.getElementById("randomizeRom").disabled = true;
+        } else {
+            var vOne = romTest[0x14C] == 0x00 ? "v1.0" : "v1.2";
+            var dxRom = romTest[0x148] == 0x05 ? "DX - " : "";
+            print = "ROM: MARIOLAND2 - " + dxRom + vOne;
+            document.getElementById("randomizeRom").disabled = false;
         }
-        var vOne = romTest[0x14C] == 0x00 ? "v1.0" : "v1.2";
-        var dxRom = romTest[0x148] == 0x05 ? "DX - " : "";
-        print = "ROM: MARIOLAND2 - " + dxRom + vOne;
-        document.getElementById("randomizeRom").disabled = false;
     } else {
         document.getElementById("randomizeRom").disabled = true;
-        warningDiv = 0x04;
-        $("#warning").addClass(function() {
-            if (!$("#warning").hasClass('hidden')) {
-                return 'hidden';
-            }
-        });
     }
     document.getElementById("romVersion").innerHTML = print;
+}
+
+function checkpoint_one() {
+    var a = document.getElementById("romVersion").innerHTML.indexOf("DX") > -1;
+    var b = document.getElementById("characterPhysics").value == "luigiPhysics";
+    return a && b;
 }
 
 function seedGenerator(custom = null) {

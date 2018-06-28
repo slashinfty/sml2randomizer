@@ -4,9 +4,11 @@ function randomizeScrolling(rom) {
     0x1F7B, 0x1F7C, 0x1F7D, 0x1F7E, 0x1F7F, 0x1F81, 0x1F82, 0x1F83, 0x1F84,
     0x1F85, 0x1F88, 0x1F8A, 0x1F8F, 0x1F90];
     var fastLevels = [0x00, 0x05, 0x09, 0x0B, 0x0D, 0x10, 0x11, 0x13,
-    0x17, 0x19];
+    0x17, 0x19, 0x1F];
     if (beastMode && !doBothPhysics && !doLuigiPhysics && !doIcePhysics) {
-        patch(patchPhysicsScrolling, rom);
+        if (rom[0x148] != 0x05) {
+            patch(patchPhysicsScrolling, rom);
+        }
     }
     //if level 12 has moon physics, remove from scrolling possibilities
     if (rom[0x1FA3 + version] == 0x08) {
@@ -23,7 +25,8 @@ function randomizeScrolling(rom) {
             //speed up autoscroller
             var currLevel = a - (0x1F71 + version);
             if (rom[a] == 0x01 && fastLevels.indexOf(currLevel) > -1 && prng.nextFloat() < 0.4) {
-                rom[0x33040 + currLevel] = 0x02;
+                var speedTable = rom[0x148] == 0x05 ? 0x93D40 : 0x33040;
+                rom[speedTable + currLevel] = 0x02;
             }
         } else {
             if (rom[a] == 0x00 && prng.nextFloat() < 0.07) {

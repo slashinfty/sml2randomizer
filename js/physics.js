@@ -4,11 +4,11 @@ function randomizeGravity(rom) {
         switch (rom[i]) {
             case 0x00:
                 if (beastMode) {
-                    //no changing physics for levels 07 and 15
+                    //no changing gravity for levels 07 and 15
                     if (i != (0x1F98 + version) && i != (0x1FA6 + version)) {
                         if (prng.nextFloat() < 0.05) {
                             rom[i] = 0x01;
-                        //.12 and no moon physics for level 08
+                        //.12 and no moon gravity for level 08
                     } else if (prng.nextFloat() < 0.126 && i != (0x1F99 + version)) {
                             rom[i] = 0x08;
                         }
@@ -59,26 +59,39 @@ function randomizeGravity(rom) {
 }
 
 function randomizePhysics(rom) {
-    patch(patchPhysicsScrolling, rom);
+    if (rom[0x148] != 0x05) {
+        patch(patchPhysicsScrolling, rom);
+    }
     //0x33000-0x3301F | Mario=$00, Luigi=$04
     //0x33020-0x3303F | Ice=$00, Luigi=$03, Mario=$04, Rock=$07
+    var jumpTable = rom[0x148] == 0x05 ? 0x93D00 : 0x33000;
+    var moveTable = rom[0x148] == 0x05 ? 0x93D20 : 0x33020;
     if (doBothPhysics) {
         for (var i = 0; i < 0x20; i++) {
             if (prng.nextFloat() < 0.15) {
-                rom[0x33000 + i] = 0x04;
-                rom[0x33020 + i] = 0x03;
+                rom[jumpTable + i] = 0x04;
+                rom[moveTable + i] = 0x03;
             }
         }
-    } else if (doLuigiPhysics) {
+        //mario only for DX
+        if (rom[0x148] == 0x05) {
+            for (var i = 0; i < 0x20; i++) {
+                if(rom[jumpTable + i] == 0xFF && prng.nextFloat() < 0.15) {
+                    rom[jumpTable + i] = 0x00;
+                    rom[moveTable + i] = 0x04;
+                }
+            }
+        }
+    } else if (doLuigiPhysics && rom[0x148] != 0x05) {
         for (var i = 0; i < 0x20; i++) {
-            rom[0x33000 + i] = 0x04;
-            rom[0x33020 + i] = 0x03;
+            rom[jumpTable + i] = 0x04;
+            rom[moveTable + i] = 0x03;
         }
     }
     if (doIcePhysics) {
-        for (var i = 0; i <0x20; i++) {
+        for (var i = 0; i < 0x20; i++) {
             if (prng.nextFloat() < 0.15) {
-                rom[0x33020 + i] = 0x00;
+                rom[moveTable + i] = 0x00;
             }
         }
     }
