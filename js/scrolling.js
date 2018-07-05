@@ -3,7 +3,7 @@ function randomizeScrolling(rom) {
     var levels = [0x1F71, 0x1F72, 0x1F73, 0x1F74, 0x1F76, 0x1F79, 0x1F7A,
     0x1F7B, 0x1F7C, 0x1F7D, 0x1F7E, 0x1F7F, 0x1F81, 0x1F82, 0x1F83, 0x1F84,
     0x1F85, 0x1F88, 0x1F8A, 0x1F8F, 0x1F90];
-    var fastLevels = [0x00, 0x05, 0x09, 0x0B, 0x0D, 0x10, 0x11, 0x13,
+    var fastLevels = [0x00, 0x05, 0x09, 0x0B, 0x0C, 0x0D, 0x10, 0x11, 0x13,
     0x17, 0x19, 0x1F];
     if (beastMode && !doBothPhysics && !doLuigiPhysics && !doIcePhysics) {
         if (rom[0x148] != 0x05) {
@@ -17,13 +17,21 @@ function randomizeScrolling(rom) {
     for (var i = 0; i < levels.length; i++) {
         var a = levels[i] + version;
         if (beastMode) {
-            if (rom[a] == 0x00 && prng.nextFloat() < 0.07) {
+            if (rom[a] == 0x00 && prng.nextFloat() < 0.1) {
                 rom[a] = 0x01;
             } else if (rom[a] == 0x01 && prng.nextFloat() < 0.6) {
                 rom[a] = 0x00;
             }
             //speed up autoscroller
             var currLevel = a - (0x1F71 + version);
+            //if level 11 has moon physics, remove from fast scrolling
+            if (rom[0x1FA2 + version] == 0x08) {
+                fastLevels.splice(fastLevels.indexOf(0x11), 1);
+            }
+            //if level 0C is first level, remove from fast scrolling
+            if (rom[0x3C218] == 0x0C) {
+                fastLevels.splice(fastLevels.indexOf(0x0C), 1);
+            }
             if (rom[a] == 0x01 && fastLevels.indexOf(currLevel) > -1 && prng.nextFloat() < 0.4) {
                 var speedTable = rom[0x148] == 0x05 ? 0x93D40 : 0x33040;
                 rom[speedTable + currLevel] = 0x02;

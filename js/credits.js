@@ -16,7 +16,12 @@ const ascii = {
         {char: "C", byte: 0x32},
         {char: "D", byte: 0x33},
         {char: "E", byte: 0x34},
-        {char: "F", byte: 0x35}
+        {char: "F", byte: 0x35},
+        {char: "I", byte: 0x38},
+        {char: "M", byte: 0x3C},
+        {char: "N", byte: 0x3D},
+        {char: "O", byte: 0x3E},
+        {char: "R", byte: 0x41}
     ]
 }
 
