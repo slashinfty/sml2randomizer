@@ -16,7 +16,12 @@ const ascii = {
         {char: "C", byte: 0x32},
         {char: "D", byte: 0x33},
         {char: "E", byte: 0x34},
-        {char: "F", byte: 0x35}
+        {char: "F", byte: 0x35},
+        {char: "I", byte: 0x38},
+        {char: "M", byte: 0x3C},
+        {char: "N", byte: 0x3D},
+        {char: "O", byte: 0x3E},
+        {char: "R", byte: 0x41}
     ]
 }
 
@@ -30,7 +35,8 @@ function fileSelectScreen(rom) {
         0x02, 0x21, 0x66, 0x47, 0x16, 0x93, 0xCD, 0x36, 0x03, 0x3E, 0x0C,
         0xEA, 0x00, 0x21, 0x01, 0x80, 0x03, 0x21, 0xCA, 0x6A, 0x16, 0x8B,
         0xCD, 0x36, 0x03, 0xC9];
-    var writeToScreen = prng.printSeed + " " + document.getElementById("flags").value;
+    var writeSeed = prng.printSeed;
+    var writeFlags = document.getElementById("flags").value;
     var offsetForAlpha = rom[0x14C] == 0x00 ? 0x2B8B : 0x2B8E;
     if (rom[0x14C] != 0x00) {
         alphaOnFileSelectScreen[3] = 0x0F;
@@ -45,9 +51,13 @@ function fileSelectScreen(rom) {
     for (var i = 0; i < 161; i++) {
         rom[0x32D5A + i] = rom[0x68656 + i];
     }
-    for (var i = 0; i < writeToScreen.length; i++) {
-        const a2h = ascii.hex.find(letter => letter.char === writeToScreen.charAt(i));
-        rom[0x30A98 + i] = a2h.byte;
+    for (var i = 0; i < writeSeed.length; i++) {
+        const a2h = ascii.hex.find(letter => letter.char === writeSeed.charAt(i));
+        rom[0x30A9A + i] = a2h.byte;
+    }
+    for (var i = 0; i < writeFlags.length; i++) {
+        const a2h = ascii.hex.find(letter => letter.char === writeFlags.charAt(i));
+        rom[0x30ABC + i] = a2h.byte;
     }
 }
 
