@@ -33,7 +33,7 @@
 <table class="tstyle">
 	<tr>
 		<td><h1>Super Mario Land 2 Randomizer</h1></td>
-		<td class="ralign"><a href="#" title="v2.03 released X July 2018"><img src="images/FriendlyFinger.png" alt="Wario giving thumbs up" style="width:81px;height:65px;"></a></td>
+		<td class="ralign"><a href="#" title="v2.03 released 18 July 2018"><img src="images/FriendlyFinger.png" alt="Wario giving thumbs up" style="width:81px;height:65px;"></a></td>
 	</tr>
 </table>
 
@@ -66,8 +66,8 @@
 					<input type="checkbox" name="level" id="randomizeBosses">
 					<select name="swapExits" id="swapExits">
 						<option value="noSwap" selected="selected">Do Not Randomize Exits</option>
-						<option value="gauntlet">Mandatory Gauntlet</option>
 						<option value="randomSwap">Randomly Swap Exits</option>
+						<option value="allExits">Swap All Exits</option>
 					</select>
 				</div>
 			</fieldset>
@@ -131,6 +131,12 @@
 		<p align="center"><strong>Note:</strong> Beast Mode affects enemies, power-ups, bosses, gravity, and all enhancements.<br>You must check those boxes which you would like to affect.</p>
 	</div>
 </div>
+<div class="ui-widget hidden" id="allExitsNote">
+	<div class="ui-state-highlight ui-corner-all" style="padding: 0 .5em;">
+		<p align="center"><strong>Note:</strong> Swaps all exits in levels that have two exits, with a couple exceptions:<br>the Hippo level, and any level in Macro Zone 1's overworld position.<br>
+			<i>If the Hippo level is in Macro Zone 1's overworld position, it does get swapped.</i></p>
+	</div>
+</div>
 <br>
 <table class="tstyle">
 	<tr>
@@ -159,7 +165,8 @@
 	<ui>
 		<li>Physics can be randomized between Mario and Luigi (or Luigi only), in addition to ice physics.</li>
 		<li>Autoscrollers on certain levels can be sped up under Beast Mode.</li>
-		<li>For levels with dual exits, either they can all be randomly swapped, or only Turtle Zone 2 can be forced to be swapped.</li>
+		<li>For levels with dual exits, either they can all be randomly swapped, or all but Hippo can be swapped.</li>
+		<li>Bonus bell game power-ups have been randomized.</li>
 		<li>Flags now have a length of 4 hexadecimal characters.</li>
 		<li>v1.8 DX ROMs are fully supported.</li>
 		<li>UI changes: rearranged some elements, physics renamed gravity, does not allow flags that pick both physics options or both exit options.</li>
@@ -261,7 +268,7 @@ $("#changelog").dialog({
 		{
 			text: "Close",
 			click: function() {
-				$( this ).dialog("close");
+				$(this).dialog("close");
 			}
 		}
 	]
@@ -272,6 +279,14 @@ $("#beastMode").change(function() {
 		$("#beastNote").removeClass('hidden');
 	} else {
 		$("#beastNote").addClass('hidden');
+	}
+});
+
+$("#swapExits").on('selectmenuchange', function() {
+	if (this.value == "allExits") {
+		$("#allExitsNote").removeClass('hidden');
+	} else {
+		$("#allExitsNote").addClass('hidden');
 	}
 });
 

@@ -122,7 +122,8 @@ const bossHealth = {
 function createLog(rom, filename, flags) {
 	var version = rom[0x14C] == 0x02 ? 0x3 : 0x0;
     var obj = new Object();
-    obj.version = rom[0x14C] == 0x00 ? 'v1.0' : 'v1.2';
+	obj.randoVersion = VERSION;
+    obj.romVersion = rom[0x14C] == 0x00 ? 'v1.0' : 'v1.2';
     obj.dx = rom[0x148] == 0x05;
 	obj.seed = prng.printSeed;
 	obj.flags = flags;
@@ -139,7 +140,6 @@ function createLog(rom, filename, flags) {
 				if (rom[bosses.lookup[i].offset] == levelByte) {
 					const bossNameObj = bosses.lookup[i];
 					l.boss = bossNameObj.name;
-					bossCarryover = bossNameObj.offset;
 					break;
 				}
 			}

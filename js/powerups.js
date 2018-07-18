@@ -34,4 +34,39 @@ function randomizePowerups(rom) {
     }
     rom[0xA9A9] = castle[prng.nextInt(castle.length)];
     rom[0xACA7] = castle[prng.nextInt(castle.length)];
+    
+    patch(patchBonusGame, rom);
+    rom[0x606AF] = 0x28;
+    rom[0x60925] = 0xCA;
+    var conveyorPowerups = [0x00, 0x01, 0x02, 0x03, 0x04];
+    var conveyorProbs = [0.25, 0.15, 0.15, 0.4, 0.05];
+    for (var i = 0x60A58; i <= 0x60A7F; i++) {
+        rom[i] = beastMode ? sprite.bias(conveyorPowerups, conveyorProbs) : conveyorPowerups[prng.nextInt(conveyorPowerups.length)];
+    }
+    for (var i = 0x60A2F; i <= 0x60A56; i++) {
+        rom[i] = beastMode ? sprite.bias(conveyorPowerups, conveyorProbs) : conveyorPowerups[prng.nextInt(conveyorPowerups.length)];
+    
+    }
+    const wireGame = {
+       "lookup": [
+            {byte: 0x01, graphics: 0x2D},
+            {byte: 0x02, graphics: 0x2F},
+            {byte: 0x03, graphics: 0x2E},
+            {byte: 0x04, graphics: 0x30}
+        ]
+    }
+    var wirePowerups = [0x01, 0x02, 0x03, 0x04];
+    var oneUpPosition = [0x60924, 0x60942, 0x606AE, 0x60717];
+    for (var i = 0x00; i < 0x04; i++) {
+        var currentWirePowerup = wirePowerups[prng.nextInt(wirePowerups.length)];
+        rom[0x60C51 + i] = currentWirePowerup;
+        const wireObj = wireGame.lookup.find(powerup => powerup.byte == currentWirePowerup);
+        rom[0x3E766 + (3 * i)] = wireObj.graphics;
+        if (currentWirePowerup == 0x04) {
+            for (var j = 0; j < oneUpPosition.length; j++) {
+                rom[oneUpPosition[j]] = i;
+            }
+            wirePowerups.splice(wirePowerups.indexOf(0x04), 1);
+        }
+    }
 }

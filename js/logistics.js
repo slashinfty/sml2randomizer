@@ -36,8 +36,8 @@ function romCheck(buffer) {
         }
     }
     if (romVerify == 0) {
-        if (romTest[0x148] == 0x05 && romTest[0xC2000] < 0x12) {
-            print = "DX ROM must be v1.8"
+        if (romTest[0x148] == 0x05 && romTest[0xC2000] < 0x13) {
+            print = "DX ROM must be v1.8.1"
             document.getElementById("randomizeRom").disabled = true;
         } else {
             var vOne = romTest[0x14C] == 0x00 ? "v1.0" : "v1.2";
@@ -85,10 +85,10 @@ function checkboxes() {
     		return (flags & 0x002) != 0;
     	}).checkboxradio('refresh');
         if ((flags & 0x004) != 0) {
-            $("#swapExits").val("gauntlet").selectmenu('refresh');
+            $("#swapExits").val("randomSwap").selectmenu('refresh');
         }
         if ((flags & 0x008) != 0) {
-            $("#swapExits").val("randomSwap").selectmenu('refresh');
+            $("#swapExits").val("allExits").selectmenu('refresh');
         }
     	$("#randomizeEnemies").prop("checked", function() {
     		return (flags & 0x010) != 0;
@@ -133,12 +133,12 @@ function flagGenerator() {
         doBosses = true;
         flags |= 0x002;
     }
-    if (document.getElementById("swapExits").value == "gauntlet") {
-        doGauntlet = true;
-        flags |= 0x004;
-    }
     if (document.getElementById("swapExits").value == "randomSwap") {
         doSwap = true;
+        flags |= 0x004;
+    }
+    if (document.getElementById("swapExits").value == "allExits") {
+        doAllExits = true;
         flags |= 0x008;
     }
     if (document.getElementById("randomizeEnemies").checked) {
@@ -189,7 +189,7 @@ function doRandomize(buffer) {
     if (doLevels) {
         randomizeLevels(rom);
     }
-    if (doGauntlet || doSwap) {
+    if (doAllExits || doSwap) {
         swapExits(rom);
     }
     if (doBosses) {

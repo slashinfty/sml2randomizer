@@ -33,19 +33,32 @@ function randomizeLevels(rom) {
 }
 
 function swapExits(rom) {
-    var exitOffsets = [[0x2A385, 0x29947], [0x4C8EB, 0x4CA7F], [0x4DA53,
-    0x4D27B], [0x54ACE, 0x5475A], [0x49215, 0x4949E], [0x49F61, 0x499A7],
-    [0x51D99, 0x51D29]];
-    if (doGauntlet && rom[0x3C24A] != 0x0F) {
-        var a = rom[exitOffsets[6][0]];
-        rom[exitOffsets[6][0]] = rom[exitOffsets[6][1]];
-        rom[exitOffsets[6][1]] = a;
+    const dualExits = {
+        "tree2": {level: 0x02, offsets: [0x2A385, 0x29947]},
+        "hippo": {level: 0x11, offsets: [0x4C8EB, 0x4CA7F]},
+        "space1": {level: 0x12, offsets: [0x4DA53, 0x4D27B]},
+        "macro1": {level: 0x14, offsets: [0x54ACE, 0x5475A]},
+        "pumpkin2": {level: 0x07, offsets: [0x49215, 0x4949E]},
+        "pumpkin3": {level: 0x08, offsets: [0x49F61, 0x499A7]},
+        "turtle2": {level: 0x0F, offsets: [0x51D99, 0x51D29]}
+    }
+    function swap(array){
+        var a = rom[array[0]];
+        rom[array[0]] = rom[array[1]];
+        rom[array[1]] = a;
+    }
+    if (doAllExits) {
+        for (l in dualExits) {
+            if (dualExits[l].level != 0x11 && rom[0x3C24A] != dualExits[l].level) {
+                swap(dualExits[l].offsets);
+            } else if (rom[0x3C24A] == 0x11) {
+                swap(dualExits[l].offsets);
+            }
+        }
     } else {
-        for (var i = 0; i < exitOffsets.length; i++) {
+        for (l in dualExits) {
             if (prng.nextBool()) {
-                var a = rom[exitOffsets[i][0]];
-                rom[exitOffsets[i][0]] = rom[exitOffsets[i][1]];
-                rom[exitOffsets[i][1]] = a;
+                swap(dualExits[l].offsets);
             }
         }
     }

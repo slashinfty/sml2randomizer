@@ -21,9 +21,9 @@ function randomizeBossHealth(rom) {
         rom[healthSetOne[i]] = (0x02 * (prng.nextInt(2) + 2));
     }
     for (var i = 0; i < healthSetTwo.length; i++) {
-        rom[healthSetTwo[i]] = (0x02 * (prng.nextInt(3) + 3));
+        rom[healthSetTwo[i]] = (0x02 * (prng.nextInt(4) + 3));
     }
     for (var i = 0; i < healthSetThree.length; i++) {
-        rom[healthSetThree[i]] = (0x02 * (prng.nextInt(2) + 3));
+        rom[healthSetThree[i]] = (0x02 * (prng.nextInt(3) + 3));
     }
 }

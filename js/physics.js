@@ -90,7 +90,7 @@ function randomizePhysics(rom) {
     }
     if (doIcePhysics) {
         for (var i = 0; i < 0x20; i++) {
-            if (prng.nextFloat() < 0.15) {
+            if (prng.nextFloat() < 0.1) {
                 rom[moveTable + i] = 0x00;
             }
         }
