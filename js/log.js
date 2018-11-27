@@ -120,7 +120,7 @@ const bossHealth = {
 }
 
 function createLog(rom, filename, flags) {
-	var version = rom[0x14C] == 0x02 ? 0x3 : 0x0;
+	const version = rom[0x14C] == 0x02 ? 0x3 : 0x0;
     var obj = new Object();
 	obj.randoVersion = VERSION;
     obj.romVersion = rom[0x14C] == 0x00 ? 'v1.0' : 'v1.2';
@@ -136,7 +136,7 @@ function createLog(rom, filename, flags) {
 		l.level = levelNameObj.name;
 		const bossOffsetObj = bosses.lookup.find(level => level.byte == levelByte);
 		if (bossOffsetObj !== undefined) {
-			for (var i = 0; i < bosses.lookup.length; i++) {
+			for (let i = 0; i < bosses.lookup.length; i++) {
 				if (rom[bosses.lookup[i].offset] == levelByte) {
 					const bossNameObj = bosses.lookup[i];
 					l.boss = bossNameObj.name;
@@ -162,21 +162,21 @@ function createLog(rom, filename, flags) {
 		if (dualExitObj !== undefined) {
 			l.true_exit = rom[dualExitObj.offset] == 0x4A;
 		}
-		var gravityByte = rom[0x1F91 + levelByte + version];
+		const gravityByte = rom[0x1F91 + levelByte + version];
 		const gravityObj = gravity.lookup.find(grav => grav.byte == gravityByte);
 		l.gravity = gravityObj.name;
 		if (doBothPhysics || doLuigiPhysics || doIcePhysics) {
-			var physicsTable = rom[0x148] == 0x05 ? 0x93D20 : 0x33020;
-			var physicsByte = rom[physicsTable + levelByte];
+			const physicsTable = rom[0x148] == 0x05 ? 0x93D20 : 0x33020;
+			let physicsByte = rom[physicsTable + levelByte];
 			const physicsObj = physics.lookup.find(phys => phys.byte == physicsByte);
 			if (physicsObj !== undefined) {
 				l.physics = physicsObj.name;
 			}
 		}
-		var autoscroller = rom[0x1F71 + levelByte + version] == 0x01;
+		let autoscroller = rom[0x1F71 + levelByte + version] == 0x01;
 		l.autoscroller = autoscroller;
 		if (autoscroller) {
-			var speedTable = rom[0x148] == 0x05 ? 0x93D40 : 0x33040;
+			const speedTable = rom[0x148] == 0x05 ? 0x93D40 : 0x33040;
 			l.autoscroller_speed = rom[speedTable + levelByte];
 		}
 		obj.levels.push(l);

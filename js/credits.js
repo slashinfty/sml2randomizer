@@ -44,18 +44,18 @@ function fileSelectScreen(rom) {
         alphaOnFileSelectScreen[46] = 0x0F;
         alphaOnFileSelectScreen[58] = 0x0F;
     }
-    for (var i = 0; i < alphaOnFileSelectScreen.length; i++) {
-        rom[offsetForAlpha + i] = alphaOnFileSelectScreen[i];
-    }
+	alphaOnFileSelectScreen.forEach((alpha, index) => {
+		rom[offsetForAlpha + index] = alpha;
+	});
     //give numbers the same background as letters
-    for (var i = 0; i < 161; i++) {
+    for (let i = 0; i < 161; i++) {
         rom[0x32D5A + i] = rom[0x68656 + i];
     }
-    for (var i = 0; i < writeSeed.length; i++) {
+    for (let i = 0; i < writeSeed.length; i++) {
         const a2h = ascii.hex.find(letter => letter.char === writeSeed.charAt(i));
         rom[0x30A9A + i] = a2h.byte;
     }
-    for (var i = 0; i < writeFlags.length; i++) {
+    for (let i = 0; i < writeFlags.length; i++) {
         const a2h = ascii.hex.find(letter => letter.char === writeFlags.charAt(i));
         rom[0x30ABC + i] = a2h.byte;
     }
@@ -63,7 +63,7 @@ function fileSelectScreen(rom) {
 
 function credits(rom) {
     function writeSentence(sentence, dest) {
-        for (var i = 0; i < sentence.length; i++) {
+        for (let i = 0; i < sentence.length; i++) {
             rom[dest + i] = sentence.charCodeAt(i);
         }
     }
@@ -117,11 +117,11 @@ function credits(rom) {
     }
     var intLim = document.getElementById("beastMode").checked ? (randomSentences.quotes.length - 1) : randomSentences.quotes.length;
     var quoteIndex = prng.nextInt(intLim);
-    function randomizeFacts() {
-        var allFacts = randomSentences.facts.slice(0);
-        for (var i = 0; i < 3; i++) {
-            var n = prng.nextInt(allFacts.length - i);
-            var a = allFacts.splice(n, 1);
+	function randomizeFacts() {
+        let allFacts = randomSentences.facts.slice(0);
+        for (let i = 0; i < 3; i++) {
+            let n = prng.nextInt(allFacts.length - i);
+            let a = allFacts.splice(n, 1);
             allFacts.push(a[0]);
         }
         return allFacts.slice(-3);
@@ -179,7 +179,7 @@ function credits(rom) {
         "song08": {line: randomSentences.songs[songIndex].line8, offsets: [0x69CCA]}
     }
     for (x in sentences) {
-        for (var i = 0; i < sentences[x].offsets.length; i++) {
+        for (let i = 0; i < sentences[x].offsets.length; i++) {
             writeSentence(sentences[x].line, sentences[x].offsets[i]);
         }
     }

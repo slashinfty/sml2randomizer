@@ -30,7 +30,7 @@ function romCheck(buffer) {
     var print = "Not a ROM of MARIOLAND2";
     var origRom = [0x4D, 0x41, 0x52, 0x49, 0x4F, 0x4C, 0x41, 0x4E, 0x44, 0x32];
     var romVerify = 10;
-    for (var i = 0; i < origRom.length; i++) {
+    for (let i = 0; i < origRom.length; i++) {
         if (romTest[0x134 + i] == origRom[i]) {
             romVerify--;
         }
@@ -40,8 +40,8 @@ function romCheck(buffer) {
             print = "DX ROM must be v1.8.1"
             document.getElementById("randomizeRom").disabled = true;
         } else {
-            var vOne = romTest[0x14C] == 0x00 ? "v1.0" : "v1.2";
-            var dxRom = romTest[0x148] == 0x05 ? "DX - " : "";
+            const vOne = romTest[0x14C] == 0x00 ? "v1.0" : "v1.2";
+            const dxRom = romTest[0x148] == 0x05 ? "DX - " : "";
             print = "ROM: MARIOLAND2 - " + dxRom + vOne;
             document.getElementById("randomizeRom").disabled = false;
         }
@@ -61,8 +61,8 @@ function seedGenerator(custom = null) {
     if (custom != null && ("000" + parseInt(custom, 16).toString(16).toUpperCase()).substr(-8) == custom && custom.length == 8) {
         prng.setSeed(custom);
     } else {
-        var partA = (Math.floor(Math.random() * 3839) + 256).toString(16).toUpperCase();
-        var partB = Date.now().toString(16).toUpperCase().substr(-5,5);
+        let partA = (Math.floor(Math.random() * 3839) + 256).toString(16).toUpperCase();
+        let partB = Date.now().toString(16).toUpperCase().substr(-5,5);
         prng.setSeed(partA.concat(partB));
         document.getElementById("seed").value = prng.printSeed.toUpperCase();
     }
@@ -124,7 +124,7 @@ function checkboxes() {
 }
 
 function flagGenerator() {
-    var flags = 0;
+    let flags = 0;
     if (document.getElementById("randomizeLevels").checked) {
         doLevels = true;
         flags |= 0x001;
@@ -185,7 +185,7 @@ function flagGenerator() {
 };
 
 function doRandomize(buffer) {
-    var rom = new Uint8Array(buffer);
+    let rom = new Uint8Array(buffer);
     if (doLevels) {
         randomizeLevels(rom);
     }
@@ -223,11 +223,11 @@ function doRandomize(buffer) {
     fileSelectScreen(rom);
     credits(rom);
     checksum(rom);
-    var flags = document.getElementById("flags").value;
+    let flags = document.getElementById("flags").value;
     document.getElementById("romVersion").innerHTML = "sml2r.download/?s=" + prng.printSeed + "&f=" + flags;
     $("#romVersion").addClass('clickable');
-    var ifDx = rom[0x148] == 0x05 ? "DX-" : "";
-    var filename = "sml2r-" + ifDx + prng.printSeed + "-" + flags;
+    const ifDx = rom[0x148] == 0x05 ? "DX-" : "";
+    let filename = "sml2r-" + ifDx + prng.printSeed + "-" + flags;
     if (doLog){
         createLog(rom, filename, flags);
     } else {

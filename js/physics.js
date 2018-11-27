@@ -1,6 +1,6 @@
 function randomizeGravity(rom) {
-    var version = rom[0x14C] == 0x02 ? 0x3 : 0x0;
-    for (var i = (0x1F91 + version); i <= (0x1FB0 + version); i++) {
+    const version = rom[0x14C] == 0x02 ? 0x3 : 0x0;
+    for (let i = (0x1F91 + version); i <= (0x1FB0 + version); i++) {
         switch (rom[i]) {
             case 0x00:
                 if (beastMode) {
@@ -60,14 +60,19 @@ function randomizeGravity(rom) {
 
 function randomizePhysics(rom) {
     if (rom[0x148] != 0x05) {
+		if (rom[0x14C] == 0x00) {
+			patch(patchPhysicsScrolling_v1_0, rom);
+		} else {
+			patch(patchPhysicsScrolling_v1_2, rom);
+		}
         patch(patchPhysicsScrolling, rom);
     }
     //0x33000-0x3301F | Mario=$00, Luigi=$04
     //0x33020-0x3303F | Ice=$00, Luigi=$03, Mario=$04, Rock=$07
-    var jumpTable = rom[0x148] == 0x05 ? 0x93D00 : 0x33000;
-    var moveTable = rom[0x148] == 0x05 ? 0x93D20 : 0x33020;
+    const jumpTable = rom[0x148] == 0x05 ? 0x93D00 : 0x33000;
+    const moveTable = rom[0x148] == 0x05 ? 0x93D20 : 0x33020;
     if (doBothPhysics) {
-        for (var i = 0; i < 0x20; i++) {
+        for (let i = 0; i < 0x20; i++) {
             if (prng.nextFloat() < 0.15) {
                 rom[jumpTable + i] = 0x04;
                 rom[moveTable + i] = 0x03;
@@ -75,7 +80,7 @@ function randomizePhysics(rom) {
         }
         //mario only for DX
         if (rom[0x148] == 0x05) {
-            for (var i = 0; i < 0x20; i++) {
+            for (let i = 0; i < 0x20; i++) {
                 if(rom[jumpTable + i] == 0xFF && prng.nextFloat() < 0.15) {
                     rom[jumpTable + i] = 0x00;
                     rom[moveTable + i] = 0x04;
@@ -83,13 +88,13 @@ function randomizePhysics(rom) {
             }
         }
     } else if (doLuigiPhysics && rom[0x148] != 0x05) {
-        for (var i = 0; i < 0x20; i++) {
+        for (let i = 0; i < 0x20; i++) {
             rom[jumpTable + i] = 0x04;
             rom[moveTable + i] = 0x03;
         }
     }
     if (doIcePhysics) {
-        for (var i = 0; i < 0x20; i++) {
+        for (let i = 0; i < 0x20; i++) {
             if (prng.nextFloat() < 0.1) {
                 rom[moveTable + i] = 0x00;
             }
