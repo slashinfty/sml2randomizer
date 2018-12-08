@@ -51,6 +51,6 @@ function randomizeScrolling(rom) {
     });
     //if level 12 is scrolling, swap midway bell for heart
     if (rom[0x1F83 + version] == 0x01) {
-        rom[0xE7A6] = 0x27;
+        sprite.insert(0xE7A6, 0xE7A7, 0x1F);
     }
 }
