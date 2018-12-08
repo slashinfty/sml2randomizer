@@ -1,19 +1,6 @@
 var VERSION = 'v2.03';
 
-var beastMode;
-var doLevels;
-var doBosses;
-var doSwap;
-var doAllExits;
-var doMusic;
-var doScrolling;
-var doGravity;
-var doBothPhysics;
-var doLuigiPhysics;
-var doIcePhysics;
-var doPowerups;
-var doPlatforms;
-var doEnemies;
+var beastMode, deerMode, doLevels, doBosses, doSwap, doAllExits, doMusic, doScrolling, doGravity, doBothPhysics, doLuigiPhysics, doIcePhysics, doPowerups, doPlatforms, doEnemies;
 
 //adapted from https://github.com/bit101/lcg
 var prng = {

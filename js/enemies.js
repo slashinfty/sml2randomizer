@@ -284,12 +284,13 @@ function randomizeEnemies(rom) {
                 }
             }
         }
-		//work in progress
-		//const floatingFaces = [0xE9EC, 0xE9F2, 0xE9F5, 0xE9FB, 0xE9FE];
-		//floatingFaces.forEach((offset, index) => {
-			//let xPos = index == 0 ? prng.nextInt(0x04) + 0x10 : prng.nextInt(0x07) + 0x0B;
-			//rom[offset + 1] = sprite.xPosition(xPos, rom[offset + 1]);
-			//rom[offset + 2] = prng.nextInt(0x0E) + 0x31;
-		//});
+		/*work in progress
+		const floatingFaces = [0xE9EC, 0xE9F2, 0xE9F5, 0xE9FB, 0xE9FE];
+		floatingFaces.forEach((offset, index) => {
+			let xPos = index == 0 ? prng.nextInt(0x04) + 0x10 : prng.nextInt(0x07) + 0x0B;
+			rom[offset + 1] = sprite.xPosition(xPos, rom[offset + 1]);
+			rom[offset + 2] = prng.nextInt(0x0E) + 0x31;
+		});
+        */
     }
 }

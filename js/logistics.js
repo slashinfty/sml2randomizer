@@ -120,6 +120,9 @@ function checkboxes() {
     	$("#beastMode").prop("checked", function() {
     		return (flags & 0x2000) != 0;
     	}).checkboxradio('refresh');
+        $("#deerMode").prop("checked", function() {
+            return (flags & 0x4000) != 0;
+        }).checkboxradio('refresh');
     }
 }
 
@@ -181,6 +184,10 @@ function flagGenerator() {
         beastMode = true;
         flags |= 0x2000;
     }
+    if (document.getElementById("deerMode").checked) {
+        deerMode = true;
+        flags |= 0x4000;
+    }
     document.getElementById("flags").value = ("0000" + flags.toString(16).toUpperCase()).substr(-4);
 };
 
@@ -219,7 +226,9 @@ function doRandomize(buffer) {
     if (beastMode) {
         randomizeBossHealth(rom);
     }
-    //patch(patchPhysicsScrolling, rom); //TODO testing feature
+    if (deerMode) {
+        deer(rom);
+    }
     fileSelectScreen(rom);
     credits(rom);
     checksum(rom);
