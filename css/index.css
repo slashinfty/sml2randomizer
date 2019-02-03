@@ -1,14 +1,35 @@
-table.tstyle {
-	width: 800px;
+body {
+    font-family: 'Source Code Pro', monospace !important;
+    padding-bottom: 4%;
+    background-color: #1f2226 !important;
+    padding-top: 70px;
 }
-table.tstyle td.calign{
-	text-align: center;
+
+.card {
+    max-width: 840px;
 }
-table.tstyle td.ralign{
-	text-align: right;
+
+input[type=text] {
+    text-align: center;
 }
-#seed {width: 75%}
-#flags {width: 70%}
-.hidden{
-	display: none;
+
+.custom-checkbox {
+    padding-bottom: 10px;
+}
+
+.center {
+    align-content: center;
+}
+
+h3 {
+    padding-top: 5px;
+}
+
+h4 {
+    border-bottom: 1px solid #cccccc;
+    padding-bottom: 5px;
+}
+
+.hide {
+    display: none;
 }

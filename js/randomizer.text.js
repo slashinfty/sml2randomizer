@@ -1,79 +1,99 @@
-const ascii = {
-    "hex": [
-        {char: " ", byte: 0xFF},
-        {char: "0", byte: 0xD9},
-        {char: "1", byte: 0xDA},
-        {char: "2", byte: 0xDB},
-        {char: "3", byte: 0xDC},
-        {char: "4", byte: 0xDD},
-        {char: "5", byte: 0xDE},
-        {char: "6", byte: 0xDF},
-        {char: "7", byte: 0xE0},
-        {char: "8", byte: 0xE1},
-        {char: "9", byte: 0xE2},
-        {char: "A", byte: 0x30},
-        {char: "B", byte: 0x31},
-        {char: "C", byte: 0x32},
-        {char: "D", byte: 0x33},
-        {char: "E", byte: 0x34},
-        {char: "F", byte: 0x35},
-        {char: "I", byte: 0x38},
-        {char: "M", byte: 0x3C},
-        {char: "N", byte: 0x3D},
-        {char: "O", byte: 0x3E},
-        {char: "R", byte: 0x41}
-    ]
-}
+const ascii = [
+    {char: " ", byte: 0xFF},
+    {char: "0", byte: 0xD9},
+    {char: "1", byte: 0xDA},
+    {char: "2", byte: 0xDB},
+    {char: "3", byte: 0xDC},
+    {char: "4", byte: 0xDD},
+    {char: "5", byte: 0xDE},
+    {char: "6", byte: 0xDF},
+    {char: "7", byte: 0xE0},
+    {char: "8", byte: 0xE1},
+    {char: "9", byte: 0xE2},
+    {char: "A", byte: 0x35},
+    {char: "B", byte: 0x36},
+    {char: "C", byte: 0x37},
+    {char: "D", byte: 0x38},
+    {char: "E", byte: 0x39},
+    {char: "F", byte: 0x3A},
+    {char: "G", byte: 0x3B},
+    {char: "H", byte: 0x3C},
+    {char: "I", byte: 0x3D},
+    {char: "J", byte: 0x3E},
+    {char: "K", byte: 0x3F},
+    {char: "L", byte: 0x40},
+    {char: "M", byte: 0x41},
+    {char: "N", byte: 0x42},
+    {char: "O", byte: 0x43},
+    {char: "P", byte: 0x44},
+    {char: "Q", byte: 0x45},
+    {char: "R", byte: 0x46},
+    {char: "S", byte: 0x47},
+    {char: "T", byte: 0x48},
+    {char: "U", byte: 0x49},
+    {char: "V", byte: 0x4A},
+    {char: "W", byte: 0x4B},
+    {char: "X", byte: 0x4C},
+    {char: "Y", byte: 0x4D},
+    {char: "Z", byte: 0x4E},
+    {char: "a", byte: 0x65},
+    {char: "b", byte: 0x66},
+    {char: "c", byte: 0x67},
+    {char: "d", byte: 0x68},
+    {char: "e", byte: 0x69},
+    {char: "f", byte: 0x6A},
+    {char: "g", byte: 0x6B},
+    {char: "h", byte: 0x6C},
+    {char: "i", byte: 0x6D},
+    {char: "j", byte: 0x6E},
+    {char: "k", byte: 0x6F},
+    {char: "l", byte: 0x70},
+    {char: "m", byte: 0x71},
+    {char: "n", byte: 0x72},
+    {char: "o", byte: 0x73},
+    {char: "p", byte: 0x74},
+    {char: "q", byte: 0x75},
+    {char: "r", byte: 0x76},
+    {char: "s", byte: 0x77},
+    {char: "t", byte: 0x78},
+    {char: "u", byte: 0x79},
+    {char: "v", byte: 0x7A},
+    {char: "w", byte: 0x7B},
+    {char: "x", byte: 0x7C},
+    {char: "y", byte: 0x7D},
+    {char: "z", byte: 0x7E}
+];
 
-function fileSelectScreen(rom) {
-    var alphaOnFileSelectScreen = [0x3E, 0x07, 0xCD, 0x0C, 0x2B, 0x01,
-        0x00, 0x06, 0x21, 0x00, 0x5E, 0x11, 0x00, 0x92, 0xCD, 0x36, 0x03,
-        0x01, 0x80, 0x03, 0x26, 0x6A, 0x11, 0x80, 0x8E, 0xCD, 0x36, 0x03,
-        0x3E, 0x06, 0xCD, 0x0C, 0x2B, 0x06, 0x08, 0x21, 0x00, 0x40, 0x16,
-        0x80, 0xCD, 0x36, 0x03, 0x3E, 0x1B, 0xCD, 0x0C, 0x2B, 0x26, 0x70,
-        0x06, 0x03, 0xCD, 0x36, 0x03, 0x3E, 0x1A, 0xCD, 0x0C, 0x2B, 0x06,
-        0x02, 0x21, 0x66, 0x47, 0x16, 0x93, 0xCD, 0x36, 0x03, 0x3E, 0x0C,
-        0xEA, 0x00, 0x21, 0x01, 0x80, 0x03, 0x21, 0xCA, 0x6A, 0x16, 0x8B,
-        0xCD, 0x36, 0x03, 0xC9];
-    var writeSeed = prng.printSeed;
-    var writeFlags = document.getElementById("flags").value;
-    var offsetForAlpha = rom[0x14C] == 0x00 ? 0x2B8B : 0x2B8E;
-    if (rom[0x14C] != 0x00) {
-        alphaOnFileSelectScreen[3] = 0x0F;
-        alphaOnFileSelectScreen[31] = 0x0F;
-        alphaOnFileSelectScreen[46] = 0x0F;
-        alphaOnFileSelectScreen[58] = 0x0F;
-    }
-	alphaOnFileSelectScreen.forEach((alpha, index) => {
-		rom[offsetForAlpha + index] = alpha;
-	});
-    //give numbers the same background as letters
-    for (let i = 0; i < 161; i++) {
-        rom[0x32D5A + i] = rom[0x68656 + i];
-    }
+function fileSelectScreen(rom, seed, flags) {
+    let writeSeed = seed;
+    let flagArray = flags.split('+');
+    let writeFlags = flagArray[0].substr(0, 16);
+    //disable easy mode
+    rom[0x30388] = 0x00;
+    let randomizerText = [0x46, 0x35, 0x42, 0x38, 0x43, 0x41, 0x3D, 0x4E, 0x39, 0x46];
+    randomizerText.forEach((letter, index) => rom[0x30A99 + index] = letter);
     for (let i = 0; i < writeSeed.length; i++) {
-        const a2h = ascii.hex.find(letter => letter.char === writeSeed.charAt(i));
-        rom[0x30A9A + i] = a2h.byte;
+        const a2h = ascii.find(letter => letter.char === writeSeed.charAt(i));
+        rom[0x30AD8 + i] = a2h.byte;
     }
-    for (let i = 0; i < writeFlags.length; i++) {
-        const a2h = ascii.hex.find(letter => letter.char === writeFlags.charAt(i));
-        rom[0x30ABC + i] = a2h.byte;
+    let flagOffset = 0x30AFB;
+    if (writeFlags.length > 2) flagOffset = writeFlags.length % 2 === 0 ? 0x30AFB - (writeFlags.length / 2 - 1) : 0x30AFB - Math.floor(writeFlags.length / 2);
+    for (let j = 0; j < writeFlags.length; j++) {
+        const a2h = ascii.find(letter => letter.char === writeFlags.charAt(j));
+        rom[flagOffset + j] = a2h.byte;
     }
 }
 
 function credits(rom) {
     function writeSentence(sentence, dest) {
-        for (let i = 0; i < sentence.length; i++) {
-            rom[dest + i] = sentence.charCodeAt(i);
-        }
+        for (let i = 0; i < sentence.length; i++) rom[dest + i] = sentence.charCodeAt(i);
     }
     const randomSentences = {
         "quotes": [
             {line1: "  BUT OUR PRINCESS  ", line2: "IS IN ANOTHER CASTLE"},
             {line1: "   OH DAISY DAISY   ", line2: "  THANK YOU MARIO   "},
             {line1: "  MARIOS ADVENTURE  ", line2: "    IS NOW OVER     "},
-            {line1: "   YOU REALLY BEAT  ", line2: " ME THIS TIME MARIO "},
-            {line1: "    NEXT TIME TRY   ", line2: "     BEAST MODE     "} //always last one
+            {line1: "   YOU REALLY BEAT  ", line2: " ME THIS TIME MARIO "}
         ],
         "facts": [
             {line1: "   A SUPERJUMP IS   ", line2: "  HOLDING JUMP FOR  ", line3: "  21 TO 26 FRAMES   "},
@@ -115,19 +135,18 @@ function credits(rom) {
              line7: " AND UNTIL NEXT TIME", line8: "      GOOD BYE      "}
         ]
     }
-    var intLim = document.getElementById("beastMode").checked ? (randomSentences.quotes.length - 1) : randomSentences.quotes.length;
-    var quoteIndex = prng.nextInt(intLim);
+    let quoteIndex = rng.nextInt(randomSentences.quotes.length);
 	function randomizeFacts() {
         let allFacts = randomSentences.facts.slice(0);
         for (let i = 0; i < 3; i++) {
-            let n = prng.nextInt(allFacts.length - i);
+            let n = rng.nextInt(allFacts.length - i);
             let a = allFacts.splice(n, 1);
             allFacts.push(a[0]);
         }
         return allFacts.slice(-3);
     }
     var randomFacts = randomizeFacts();
-    var songIndex = prng.nextInt(randomSentences.songs.length);
+    let songIndex = rng.nextInt(randomSentences.songs.length);
     const sentences = {
         "sentence01": {line: "  SML2 RANDO STAFF  ", offsets: [0x6974D]},
         "sentence02": {line: "      CREATOR       ", offsets: [0x69763]},
@@ -138,7 +157,7 @@ function credits(rom) {
         "sentence07": {line: "      SMELLYMOO     ", offsets: [0x697F6]},
         "sentence08": {line: "     PROGRAMMER     ", offsets: [0x69835]},
         "sentence09": {line: "       VEEARR       ", offsets: [0x69820]},
-        "sentence10": {line: "     DRJOEYHUGS     ", offsets: [0x6984A]},
+        "sentence10": {line: "     DOCTORHUGS     ", offsets: [0x6984A]},
         "sentence11": {line: "  TESTING  PLAYERS  ", offsets: [0x698AF]},
         "sentence12": {line: "      OH DEER       ", offsets: [0x698C4]},
         "sentence13": {line: "    BEASTFRISIAN    ", offsets: [0x698D9]},
@@ -179,8 +198,6 @@ function credits(rom) {
         "song08": {line: randomSentences.songs[songIndex].line8, offsets: [0x69CCA]}
     }
     for (x in sentences) {
-        for (let i = 0; i < sentences[x].offsets.length; i++) {
-            writeSentence(sentences[x].line, sentences[x].offsets[i]);
-        }
+        for (let i = 0; i < sentences[x].offsets.length; i++) writeSentence(sentences[x].line, sentences[x].offsets[i]);
     }
 }

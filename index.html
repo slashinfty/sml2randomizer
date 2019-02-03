@@ -1,354 +1,223 @@
 <!doctype html>
-<html lang="us">
+<html>
 <head>
-	<meta charset="utf-8">
-	<title>SML2 Randomizer</title>
-	<link href="jqueryui/jquery-ui.css" rel="stylesheet">
-	<link href="css/index.css" rel="stylesheet">
-	<link rel="icon" type="image/x-icon" href="images/favicon.png">
-	<style>
-	.content {
-    	max-width: 800px;
-    	margin: auto;
-	}
-	body{
-		font-family: Monospace, sans-serif;
-	}
-	#dialog-link {
-		padding: .4em 1em .4em 20px;
-		text-decoration: none;
-		position: relative;
-	}
-	#dialog-link span.ui-icon {
-		margin: 0 5px 0 0;
-		position: absolute;
-		left: .2em;
-		top: 50%;
-		margin-top: -8px;
-	}
-	</style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SML2 Randomizer</title>
+    <link href="css/index.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 </head>
 <body>
-<div class="content">
-<table class="tstyle">
-	<tr>
-		<td><h1>Super Mario Land 2 Randomizer</h1></td>
-		<td class="ralign"><a href="#" title="v2.04.1 released 8 December 2018"><img src="images/FriendlyFinger.png" alt="Wario giving thumbs up" style="width:81px;height:65px;"></a></td>
-	</tr>
-</table>
-
-<table class="tstyle">
-	<tr>
-		<td><div class="upload"><input type="file" id="fileupload" name="upload" accept=".gb,.gbc" /><p></p></div></td>
-		<td class="calign"><p id="romVersion"></p></td>
-		<td class="ralign"><button id="randomizeRom" disabled>Randomize</button></td>
-	</tr>
-</table>
-<br>
-<table class="tstyle">
-	<tr>
-		<td><label for="seed">Seed:</label><input type="text" name="seed-input" id="seed" placeholder="Leave blank for random seed" /></td>
-		<td class="ralign"><label for="flags">Flags:</label><input type="text" name="flags-input" id="flags" placeholder="Leave blank if selecting options" /></td>
-	</tr>
-</table>
-
-<h2>Options:</h2>
-
-<table class="tstyle">
-	<tr>
-		<td>
-			<fieldset>
-				<legend>Levels</legend>
-				<div id="controlgroup1">
-					<label for="randomizeLevels">Randomize Levels</label>
-					<input type="checkbox" name="level" id="randomizeLevels">
-					<label for="randomizeBosses">Randomize Bosses</label>
-					<input type="checkbox" name="level" id="randomizeBosses">
-					<select name="swapExits" id="swapExits">
-						<option value="noSwap" selected="selected">Do Not Randomize Exits</option>
-						<option value="randomSwap">Randomly Swap Exits</option>
-						<option value="allExits">Swap All Exits</option>
-					</select>
-				</div>
-			</fieldset>
-		</td>
-		<td>
-			<fieldset>
-				<legend>Sprites</legend>
-				<div id="controlgroup2">
-					<label for="randomizeEnemies">Randomize Enemies</label>
-					<input type="checkbox" name="sprite" id="randomizeEnemies">
-					<label for="randomizePowerups">Randomize Power-Ups</label>
-					<input type="checkbox" name="sprite" id="randomizePowerups">
-					<label for="randomizePlatforms">Randomize Platforms</label>
-					<input type="checkbox" name="sprite" id="randomizePlatforms">
-				</div>
-			</fieldset>
-		</td>
-		<td>
-			<fieldset>
-				<legend>Movement</legend>
-				<div id="controlgroup5">
-					<label for="randomizeGravity">Randomize Gravity</label>
-					<input type="checkbox" name="enhance" id="randomizeGravity">
-					<label for="randomizeIce">Randomize Ice Physics</label>
-					<input type="checkbox" name="enhance" id="randomizeIce">
-					<select name="characterPhysics" id="characterPhysics">
-						<option value="marioPhysics" selected="selected">Mario Physics</option>
-						<option value="bothPhysics">Mario/Luigi Physics</option>
-						<option value="luigiPhysics">Luigi Physics</option>
-					</select>
-				</div>
-			</fieldset>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<fieldset>
-				<legend>Enhancements</legend>
-				<div id="controlgroup3">
-					<label for="randomizeScrolling">Randomize Scrolling</label>
-					<input type="checkbox" name="enhance" id="randomizeScrolling">
-					<label for="randomizeMusic">Randomize Music</label>
-					<input type="checkbox" name="enhance" id="randomizeMusic">
-				</div>
-			</fieldset>
-		</td>
-		<td></td>
-		<td>
-			<fieldset>
-				<legend>Challenges</legend>
-				<div id="controlgroup4">
-					<label for="beastMode">Beast Mode</label>
-					<input type="checkbox" name="challenge" id="beastMode">
-                    <label for="deerMode">Deer Mode</label>
-                    <input type="checkbox" name="challenge" id="deerMode">
-				</div>
-			</fieldset>
-		</td>
-	</tr>
-</table>
-<div class="ui-widget hidden" id="beastNote">
-	<div class="ui-state-highlight ui-corner-all" style="padding: 0 .5em;">
-		<p align="center"><strong>Note:</strong> Beast Mode affects enemies, power-ups, bosses, gravity, and all enhancements.<br>You must check those boxes which you would like to affect.</p>
-	</div>
-</div>
-<div class="ui-widget hidden" id="deerNote">
-    <div class="ui-state-highlight ui-corner-all" style="padding: 0 .5em;">
-        <p align="center"><strong>Note:</strong> Deer Mode starts the player with one life and disables both exiting levels and soft resets.</p>
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><img src="images/FriendlyFinger.png" title="Friendly Finger"> SML2 Randomizer</a>
+        <div class="collapse navbar-collapse" id="navbar">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link" href="about.html">About</a>
+                <a class="nav-item nav-link" href="changelog.html">Changelog</a>
+                <a class="nav-item nav-link" href="https://github.com/slashinfty/sml2randomizer">Source Code</a>
+                <a class="nav-item nav-link" href="https://github.com/slashinfty/sml2randomizer/issues">Report an Issue</a>
+            </div>                
+        </div>
+    </nav>
+    <div class="container" style="padding-top: 30px">
+    <div class="card text-white bg-secondary mb-3 mx-auto">
+        <div class="card-header"><h3 class="card-title">Super Mario Land 2 Randomizer</h3></div>
+        <div class="card-body">
+        <p>Welcome to the randomizer for the 1992 Game Boy platformer Super Mario Land 2: 6 Golden Coins. By providing a copy of the ROM, many elements of the game can be shuffled and randomized, plus additional elements can be added for a whole new experience. The result can be shared with others using a generated link, and then multiple people can play the same exact randomized game.</p>
+        <p>This randomizer was developed by dadinfinitum and toruzz, and is licensed under the GNU GPL v3.0 licence.</p>
+        </div>
     </div>
-</div>
-<div class="ui-widget hidden" id="allExitsNote">
-	<div class="ui-state-highlight ui-corner-all" style="padding: 0 .5em;">
-		<p align="center"><strong>Note:</strong> Swaps all exits in levels that have two exits, with a couple exceptions:<br>the Hippo level, and any level in Macro Zone 1's overworld position.<br>
-			<i>If the Hippo level is in Macro Zone 1's overworld position, it does get swapped.</i></p>
-	</div>
-</div>
-<br>
-<table class="tstyle">
-	<tr>
-		<td><a href="https://github.com/slashinfty/sml2randomizer"><button id="button">View Source on GitHub</button></a></td>
-		<td class="ralign"><button id="changelog-link" class="ui-button ui-corner-all ui-widget">
-		<span class="ui-icon ui-icon-newwin"></span>View Changelog</button>
-	</tr>
-</table>
-<br>
-<table class="tstyle">
-	<tr>
-		<td>
-		</td>
-		<td class="calign">
-			<font size="1"><a href="https://github.com/slashinfty/sml2randomizer/blob/master/LICENSE">GNU General Public License v3.0</a></font>
-		</td>
-		<td class="ralign">
-		</td>
-	</tr>
-</table>
-
-<div id="changelog" title="Changelog">
-    <h3>v2.04.1</h3>
-    <ui>
-        <li>Updated Deer Mode to remove hearts and stars from levels, including bonus games.</li>
-        <li>Fixed midway bell replacement in Space Zone 1 (if it is scrolling).</li>
-    </ui>
-    <h3>v2.04</h3>
-    <ui>
-        <li>Deer Mode introduced, which starts the player with 0 lives and disables both soft resets and exiting levels via start and select.</li>
-    </ui>
-	<h3>v2.03.1</h3>
-	<ui>
-		<li>v1.2 ROM compatibility has been fixed.</li>
-	</ui>
-	<h3>v2.03</h3>
-	<ui>
-		<li>Physics can be randomized between Mario and Luigi (or Luigi only), in addition to ice physics.</li>
-		<li>Autoscrollers on certain levels can be sped up under Beast Mode.</li>
-		<li>For levels with dual exits, either they can all be randomly swapped, or all but Hippo can be swapped.</li>
-		<li>Bonus bell game power-ups have been randomized.</li>
-		<li>Flags now have a length of 4 hexadecimal characters.</li>
-		<li><a href="http://www.romhacking.net/hacks/3784/">v1.8.1 DX</a> ROMs are fully supported.</li>
-		<li>UI changes: rearranged some elements, physics renamed gravity, does not allow flags that pick both physics options or both exit options.</li>
-	</ui>
-	<h3>v2.02</h3>
-	<ui>
-		<li>Karamenbos ("thwomps") in Wario's Castle have randomized starting heights if enemies are randomized.</li>
-		<li>Certain platforms in Wario's Castle have randomized starting heights under Beast Mode (with randomized platforms).</li>
-	</ui>
-	<h3>v2.01.1</h3>
-	<ui>
-		<li>v1.2 ROMs now properly display the file select screen with the seed and flag numbers.</li>
-	</ui>
-	<h3>v2.01</h3>
-	<ui>
-		<li>Midway bells are replaced with enemies in Beast Mode.</li>
-		<li>Auto-scrolling is no longer allowed in Space Zone 1 if it has moon physics.</li>
-	</ui>
-	<h3>v2.00.4</h3>
-	<ui>
-		<li>Credits have custom text and some parts are randomized.</li>
-	</ui>
-	<h3>v2.00.3</h3>
-	<ui>
-		<li>Seed and flags appear on the file select screen.</li>
-	</ui>
-	<h3>v2.00.2</h3>
-	<ui>
-		<li>Changes the ROM version text to the URL with the seed and flag numbers, and clicking it copies it to the user's clipboard.</li>
-		<li>After flags are inserted in the flags field, the checkboxes are checked automatically.</li>
-		<li>Seed and flag fields only accept valid inputs via URL, and only output what would be valid inputs.</li>
-	<h3>v2.00.1</h3>
-	<ui>
-		<li>Accepts seed and flags via URL in the format "/?s=SEED&f=FLAGS" at the end of the URL.</li>
-	<h3>v2.00</h3>
-	<ui>
-		<li>Rewritten in JavaScript; now available online.</li>
-		<li>Options are now saved as flags, rather than integrated into the seed number.</li>
-		<li>If a DX ROM is randomized, it will be reflected in the output file name.</li>
-		<li>Boss levels can now be randomized. The golden coin shown corresponds to the level (not boss) beat, but will be saved as the zone that was completed.</li>
-		<li>Bosses can be randomized within boss levels.</li>
-		<li>Boss health can be randomized.</li>
-		<li>Power-ups during the Wario fight are randomized.</li>
-		<li>Hurry-up music is now an option for level music.</li>
-	</ui>
-</div>
-</div>
-<script src="jqueryui/external/jquery/jquery.js"></script>
-<script src="jqueryui/jquery-ui.js"></script>
-<script src="https://fastcdn.org/FileSaver.js/1.1.20151003/FileSaver.min.js"></script>
-<script src="js/logistics.js"></script>
-<script src="js/randomizer.js"></script>
-<script src="js/levels.js"></script>
-<script src="js/bosses.js"></script>
-<script src="js/music.js"></script>
-<script src="js/scrolling.js"></script>
-<script src="js/physics.js"></script>
-<script src="js/powerups.js"></script>
-<script src="js/platforms.js"></script>
-<script src="js/enemies.js"></script>
-<script src="js/copy.js"></script>
-<script src="js/credits.js"></script>
-<script src="js/log.js"></script>
-<script src="js/deer.js"></script>
-<script>
-
-$("#controlgroup1").controlgroup({
-	direction: "vertical"
-});
-$("#controlgroup2").controlgroup({
-	direction: "vertical"
-});
-$("#controlgroup3").controlgroup({
-	direction: "vertical"
-});
-$("#controlgroup4").controlgroup({
-	direction: "vertical"
-});
-$("#controlgroup5").controlgroup({
-	direction: "vertical"
-});
-
-$( function() {
-	$("#characterPhysics").selectmenu();
-});
-$( function() {
-	$("#swapExits").selectmenu();
-});
-
-$("#changelog-link").click(function( event ) {
-	$("#changelog").dialog("open");
-	event.preventDefault();
-});
-
-$("#changelog").dialog({
-	autoOpen: false,
-	width: 450,
-	height: 500,
-	buttons: [
-		{
-			text: "Close",
-			click: function() {
-				$(this).dialog("close");
-			}
-		}
-	]
-});
-
-$("#beastMode").change(function() {
-	if (this.checked) {
-		$("#beastNote").removeClass('hidden');
-	} else {
-		$("#beastNote").addClass('hidden');
-	}
-});
-
-$("#deerMode").change(function() {
-	if (this.checked) {
-		$("#deerNote").removeClass('hidden');
-	} else {
-		$("#deerNote").addClass('hidden');
-	}
-});
+    <div class="card text-white bg-secondary mb-3 mx-auto">
+        <div class="card-header"><h3 class="card-title">Load Settings</h3></div>
+        <div class="card-body">
+        <p>If you have a custom flag string, you may enter it here. Once applied, all settings will be marked below for review.</p>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Flags:</span>
+            </div>
+            <input type="text" class="form-control" id="flagSet" aria-label="Flags" aria-describedby="basic-addon1">
+            <div class="input-group-append">
+                <button class="btn btn-light" id="applyFlags" type="button">Apply Flags</button>
+            </div>
+        </div>
+        <p>If you do not have a custom flag string, you may continue and customize your settings below.</p>
+        </div>
+    </div>
+    <div class="card text-white bg-secondary mb-3 mx-auto">
+        <div class="card-header"><h3 class="card-title">Choose Settings</h3></div>
+        <div class="card-body">
+        <p>Review and customize your settings below.</p>
+        <div class="d-flex justify-content-center"><button class="btn btn-light" id="clearFlags" type="button">Clear All Settings</button></div>
+        <p></p>
+        <h4>Overworld</h4>
+        <p>Affects various elements of the entire overworld and level structure.</p>
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="l">
+            <label class="custom-control-label" for="l">Randomize Levels</label>
+        </div>
+        <p id="text-l" class="hide">Randomizes levels within sets: all boss levels with each other, all levels with two exits with each other, and all other levels with each other.</p>
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="b">
+            <label class="custom-control-label" for="b">Randomize Bosses</label>
+        </div>
+        <p id="text-b" class="hide">Randomizes bosses between boss levels and clears the zone where the boss is found.</p>
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="D">
+            <label class="custom-control-label" for="D">Swap All Dual Exits</label>
+        </div>
+        <p id="text-D" class="hide">All levels with two exits will be swapped (normal exit will be secret exit and vice versa), except for the Hippo level and any level in the overworld position of Macro Zone 1.</p>
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="d">
+            <label class="custom-control-label" for="d">Randomly Swap Dual Exits</label>
+        </div>
+        <p id="text-d" class="hide">Any level with two exits may have their exits swapped (normal exit will be secret exit and vice versa).</p>
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="c">
+            <label class="custom-control-label" for="c">Randomize Gambling Costs</label>
+        </div>
+        <p id="text-c" class="hide">Randomize the cost of gambling on the overworld; costs will be increasing for each pipe.</p>
+        <h4>Sprites</h4>
+        <p>Affects various sprites in each level.</p>
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="e">
+            <label class="custom-control-label" for="e">Randomize Enemies</label>
+        </div>
+        <p id="text-e" class="hide">Randomizes enemies within each level (swaps locations).</p>
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="u">
+            <label class="custom-control-label" for="u">Randomize Power-Ups</label>
+        </div>
+        <p id="text-u" class="hide">Randomizes power-ups, both ones in blocks and ones on the ground, in each level.</p>
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="p">
+            <label class="custom-control-label" for="p">Randomize Platforms</label>
+        </div>
+        <p id="text-p" class="hide">Randomizes platforms, either the type or the height, in Tree Zone 4, Tree Zone 5, and Wario's Castle.</p>
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="B">
+            <label class="custom-control-label" for="B">Randomize Bonus Games</label>
+        </div>
+        <p id="text-B" class="hide">Randomizes the power-ups in both the crane and wirecutting bonus games at the end of levels (currently bugged).</p>
+        <h4>Movement</h4>
+        <p>Affects either how Mario moves or how the screen moves.</p>
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="g">
+            <label class="custom-control-label" for="g">Randomize Gravity</label>
+        </div>
+        <p id="text-g" class="hide">When possible, levels may randomly have normal, moon (from Space Zone 1), or space (from Space Zone 2) gravity.</p>
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="i">
+            <label class="custom-control-label" for="i">Random Ice Physics</label>
+        </div>
+        <p id="text-i" class="hide">Levels may randomly have ice physics, where Mario has difficulty stopping.</p>
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="x">
+            <label class="custom-control-label" for="x">Randomize Mario & Luigi Physics</label>
+        </div>
+        <p id="text-x" class="hide">Levels may randomly have Luigi physics (from the SML2 DX ROM hack), where Mario will run a little faster and jump a little higher. In the DX ROM, the Luigi sprite will be used in those levels, and Mario will be forced in some levels.</p>
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="X">
+            <label class="custom-control-label" for="X">Always Luigi Physics</label>
+        </div>
+        <p id="text-X" class="hide">All levels will have Luigi physics (from the SML2 DX ROM hack), where Mario will run a little faster and jump a little higher. In the DX ROM, the Luigi sprite will be used in the levels.</p>
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="s">
+            <label class="custom-control-label" for="s">Randomize Scrolling</label>
+        </div>
+        <p id="text-s" class="hide">When possible, levels may randomly be autoscrollers (or autoscrollers can be turned off).</p>
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="f">
+            <label class="custom-control-label" for="f">Random Fast Scrolling</label>
+        </div>
+        <p id="text-f" class="hide">When possible, levels that are autoscrollers may have the screen scroll at twice the speed.</p>
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="F">
+            <label class="custom-control-label" for="F">Always Fast Scrolling</label>
+        </div>
+        <p id="text-F" class="hide">When possible, levels that are autoscrollers will always have the screen scroll at twice the speed.</p>
+        <h4>Enhancements</h4>
+        <p>Various effects that alter different aspects of the game.</p>
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="m">
+            <label class="custom-control-label" for="m">Randomize Music</label>
+        </div>
+        <p id="text-m" class="hide">Music on the file select screen, the overworld, in each zone, and in each level is randomized.</p>
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="M">
+            <label class="custom-control-label" for="M">Random Hurry-Up Music</label>
+        </div>
+        <p id="text-M" class="hide">Music in levels may randomly play as if under 100 seconds remain on the timer.</p>
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="h">
+            <label class="custom-control-label" for="h">Randomize Boss Health</label>
+        </div>
+        <p id="text-h" class="hide">Each boss will have a random amount of health within a range; the 3 Pigs and the 3 phases of Wario are set individually from one another.</p>
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="o">
+            <label class="custom-control-label" for="o">One-Hit Knockout (OHKO)</label>
+        </div>
+        <p id="text-o" class="hide">Players start with zero extra lives, can not soft reset or start+select out of levels, all stars and hearts have been removed from levels, and gambling costs 999 coins.</p>
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="dx">
+            <label class="custom-control-label" for="dx">Apply DX Patch</label>
+        </div>
+        <p id="text-dx" class="hide">Patch the ROM with the DX color hack that also reduces lag; saves the ROM as a .gbc and is not playable on a Super Game Boy; <a href="https://www.romhacking.net/hacks/3784/" target="_blank">more information</a>.</p>
+        </div>
+    </div>
+    <div class="card text-white bg-secondary mb-3 mx-auto">
+        <div class="card-header"><h3 class="card-title">Input Seed</h3></div>
+        <div class="card-body">
+        <p>You may specify a seed for the random generator, or one will be created for you. Seeds should be 8-character strings in hexadecimal format (containing only numbers 0-9 and letters A-F).</p>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Seed:</span>
+            </div>
+            <input type="text" class="form-control" id="seedNumber" maxlength="8" aria-label="Seed" aria-describedby="basic-addon1">
+        </div>
+        </div>
+    </div>
+    <div class="card text-white bg-secondary mb-3 mx-auto">
+        <div class="card-header"><h3 class="card-title">Generate ROM</h3></div>
+        <div class="card-body">
+        <p>Provide a ROM of Super Mario Land 2: 6 Golden Coins. Both v1.0 and v1.2 ROMs are accepted. Once a valid ROM is uploaded, you will be able to apply your settings to the uploaded ROM.</p>
+        <div class="input-group">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="romUpload" accept=".gb, .gbc">
+                <label id="romUploadLabel" class="custom-file-label" for="romUpload">Choose ROM</label>
+            </div>
+            <div class="input-group-append">
+                <button class="btn btn-outline-light" type="button" id="randomizeROM" disabled>Generate ROM</button>
+            </div>
+        </div>
+        </div>
+        <div id="linkFooter" class="card-footer" style="display: none;">
+        <p>Share these settings with other people using the following link:</p>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" id="shareLink" aria-label="Share Link" aria-describedby="basic-addon1" readonly>
+            <div class="input-group-append">
+                <button class="btn btn-light" id="copyLink" type="button">Copy to Clipboard</button>
+            </div>
+        </div>
+        </div>
+    </div>
     
-$("#swapExits").on('selectmenuchange', function() {
-	if (this.value == "allExits") {
-		$("#allExitsNote").removeClass('hidden');
-	} else {
-		$("#allExitsNote").addClass('hidden');
-	}
-});
-
-$("#flags").change(function() {
-	var ftext = $("#flags").val().toUpperCase();
-	if (ftext.length == 4 && ("0000" + parseInt(ftext, 16).toString(16).toUpperCase()).substr(-4) === ftext) {
-		checkboxes();
-	}
-});
-
-$("#romVersion").click(function() {
-	if ($("#romVersion").hasClass('clickable')) {
-		var url = $("#romVersion").text();
-		copy(url);
-	}
-});
-
-$(document).ready(function() {
-	var url = new URL(window.location.href);
-	if (url.searchParams.has("s") && url.searchParams.has("f")) {
-		var seed = url.searchParams.get("s").toUpperCase();
-		var flags = url.searchParams.get("f").toUpperCase();
-		if (seed.length == 8 && ("000" + parseInt(seed, 16).toString(16).toUpperCase()).substr(-8) === seed) {
-			document.getElementById("seed").value = seed;
-		}
-		if (flags.length == 4 && ("0000" + parseInt(flags, 16).toString(16).toUpperCase()).substr(-4) === flags) {
-			document.getElementById("flags").value = flags;
-			checkboxes();
-		}
-	}
-	if (url.searchParams.has("log")) {
-		doLog = true;
-	}
-});
-
-</script>
+    <script src="https://fastcdn.org/FileSaver.js/1.1.20151003/FileSaver.min.js"></script>
+    <script src="js/interface.js"></script>
+    <script src="js/rom-patcher.js"></script>
+    <script src="js/randomizer.js"></script>
+    <script src="js/randomizer.overworld.js"></script>
+    <script src="js/randomizer.sprites.js"></script>
+    <script src="js/randomizer.movement.js"></script>
+    <script src="js/randomizer.enhancements.js"></script>
+    <script src="js/randomizer.text.js"></script>
 </body>
 </html>
