@@ -13,6 +13,8 @@ function randomizeLevels(rom) {
     normalOffsets.forEach((offset, index) => { rom[offset] = normalBytes[index] });
     shuffle(secretBytes);
     secretOffsets.forEach((offset, index) => { rom[offset] = secretBytes[index] });
+    //ensure level 11 on overworld is always same level
+    rom[0x3C232] = rom[0x3C21D];
     shuffle(bossSetTwo);
     for (let i = 0; i < bossSetOne.length; i++) {
         rom[bossSetOne[i][0]] = bossSetTwo[i][0];
