@@ -59,7 +59,7 @@ function randomizeScrolling(rom) {
         else if (rom[offset] == 0x01 && rng.nextFloat() < 0.25) rom[offset] = 0x00;
     });
     //if level 12 is scrolling, swap midway bell for money bag
-    if (rom[0x1F83 + v] = 0x01) { let bag = sprite.insert(0xE7A6, 0xE7A7, 0x1F); sprite.copy(bag, rom, 0xE7A6); }
+    if (rom[0x1F83 + v] == 0x01) { let bag = sprite.insert(0xE7A6, 0xE7A7, 0x1F); sprite.copy(bag, rom, 0xE7A6); }
 }
 
 function fastScrolling(rom) {
