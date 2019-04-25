@@ -6,8 +6,9 @@ function randomizeGravity(rom) {
                 //no changing levels 07 and 15
                 if (i != 0x1F98 + v && i != 0x1FA6 + v) {
                     if (rng.nextFloat() < 0.05) rom[i] = 0x01;
-                //no moon for level 08
-                } else if (rng.nextFloat() < 0.1 && i != 0x1F99 + v) rom[i] = 0x08;
+                    //no moon for level 08
+                    else if (rng.nextFloat() < 0.1 && i != 0x1F99 + v) rom[i] = 0x08;
+                }
                 break;
             case 0x01:
                 if (rng.nextFloat() < 0.1) rom[i] = 0x00;
