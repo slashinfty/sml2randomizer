@@ -27,6 +27,13 @@ $('input:checkbox').change(function() {
             if ($('#f').is(':checked')) $('#text-f').toggleClass('hide');
             $('#f').prop('checked', false);
             break;
+		case '0':
+			if (!$('#l').is(':checked')) $('#text-l').toggleClass('hide');
+			$('#l').prop('checked', true);
+			break;
+		case 'l':
+			if ($('#0').is(':checked')) $('#text-0').toggleClass('hide');
+			$('#0').prop('checked', false);
     }
 });
 
@@ -66,10 +73,11 @@ var cleanFlags = flagSubmit => {
     let flagArray = flagSubmit.split('+');
     let flags = flagArray[0];
     //strip out extraneous characters
-    flags = flags.replace(/[^lybDdceupBgixXsfFmMho+]/g, '');
+    flags = flags.replace(/[^l0bDdceupBgixXsfFmMho+]/g, '');
     //strip out duplicate characters
     flags = flags.split('').filter((x, n, s) => s.indexOf(x) == n).join('');
     //disallow and strip out one-of settings
+	if (flags.includes('0') && !flags.includes('l')) flags = 'l' + flags;
     if (flags.includes('D') && flags.includes('d')) flags = flags.replace(/[dD]/g, '');
     if (flags.includes('x') && flags.includes('X')) flags = flags.replace(/[xX]/g, '');
     if (flags.includes('f') && flags.includes('F')) flags = flags.replace(/[fF]/g, '');
@@ -80,7 +88,7 @@ var cleanFlags = flagSubmit => {
 
 //turning on checkboxes based on flags
 function setFlags(flags) {
-    let flagSet = ['l', 'y', 'b', 'D', 'd', 'c', 'e', 'u', 'p', 'B', 'g', 'i', 'x', 'X', 's', 'f', 'F', 'm', 'M', 'h', 'o'], patchSet = ['dx'];
+    let flagSet = ['l', '0', 'b', 'D', 'd', 'c', 'e', 'u', 'p', 'B', 'g', 'i', 'x', 'X', 's', 'f', 'F', 'm', 'M', 'h', 'o'], patchSet = ['dx'];
     let flagArray = flags.split('+');
     flagSet.forEach(letter => { 
         if (flagArray[0].includes(letter)) {
@@ -134,7 +142,7 @@ $('#copyLink').click(function() {
 var settings = () => {
     let flags = '';
     if ($('#l').is(':checked')) { doLevels = true; flags += 'l'; }
-	if ($('#y').is(':checked')) { doIncludeDuals = true; flags += 'y'; }
+	if ($('#y').is(':checked')) { doIncludeDuals = true; flags += '0'; }
     if ($('#b').is(':checked')) { doBosses = true; flags += 'b'; }
     if ($('#D').is(':checked')) { doAllDuals = true; flags += 'D'; }
     if ($('#d').is(':checked')) { doRandomDuals = true; flags += 'd'; }
