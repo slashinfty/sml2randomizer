@@ -66,7 +66,7 @@ var cleanFlags = flagSubmit => {
     let flagArray = flagSubmit.split('+');
     let flags = flagArray[0];
     //strip out extraneous characters
-    flags = flags.replace(/[^lbDdceupBgixXsfFmMho+]/g, '');
+    flags = flags.replace(/[^lybDdceupBgixXsfFmMho+]/g, '');
     //strip out duplicate characters
     flags = flags.split('').filter((x, n, s) => s.indexOf(x) == n).join('');
     //disallow and strip out one-of settings
@@ -74,12 +74,13 @@ var cleanFlags = flagSubmit => {
     if (flags.includes('x') && flags.includes('X')) flags = flags.replace(/[xX]/g, '');
     if (flags.includes('f') && flags.includes('F')) flags = flags.replace(/[fF]/g, '');
     flags = flagArray.length > 1 ? flags + '+' + flagArray[1] : flags; //expand later
+	if (flags != flagSubmit) $('#flagsFooter').show();
     return flags;
 }
 
 //turning on checkboxes based on flags
 function setFlags(flags) {
-    let flagSet = ['l', 'b', 'D', 'd', 'c', 'e', 'u', 'p', 'B', 'g', 'i', 'x', 'X', 's', 'f', 'F', 'm', 'M', 'h', 'o'], patchSet = ['dx'];
+    let flagSet = ['l', 'y', 'b', 'D', 'd', 'c', 'e', 'u', 'p', 'B', 'g', 'i', 'x', 'X', 's', 'f', 'F', 'm', 'M', 'h', 'o'], patchSet = ['dx'];
     let flagArray = flags.split('+');
     flagSet.forEach(letter => { 
         if (flagArray[0].includes(letter)) {
@@ -133,6 +134,7 @@ $('#copyLink').click(function() {
 var settings = () => {
     let flags = '';
     if ($('#l').is(':checked')) { doLevels = true; flags += 'l'; }
+	if ($('#y').is(':checked')) { doIncludeDuals = true; flags += 'y'; }
     if ($('#b').is(':checked')) { doBosses = true; flags += 'b'; }
     if ($('#D').is(':checked')) { doAllDuals = true; flags += 'D'; }
     if ($('#d').is(':checked')) { doRandomDuals = true; flags += 'd'; }

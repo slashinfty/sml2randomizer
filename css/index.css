@@ -33,3 +33,20 @@ h4 {
 .hide {
     display: none;
 }
+
+.textWarning {
+	color: red;
+	font-weight: bold;
+}
+
+.textExperiment {
+	color: greenyellow;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+.textNew {
+	color: aqua;
+	font-weight: bold;
+	text-transform: uppercase;
+}

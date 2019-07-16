@@ -7,12 +7,17 @@ function randomizeLevels(rom) {
     let bossSetOne = [[0x3C238, 0x05], [0x3C243, 0x09], [0x3C24D, 0x0E], [0x3C255, 0x11], [0x3C261, 0x17], [0x3C26B, 0x1D]];
     //level byte and zone clear offset
     let bossSetTwo = [[0x05, 0x304F6], [0x09, 0x304FA], [0x17, 0x30508], [0x13, 0x30504], [0x10, 0x30501], [0x0D, 0x304FE]];
-    shuffle(normalBytes);
+	if (doIncludeDuals) {
+		secretBytes.forEach(level => { normalBytes.push(level) });
+		secretOffsets.forEach(level => { normalOffsets.push(level) });
+	} else {
+		shuffle(secretBytes);
+    	secretOffsets.forEach((offset, index) => { rom[offset] = secretBytes[index] });
+	}
+	shuffle(normalBytes);
     //prevents 0x1A as Mushroom House
     while (normalBytes[0] == 0x1A) { shuffle(normalBytes) }
     normalOffsets.forEach((offset, index) => { rom[offset] = normalBytes[index] });
-    shuffle(secretBytes);
-    secretOffsets.forEach((offset, index) => { rom[offset] = secretBytes[index] });
     //ensure level 11 on overworld is always same level
     rom[0x3C232] = rom[0x3C21D];
     shuffle(bossSetTwo);
