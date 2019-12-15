@@ -20,6 +20,11 @@ function randomFastMusic(rom) {
     }
 }
 
+function disableSound(rom) {
+    if (doDisableMusic) rom[0x10047] = 0xAF;
+    if (doDisableSoundFX) rom[0x100E1] = 0xAF;
+}
+
 function randomizeBossHealth(rom) {
     let healthSetOne = [0x8FBB, 0x8FA9, 0x8E58]; //pigs
     let healthSetTwo = [0x8E52, 0x8E5B, 0x8E61]; //bird, octopus, rat

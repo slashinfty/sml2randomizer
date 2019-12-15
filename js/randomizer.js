@@ -1,5 +1,5 @@
 //list of settings
-var doPatchDX, doLevels, doIncludeDuals, doBosses, doAllDuals, doRandomDuals, doGambling, doEnemies, doPowerups, doPlatforms, doBonus, doGravity, doIce, doRandomLuigi, doAllLuigi, doScrolling, doRandomFast, doAllFast, doMusic, doFastMusic, doBossHP, doOHKO;
+var doPatchDX, doLevels, doIncludeDuals, doBosses, doAllDuals, doRandomDuals, doGambling, doEnemies, doPowerups, doPlatforms, doBonus, doGravity, doIce, doRandomLuigi, doAllLuigi, doScrolling, doRandomFast, doAllFast, doMusic, doFastMusic, doDisableMusic, doDisableSoundFX, doBossHP, doOHKO;
 
 //list of patches
 var base1_0patch = 'patches/basepatch_v10.ips';
@@ -173,6 +173,7 @@ async function doRandomize(romBuffer) {
     if (doAllFast || doRandomFast) fastScrolling(rom);
     if (doMusic) randomizeMusic(rom);
     if (doFastMusic) randomFastMusic(rom);
+    if (doDisableMusic || doDisableSoundFX) disableSound(rom);
     if (doBossHP) randomizeBossHealth(rom);
     if (doOHKO) oneHitKnockOut(rom);  
     let seed = document.getElementById('seedNumber').value;

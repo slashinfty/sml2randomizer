@@ -27,13 +27,24 @@ $('input:checkbox').change(function() {
             if ($('#f').is(':checked')) $('#text-f').toggleClass('hide');
             $('#f').prop('checked', false);
             break;
-		case 'w':
-			if (!$('#l').is(':checked')) $('#text-l').toggleClass('hide');
-			$('#l').prop('checked', true);
-			break;
-		case 'l':
-			if ($('#w').is(':checked')) $('#text-w').toggleClass('hide');
-			$('#w').prop('checked', false);
+        case 'w':
+            if (!$('#l').is(':checked')) $('#text-l').toggleClass('hide');
+            $('#l').prop('checked', true);
+            break;
+        case 'l':
+            if ($('#w').is(':checked')) $('#text-w').toggleClass('hide');
+            $('#w').prop('checked', false);
+            break;
+        case 'Z':
+            if ($('#M').is(':checked')) $('#text-M').toggleClass('hide');
+            if ($('#m').is(':checked')) $('#text-m').toggleClass('hide');
+            $('#M').prop('checked', false);
+            $('#m').prop('checked', false);
+            break;
+        case 'M': case'm':
+            if ($('#Z').is(':checked')) $('#text-Z').toggleClass('hide');
+            $('#Z').prop('checked', false);
+            break;
     }
 });
 
@@ -77,10 +88,11 @@ var cleanFlags = flagSubmit => {
     //strip out duplicate characters
     flags = flags.split('').filter((x, n, s) => s.indexOf(x) == n).join('');
     //disallow and strip out one-of settings
-	if (flags.includes('w') && !flags.includes('l')) flags = 'l' + flags;
+    if (flags.includes('w') && !flags.includes('l')) flags = 'l' + flags;
     if (flags.includes('D') && flags.includes('d')) flags = flags.replace(/[dD]/g, '');
     if (flags.includes('x') && flags.includes('X')) flags = flags.replace(/[xX]/g, '');
     if (flags.includes('f') && flags.includes('F')) flags = flags.replace(/[fF]/g, '');
+    if (flags.includes('Z') && (flags.includes('M') || flags.includes('m'))) flags = flags.replace(/[ZMm]/g, '');
     flags = flagArray.length > 1 ? flags + '+' + flagArray[1] : flags; //expand later
 	if (flags != flagSubmit) $('#flagsFooter').show();
     return flags;
@@ -88,7 +100,7 @@ var cleanFlags = flagSubmit => {
 
 //turning on checkboxes based on flags
 function setFlags(flags) {
-    let flagSet = ['l', 'w', 'b', 'D', 'd', 'c', 'e', 'u', 'p', 'B', 'g', 'i', 'x', 'X', 's', 'f', 'F', 'm', 'M', 'h', 'o'], patchSet = ['dx'];
+    let flagSet = ['l', 'w', 'b', 'D', 'd', 'c', 'e', 'u', 'p', 'B', 'g', 'i', 'x', 'X', 's', 'f', 'F', 'm', 'M', 'Z', 'z', 'h', 'o'], patchSet = ['dx'];
     let flagArray = flags.split('+');
     flagSet.forEach(letter => { 
         if (flagArray[0].includes(letter)) {
@@ -142,7 +154,7 @@ $('#copyLink').click(function() {
 var settings = () => {
     let flags = '';
     if ($('#l').is(':checked')) { doLevels = true; flags += 'l'; }
-	if ($('#w').is(':checked')) { doIncludeDuals = true; flags += 'w'; }
+    if ($('#w').is(':checked')) { doIncludeDuals = true; flags += 'w'; }
     if ($('#b').is(':checked')) { doBosses = true; flags += 'b'; }
     if ($('#D').is(':checked')) { doAllDuals = true; flags += 'D'; }
     if ($('#d').is(':checked')) { doRandomDuals = true; flags += 'd'; }
@@ -160,6 +172,8 @@ var settings = () => {
     if ($('#F').is(':checked')) { doAllFast = true; flags += 'F'; }
     if ($('#m').is(':checked')) { doMusic = true; flags += 'm'; }
     if ($('#M').is(':checked')) { doFastMusic = true; flags += 'M'; }
+    if ($('#Z').is(':checked')) { doDisableMusic = true; flags += 'Z'; }
+    if ($('#z').is(':checked')) { doDisableSoundFX = true; flags += 'z'; }
     if ($('#h').is(':checked')) { doBossHP = true; flags += 'h'; }
     if ($('#o').is(':checked')) { doOHKO = true; flags += 'o'; }
     if ($('#dx').is(':checked')) { doPatchDX = true; flags += '+dx'; }
