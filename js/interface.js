@@ -48,7 +48,7 @@ $('input:checkbox').change(function() {
     }
 });
 
-////read seed and flags from the URL in the format /?s=SEED&f=FLAGS
+//read seed and flags from the URL in the format /?s=SEED&f=FLAGS
 $(document).ready(function() {
     let url = new URL(window.location.href);
     if (url.searchParams.has('s') && url.searchParams.has('f')) {
@@ -60,6 +60,10 @@ $(document).ready(function() {
         let flags = cleanFlags(getFlags.replace(' ', '+'));
         document.getElementById('flagSet').value = flags;
         setFlags(flags);
+        if (url.searchParams.has('dl')) {
+          document.getElementById('romUpload').click();
+          document.getElementById('randomizeROM').click();
+        }
     }
 });
 
