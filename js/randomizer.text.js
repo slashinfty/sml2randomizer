@@ -150,7 +150,7 @@ function credits(rom) {
     const sentences = {
         "sentence01": {line: "  SML2 RANDO STAFF  ", offsets: [0x6974D]},
         "sentence02": {line: "      CREATOR       ", offsets: [0x69763]},
-        "sentence03": {line: "     SLASHINFTY     ", offsets: [0x69778]},
+        "sentence03": {line: "    DADINFINITUM    ", offsets: [0x69778]},
         "sentence04": {line: "      ROMHACKER     ", offsets: [0x6978D, 0x697B7, 0x697E1]},
         "sentence05": {line: "       TORUZZ       ", offsets: [0x697A2]},
         "sentence06": {line: "     RACCOON SAM    ", offsets: [0x697CC]},
