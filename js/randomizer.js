@@ -177,6 +177,7 @@ async function doRandomize(romBuffer) {
     if (doBossHP) randomizeBossHealth(rom);
     if (doOHKO) oneHitKnockOut(rom);  
     let seed = document.getElementById('seedNumber').value;
+    window.localStorage.setItem("settings", document.getElementById('flagSet').value);
     let flags = document.getElementById('flagSet').value === '' ? 'vanilla' : document.getElementById('flagSet').value;
     fileSelectScreen(rom, seed, flags);
     credits(rom);

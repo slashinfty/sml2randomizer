@@ -4,6 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SML2 Randomizer</title>
+    <meta name="author" content="Matt Braddock">
+    <meta name="description" content="A randomizer for Super Mario Land 2: 6 Golden Coins">
+    <meta name="keywords" content="randomizer, gameboy, game boy, sml2, super mario land 2">
+    
     <link href="css/index.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="images/favicon.png">
@@ -87,6 +91,12 @@
             </div>
         </div>
         <p>If you do not have a custom flag string, you may continue and customize your settings below.</p>
+        <div id="loadFooter" class="card-footer" style="display: none;">
+        <p>Welcome back! Would you like to load your last used settings?</p>
+        <div class="d-flex justify-content-center">
+        <button class="btn btn-light" id="loadSavedSettings" type="button">Load Settings</button>&nbsp;<button class="btn btn-light" id="deleteSavedSettings" type="button">Clear Saved Settings</button>
+        </div>
+        </div>
         </div>
 		<div id="flagsFooter" class="card-footer" style="display: none;">
         <p class="textWarning">Flags have been updated to reflect only valid options.</p>
@@ -95,7 +105,7 @@
     <div class="card text-white bg-secondary mb-3 mx-auto">
         <div class="card-header"><h3 class="card-title">Choose Settings</h3></div>
         <div class="card-body">
-        <p>Review and customize your settings below.</p>
+        <p>Review and customize your settings below. Enabling an option will also display text explaining what it does.</p>
         <div class="d-flex justify-content-center"><button class="btn btn-light" id="clearFlags" type="button">Clear All Settings</button></div>
         <p></p>
         <h4>Overworld</h4>
@@ -215,7 +225,7 @@
             <input type="checkbox" class="custom-control-input" id="h">
             <label class="custom-control-label" for="h">Randomize Boss Health</label>
         </div>
-        <p id="text-h" class="hide">Each boss will have a random amount of health within a range; the 3 Pigs and the 3 phases of Wario are set individually from one another.</p>
+        <p id="text-h" class="hide">Each boss will have a random amount of health within a range; each of the 3 Pigs and the 3 phases of Wario are set individually from one another.</p>
         <div class="custom-control custom-checkbox">
             <input type="checkbox" class="custom-control-input" id="o">
             <label class="custom-control-label" for="o">One-Hit Knockout (OHKO)</label>

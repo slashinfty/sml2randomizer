@@ -49,7 +49,8 @@ $('input:checkbox').change(function() {
 });
 
 //read seed and flags from the URL in the format /?s=SEED&f=FLAGS
-$(document).ready(function() {
+//check localStorage for previously saved settings
+$(document).ready(() => {
     let url = new URL(window.location.href);
     if (url.searchParams.has('s') && url.searchParams.has('f')) {
         let seed = url.searchParams.get('s');
@@ -61,6 +62,23 @@ $(document).ready(function() {
         document.getElementById('flagSet').value = flags;
         setFlags(flags);
     }
+    let checkStorage = window.localStorage.getItem("settings");
+    if (checkStorage != null && checkStorage != undefined && checkStorage != '') $('#loadFooter').show();
+});
+
+//load saved settings
+$('#loadSavedSettings').click(function() {
+    let getFlags = window.localStorage.getItem("settings");
+    let flags = cleanFlags(getFlags.replace(' ', '+'));
+    document.getElementById('flagSet').value = flags;
+    setFlags(flags);
+    $('#loadFooter').hide();
+});
+
+//clear saved settings
+$('#deleteSavedSettings').click(function() {
+    window.localStorage.removeItem("settings");
+    $('#loadFooter').hide();
 });
 
 //clear settings button
@@ -81,6 +99,7 @@ $('#applyFlags').click(function() {
 
 //reduces flags to minimal length
 var cleanFlags = flagSubmit => {
+    $('#flagsFooter').hide();
     let flagArray = flagSubmit.split('+');
     let flags = flagArray[0];
     //strip out extraneous characters
