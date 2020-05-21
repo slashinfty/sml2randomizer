@@ -1,7 +1,7 @@
 $('#saveStateRom').click(function() {
     let file = document.getElementById('romUpload').files[0];
     let reader = new FileReader();
-    reader.onloadend = () => doRandomize(reader.result);
+    reader.onloadend = () => saveStateGenerator(reader.result);
     reader.readAsArrayBuffer(file);
 });
 
