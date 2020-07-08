@@ -116,16 +116,16 @@ function verification(buffer) {
         if (rom[0x148] == 0x05) {
             print = "Use the Apply DX option with an original SML2 ROM";
             toggleButton('#randomizeROM', true);
-            toggleButton('#saveStateRom', true);
+            toggleButton('#practiceRom', true);
         } else {
             const version = rom[0x14C] == 0x00 ? 'v1.0' : 'v1.2';
             print = "ROM: MARIOLAND2 - " + version;
             toggleButton('#randomizeROM', false);
-            toggleButton('#saveStateRom', false);
+            toggleButton('#practiceRom', false);
         }
     } else {
         toggleButton('#randomizeROM', true);
-	toggleButton('#saveStateRom', true);
+	toggleButton('#PracticeRom', true);
     }
     $('#romUploadLabel').text(print);
 }

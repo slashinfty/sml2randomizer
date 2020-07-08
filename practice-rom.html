@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SML2 Save State Generator</title>
+    <title>SML2 Practice ROM Generator</title>
     <meta name="author" content="Matt Braddock">
     <meta name="description" content="A randomizer for Super Mario Land 2: 6 Golden Coins">
     <meta name="keywords" content="randomizer, gameboy, game boy, sml2, super mario land 2">
@@ -29,29 +29,31 @@
                 <a class="nav-item nav-link" href="changelog.html">Changelog</a>
                 <a class="nav-item nav-link" href="https://github.com/slashinfty/sml2randomizer">Source Code</a>
                 <a class="nav-item nav-link" href="https://github.com/slashinfty/sml2randomizer/issues">Report an Issue</a>
-		<a class="nav-item nav-link" href="save-states.html">Save States</a>
+                <a class="nav-item nav-link" href="practice-rom.html">Practice ROM</a>
             </div>                
         </div>
     </nav>
     <div class="container" style="padding-top: 30px">
     <div class="card text-white bg-secondary mb-3 mx-auto">
-        <div class="card-header"><h3 class="card-title">Super Mario Land 2 Save State Generator</h3></div>
+        <div class="card-header"><h3 class="card-title">Super Mario Land 2 Practice ROM Generator</h3></div>
         <div class="card-body">
-        <p>Create save states for either v1.0 or v1.2. Saving is done by pressing Down and Start, or Select and A. Loading is done by pressing Up and Start, or Select and B.</p>
-	<p>This tool is available thanks to <a href="https://github.com/mattcurrie/gb-save-states" target="blank">Matt Currie's gb-save-states</a></p>
+        <p>Create a practice ROM with save states for either v1.0 or v1.2.</p>
+        <p>After the title screen, a menu is available where you can pick a level and power-up. The ROM remembers your last choice through a soft reset. If you are using a v1.0 ROM, you can press select to have the pipe glitch active.</p>
+        <p>Saving is done by pressing Down and Start, or Select and A. Loading is done by pressing Up and Start, or Select and B.</p>
+        <p>This tool is available thanks to <a href="https://github.com/mattcurrie/gb-save-states" target="blank">Matt Currie's gb-save-states</a> and lightbulbsun's work in creating the practice menu, v1.0 save states, and IPS patches.</p>
         </div>
     </div>
     <div class="card text-white bg-secondary mb-3 mx-auto">
         <div class="card-header"><h3 class="card-title">Generate ROM</h3></div>
         <div class="card-body">
-        <p>Provide a ROM of Super Mario Land 2: 6 Golden Coins. Both v1.0 and v1.2 ROMs are accepted. Once a valid ROM is uploaded, you will be able to apply the save states.</p>
+        <p>Provide a ROM of Super Mario Land 2: 6 Golden Coins. Both v1.0 and v1.2 ROMs are accepted. Once a valid ROM is uploaded, you will be able to apply the patches.</p>
         <div class="input-group">
             <div class="custom-file">
                 <input type="file" class="custom-file-input" id="romUpload" accept=".gb, .gbc">
                 <label id="romUploadLabel" class="custom-file-label" for="romUpload">Choose ROM</label>
             </div>
             <div class="input-group-append">
-                <button class="btn btn-outline-light" type="button" id="saveStateRom" disabled>Generate ROM</button>
+                <button class="btn btn-outline-light" type="button" id="practiceRom" disabled>Generate ROM</button>
             </div>
         </div>
         </div>
@@ -61,11 +63,6 @@
     <script src="js/interface.js"></script>
     <script src="js/rom-patcher.js"></script>
     <script src="js/randomizer.js"></script>
-    <script src="js/randomizer.overworld.js"></script>
-    <script src="js/randomizer.sprites.js"></script>
-    <script src="js/randomizer.movement.js"></script>
-    <script src="js/randomizer.enhancements.js"></script>
-    <script src="js/randomizer.text.js"></script>
-    <script src="js/save-states.js"></script>
+    <script src="js/practice-rom.js"></script>
 </body>
 </html>
