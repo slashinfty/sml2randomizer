@@ -172,30 +172,30 @@ $('#copyLink').click(function() {
 //creates flags based on checkboxes and determines which settings to make true
 var settings = () => {
     let flags = '';
-    if ($('#l').is(':checked')) { doLevels = true; flags += 'l'; }
-    if ($('#w').is(':checked')) { doIncludeDuals = true; flags += 'w'; }
-    if ($('#b').is(':checked')) { doBosses = true; flags += 'b'; }
-    if ($('#D').is(':checked')) { doAllDuals = true; flags += 'D'; }
-    if ($('#d').is(':checked')) { doRandomDuals = true; flags += 'd'; }
-    if ($('#c').is(':checked')) { doGambling = true; flags += 'c'; }
-    if ($('#e').is(':checked')) { doEnemies = true; flags += 'e'; }
-    if ($('#u').is(':checked')) { doPowerups = true; flags += 'u'; }
-    if ($('#p').is(':checked')) { doPlatforms = true; flags += 'p'; }
-    if ($('#B').is(':checked')) { doBonus = true; flags += 'B'; }
-    if ($('#g').is(':checked')) { doGravity = true; flags += 'g'; }
-    if ($('#i').is(':checked')) { doIce = true; flags += 'i'; }
-    if ($('#x').is(':checked')) { doRandomLuigi = true; flags += 'x'; }
-    if ($('#X').is(':checked')) { doAllLuigi = true; flags += 'X'; }
-    if ($('#s').is(':checked')) { doScrolling = true; flags += 's'; }
-    if ($('#f').is(':checked')) { doRandomFast = true; flags += 'f'; }
-    if ($('#F').is(':checked')) { doAllFast = true; flags += 'F'; }
-    if ($('#m').is(':checked')) { doMusic = true; flags += 'm'; }
-    if ($('#M').is(':checked')) { doFastMusic = true; flags += 'M'; }
-    if ($('#Z').is(':checked')) { doDisableMusic = true; flags += 'Z'; }
-    if ($('#z').is(':checked')) { doDisableSoundFX = true; flags += 'z'; }
-    if ($('#h').is(':checked')) { doBossHP = true; flags += 'h'; }
-    if ($('#o').is(':checked')) { doOHKO = true; flags += 'o'; }
-    if ($('#dx').is(':checked')) { doPatchDX = true; flags += '+dx'; }
+    if ($('#l').is(':checked')) { doLevels = true; flags += 'l'; } else { doLevels = false; }
+    if ($('#w').is(':checked')) { doIncludeDuals = true; flags += 'w'; } else { doIncludeDuals = false; }
+    if ($('#b').is(':checked')) { doBosses = true; flags += 'b'; } else { doBosses = false; }
+    if ($('#D').is(':checked')) { doAllDuals = true; flags += 'D'; } else { doAllDuals = false; }
+    if ($('#d').is(':checked')) { doRandomDuals = true; flags += 'd'; } else { doRandomDuals = false; }
+    if ($('#c').is(':checked')) { doGambling = true; flags += 'c'; } else { doGambling = false; }
+    if ($('#e').is(':checked')) { doEnemies = true; flags += 'e'; } else { doEnemies = false; }
+    if ($('#u').is(':checked')) { doPowerups = true; flags += 'u'; } else { doPowerups = false; }
+    if ($('#p').is(':checked')) { doPlatforms = true; flags += 'p'; } else { doPlatforms = false; }
+    if ($('#B').is(':checked')) { doBonus = true; flags += 'B'; } else { doBonus = false; }
+    if ($('#g').is(':checked')) { doGravity = true; flags += 'g'; } else { doGravity = false; }
+    if ($('#i').is(':checked')) { doIce = true; flags += 'i'; } else { doIce = false; }
+    if ($('#x').is(':checked')) { doRandomLuigi = true; flags += 'x'; } else { doRandomLuigi = false; }
+    if ($('#X').is(':checked')) { doAllLuigi = true; flags += 'X'; } else { doAllLuigi = false; }
+    if ($('#s').is(':checked')) { doScrolling = true; flags += 's'; } else { doScrolling = false; }
+    if ($('#f').is(':checked')) { doRandomFast = true; flags += 'f'; } else { doRandomFast = false; }
+    if ($('#F').is(':checked')) { doAllFast = true; flags += 'F'; } else { doAllFast = false; }
+    if ($('#m').is(':checked')) { doMusic = true; flags += 'm'; } else { doMusic = false; }
+    if ($('#M').is(':checked')) { doFastMusic = true; flags += 'M'; } else { doFastMusic = false; }
+    if ($('#Z').is(':checked')) { doDisableMusic = true; flags += 'Z'; } else { doDisableMusic = false; }
+    if ($('#z').is(':checked')) { doDisableSoundFX = true; flags += 'z'; } else { doDisableSoundFX = false; }
+    if ($('#h').is(':checked')) { doBossHP = true; flags += 'h'; } else { doBossHP = false; }
+    if ($('#o').is(':checked')) { doOHKO = true; flags += 'o'; } else { doOHKO = false; }
+    if ($('#dx').is(':checked')) { doPatchDX = true; flags += '+dx'; } else { doPatchDX = false; }
     return flags;
 }
 
