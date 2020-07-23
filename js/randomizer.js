@@ -186,6 +186,7 @@ async function doRandomize(romBuffer) {
     credits(rom);
     checksum(rom);
     let link = 'http://sml2r.download/?s=' + seed + '&f=' + flags;
+    document.getElementById('tracker-link').setAttribute('href', 'https://mattbraddock.com/sml2tracker/?s=' + seed + '&f=' + flags);
     showLink(link);
     let fileName = 'sml2r-' + seed + '-' + flags;
     let ext = rom[0x148] == 0x05 ? ".gbc" : ".gb";
