@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SML2 Bingo</title>
+    <meta name="author" content="Matt Braddock">
+    <meta name="description" content="Bingo card generator for Super Mario Land 2: 6 Golden Coins">
+    <meta name="keywords" content="randomizer, gameboy, game boy, sml2, super mario land 2">
+    
+    <link href="css/index.css" rel="stylesheet">
+    <link href="css/bingo.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><img src="images/FriendlyFinger.png" title="Friendly Finger"> SML2 Randomizer</a>
+        <div class="collapse navbar-collapse" id="navbar">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link" href="about.html">About</a>
+                <a class="nav-item nav-link" href="changelog.html">Changelog</a>
+                <a class="nav-item nav-link" href="https://github.com/slashinfty/sml2randomizer">Source Code</a>
+                <a class="nav-item nav-link" href="https://github.com/slashinfty/sml2randomizer/issues">Report an Issue</a>
+                <a class="nav-item nav-link" href="practice-rom.html">Practice ROM</a>
+            </div>                
+        </div>
+    </nav>
+    <div class="container" style="padding-top: 30px">
+        <div class="card text-white bg-secondary mb-3 mx-auto">
+            <div class="card-header"><h3 class="card-title">Super Mario Land 2 Bingo Card Generator</h3></div>
+            <div class="card-body">
+            <p>Create a bingo card filled with various goals to accomplish while defeating SML2.</p>
+            <p>Generate a random card, or use a seed to load the same bingo card as someone else (for racing).</p>
+            </div>
+        </div>
+        <div class="card text-white bg-secondary mb-3 mx-auto">
+            <div class="card-header"><h3 class="card-title">Generate card</h3></div>
+            <div class="card-body">
+                <p>You may specify a seed for the random generator, or one will be created for you. Seeds should be 8-character strings in hexadecimal format (containing only numbers 0-9 and letters A-F).</p>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <button class="btn btn-light" type="button" id="randomSeed">Random Seed</button>
+                    </div>
+                    <input type="text" class="form-control" id="seed" maxlength="8" aria-label="Seed" placeholder="Input Custom Seed Here" aria-describedby="basic-addon1">
+                    <div class="input-group-append">
+                        <button class="btn btn-light" type="button" id="loadSeed">Load Seed</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <table class="table table-bordered table-dark" id="bingo-card">
+                    <thead>
+                        <tr id="first-row">
+                            <th scope="col" id="row-header-column"></th>
+                            <th scope="col" class="content-column">Col 1</th>
+                            <th scope="col" class="content-column">Col 2</th>
+                            <th scope="col" class="content-column">Col 3</th>
+                            <th scope="col" class="content-column">Col 4</th>
+                            <th scope="col" class="content-column">Col 5</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Row 1</th>
+                            <td id="sq0" class="unchecked">This is a test</td>
+                            <td id="sq1" class="unchecked">This is a test</td>
+                            <td id="sq2" class="unchecked">This is a test</td>
+                            <td id="sq3" class="unchecked">This is a test</td>
+                            <td id="sq4" class="unchecked">This is a test</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Row 2</th>
+                            <td id="sq5" class="unchecked">This is a test</td>
+                            <td id="sq6" class="unchecked">This is a test</td>
+                            <td id="sq7" class="unchecked">This is a test</td>
+                            <td id="sq8" class="unchecked">This is a test</td>
+                            <td id="sq9" class="unchecked">This is a test</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Row 3</th>
+                            <td id="sq10" class="unchecked">This is a test</td>
+                            <td id="sq11" class="unchecked">This is a test</td>
+                            <td id="sq12" class="unchecked">This is a test</td>
+                            <td id="sq13" class="unchecked">This is a test</td>
+                            <td id="sq14" class="unchecked">This is a test</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Row 4</th>
+                            <td id="sq15" class="unchecked">This is a test</td>
+                            <td id="sq16" class="unchecked">This is a test</td>
+                            <td id="sq17" class="unchecked">This is a test</td>
+                            <td id="sq18" class="unchecked">This is a test</td>
+                            <td id="sq19" class="unchecked">This is a test</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Row 5</th>
+                            <td id="sq20" class="unchecked">This is a test</td>
+                            <td id="sq21" class="unchecked">This is a test</td>
+                            <td id="sq22" class="unchecked">This is a test</td>
+                            <td id="sq23" class="unchecked">This is a test</td>
+                            <td id="sq24" class="unchecked">This is a test</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/bingo.js"></script>
+</body>
+</html>
+        
