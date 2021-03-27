@@ -83,7 +83,7 @@ Raccoon Sam saved a forum post from 2005 that described how sprites worked, and 
 * Extracting `LMNOP` and converting it to hex will yield the x-position of the sprite on the screen, in 8-pixel increments.
 * Extracting `TUVWX` and converting it to hex will yield the y-position of the sprite on the screen, in 8-pixel increments.
 * Extracting both `ABCD` and `IJK`, concatenating and rearranging them into `DABCIJK` then converting it to hex will yield the sprite ID number.
-* The purpose and meaning of `QRS` is left as an exercise for the reader.
+* The purpose and meaning of `QRS` is ~~left as an exercise for the reader~~ to signify if the sprite appears in Easy Mode or not.
 
 I broke the sprites into four categories: enemies, obstacles, platforms, and power-ups. For names, I got as many as I could from the [Mario Wiki](http://www.mariowiki.com/Category:Super_Mario_Land_2:_6_Golden_Coins_Enemies).
 
