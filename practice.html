@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!--Meta-->
+    <meta charset="utf-8">
+    <title>SML2 Practice ROM</title>
+    <meta name="description" content="Super Mario Land 2 Practice ROM">
+    <meta name="author" content="Matt Braddock">
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
+
+    <!--Mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet"> 
+
+    <!--CSS-->
+    <link rel="stylesheet" href="https://unpkg.com/skeleton-css@2.0.4/css/skeleton.css" />
+    <link rel="stylesheet" href="https://unpkg.com/skeleton-css@2.0.4/css/normalize.css" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin-top: 3em;
+            margin-bottom: 5em;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        button:disabled, button:disabled:hover {
+            color: gray;
+            border: 1px solid #bbb;
+        }
+
+        a, a:visited, a:hover, a:active {
+            color: black;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .row {
+            margin-top: 1em;
+        }
+
+        .fakeBtn { /* C&P from skeleton.css */
+            display: inline-block;
+            height: 38px;
+            padding: 0 30px;
+            text-align: center;
+            font-weight: 400;
+            line-height: 38px;
+            letter-spacing: .1rem;
+            text-decoration: none;
+            white-space: nowrap;
+            background-color: transparent;
+            border-radius: 4px;
+            border: 1px solid #bbb;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+
+        .fakeBtn:hover {
+            color: #333;
+            border-color: #888;
+            outline: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Super Mario Land 2 Practice ROM</h2>
+        <div class="row">
+            <div class="one-half column">
+                <label class="fakeBtn">
+                    <input id="rom" type="file" accept=".gb" />
+                    Upload ROM
+                </label>
+            </div>
+            <div class="one-half column">
+                <span id="verify"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="u-full-width">
+                <p>After the title screen, a menu is available where you can pick a level and power-up. The ROM remembers your last choice through a soft reset. If you are using a v1.0 ROM, you can press select to have the pipe glitch active.</p>
+                <p>Saving is done by pressing Down and Start, or Select and A. Loading is done by pressing Up and Start, or Select and B.</p>
+                <p>This tool is available thanks to <a href="https://github.com/mattcurrie/gb-save-states" target="blank">Matt Currie's gb-save-states</a> and lightbulbsun's work in creating the practice menu, v1.0 save states, and IPS patches.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="u-full-width">
+                <button id="generate" onclick="generate()" disabled>Generate Practice ROM</button>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+    <script src="rom-patcher.js"></script>
+    <script>
+        document.getElementById('rom').addEventListener('change', () => {
+            const verify = buffer => {
+                const rom = new Uint8Array(buffer);
+                const count = [0x4D, 0x41, 0x52, 0x49, 0x4F, 0x4C, 0x41, 0x4E, 0x44, 0x32, 0x00]
+                .reduce((prev, curr, i) => rom[0x134 + i] === curr ? prev - 1 : prev, 11);
+                document.getElementById('verify').innerHTML = `ROM is ${count > 0 || rom[0x148 === 0x05] ? `<span class="bold">not</span>` : ''} valid. ${count === 0 && rom[0x148] !== 0x05 ? `<img src="images/FriendlyFinger.png" height="38"/>` : ''}`;
+                if (count > 0 || rom[0x148 === 0x05]) {
+                    document.getElementById('generate').disabled = true;
+                } else {
+                    document.getElementById('generate').disabled = false;
+                }
+            }
+            const file = document.getElementById('rom').files[0];
+            const reader = new FileReader();
+            reader.onloadend = () => verify(reader.result);
+            reader.readAsArrayBuffer(file);
+        });
+
+        const generate = () => {
+            const checksum = rom => {
+                let csum = 0;
+                let comp = 0;
+                for (let i = 0x00; i < 0x14E; i++) {
+                    csum += rom[i];
+                }
+                for (let j = 0x150, e = rom[0x148] == 0x05 ? 0xFFFFF : 0x7FFFF; j <= e; j++) {
+                    csum += rom[j];
+                }
+                rom[0x14E] = (csum >> 8) & 0xFF;
+                rom[0x14F] = csum & 0xFF;
+                for (let k = 0x134; k <= 0x14C; k++) {
+                    comp += rom[k];
+                }
+                comp += 25;
+                rom[0x14D] = 0 - (comp & 0xFF);
+            }
+            const patch = async buffer => {
+                let rom = new Uint8Array(buffer);
+                const version = rom[0x14C] === 0x00 ? '0' : '2';
+                const savePatch = await fetch(`patches/savestates_v1${version}.ips`);
+                const saveBuffer = await savePatch.arrayBuffer();
+                buffer = patchRom(buffer, saveBuffer);
+                const pracPatch = await fetch(`patches/practice_v1${version}.ips`);
+                const pracBuffer = await pracPatch.arrayBuffer();
+                buffer = patchRom(buffer, pracBuffer);
+                rom = new Uint8Array(buffer);
+                checksum(rom);
+                saveAs(new Blob([buffer], {type: 'octet/stream'}), 'sml2-practice.gb');
+            }
+            const file = document.getElementById('rom').files[0];
+            const reader = new FileReader();
+            reader.onloadend = () => patch(reader.result);
+            reader.readAsArrayBuffer(file);
+        }
+    </script>
+</body>
+</html>
