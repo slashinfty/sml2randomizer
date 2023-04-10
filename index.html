@@ -134,6 +134,11 @@
             </div>
         </div>
         <div class="row">
+            <div class="u-full-width">
+                <button id="getFlags" onclick="getFlags()">Get Flags From Settings</button>
+            </div>
+        </div>
+        <div class="row">
             <div class="one-half column">
                 <button id="randomize" onclick="randomize()" disabled>Randomize ROM</button>
             </div>
@@ -243,34 +248,39 @@
             }
         });
 
+        const generateFlags = () => {
+            let flags = 0;
+            if (document.getElementById('randomLevelLocations').checked)   flags = flags | 0b000000000000000000000001;
+            if (document.getElementById('includeDualLocations').checked)   flags = flags | 0b000000000000000000000010;
+            if (document.getElementById('randomBossLocations').checked)    flags = flags | 0b000000000000000000000100;
+            if (document.getElementById('randomBossHealth').checked)       flags = flags | 0b000000000000000000001000;
+            if (document.getElementById('randomSwapDualExits').checked)    flags = flags | 0b000000000000000000010000;
+            if (document.getElementById('swapAllDualExits').checked)       flags = flags | 0b000000000000000000100000;
+            if (document.getElementById('randomGamblingCosts').checked)    flags = flags | 0b000000000000000001000000;
+            if (document.getElementById('randomBonusGames').checked)       flags = flags | 0b000000000000000010000000;
+            if (document.getElementById('randomEnemies').checked)          flags = flags | 0b000000000000000100000000;
+            if (document.getElementById('randomPowerups').checked)         flags = flags | 0b000000000000001000000000;
+            if (document.getElementById('randomPlatforms').checked)        flags = flags | 0b000000000000010000000000;
+            if (document.getElementById('randomGravity').checked)          flags = flags | 0b000000000000100000000000;
+            if (document.getElementById('randomScrollingLevels').checked)  flags = flags | 0b000000000001000000000000;
+            if (document.getElementById('randomFastScrolling').checked)    flags = flags | 0b000000000010000000000000;
+            if (document.getElementById('allFastScrolling').checked)       flags = flags | 0b000000000100000000000000;
+            if (document.getElementById('includeIcePhysics').checked)      flags = flags | 0b000000001000000000000000;
+            if (document.getElementById('randomLuigiPhysics').checked)     flags = flags | 0b000000010000000000000000;
+            if (document.getElementById('allLuigiPhysics').checked)        flags = flags | 0b000000100000000000000000;
+            if (document.getElementById('randomMusic').checked)            flags = flags | 0b000001000000000000000000;
+            if (document.getElementById('randomFastMusic').checked)        flags = flags | 0b000010000000000000000000;
+            if (document.getElementById('disableMusic').checked)           flags = flags | 0b000100000000000000000000;
+            if (document.getElementById('disableSoundFX').checked)         flags = flags | 0b001000000000000000000000;
+            if (document.getElementById('patchDX').checked)                flags = flags | 0b010000000000000000000000;
+            return flags;
+        }
+
+        const getFlags = () => {
+            alert(`Flags: ${('000000' + generateFlags().toString(16)).slice(-6).toUpperCase()}`);
+        }
+
         const randomize = async () => {
-            const generateFlags = () => {
-                let flags = 0;
-                if (document.getElementById('randomLevelLocations').checked)   flags = flags | 0b000000000000000000000001;
-                if (document.getElementById('includeDualLocations').checked)   flags = flags | 0b000000000000000000000010;
-                if (document.getElementById('randomBossLocations').checked)    flags = flags | 0b000000000000000000000100;
-                if (document.getElementById('randomBossHealth').checked)       flags = flags | 0b000000000000000000001000;
-                if (document.getElementById('randomSwapDualExits').checked)    flags = flags | 0b000000000000000000010000;
-                if (document.getElementById('swapAllDualExits').checked)       flags = flags | 0b000000000000000000100000;
-                if (document.getElementById('randomGamblingCosts').checked)    flags = flags | 0b000000000000000001000000;
-                if (document.getElementById('randomBonusGames').checked)       flags = flags | 0b000000000000000010000000;
-                if (document.getElementById('randomEnemies').checked)          flags = flags | 0b000000000000000100000000;
-                if (document.getElementById('randomPowerups').checked)         flags = flags | 0b000000000000001000000000;
-                if (document.getElementById('randomPlatforms').checked)        flags = flags | 0b000000000000010000000000;
-                if (document.getElementById('randomGravity').checked)          flags = flags | 0b000000000000100000000000;
-                if (document.getElementById('randomScrollingLevels').checked)  flags = flags | 0b000000000001000000000000;
-                if (document.getElementById('randomFastScrolling').checked)    flags = flags | 0b000000000010000000000000;
-                if (document.getElementById('allFastScrolling').checked)       flags = flags | 0b000000000100000000000000;
-                if (document.getElementById('includeIcePhysics').checked)      flags = flags | 0b000000001000000000000000;
-                if (document.getElementById('randomLuigiPhysics').checked)     flags = flags | 0b000000010000000000000000;
-                if (document.getElementById('allLuigiPhysics').checked)        flags = flags | 0b000000100000000000000000;
-                if (document.getElementById('randomMusic').checked)            flags = flags | 0b000001000000000000000000;
-                if (document.getElementById('randomFastMusic').checked)        flags = flags | 0b000010000000000000000000;
-                if (document.getElementById('disableMusic').checked)           flags = flags | 0b000100000000000000000000;
-                if (document.getElementById('disableSoundFX').checked)         flags = flags | 0b001000000000000000000000;
-                if (document.getElementById('patchDX').checked)                flags = flags | 0b010000000000000000000000;
-                return flags;
-            }
             const getROMValues = buff => {
                 const ascii = [
                     {char: "0", byte: 0xD9},
@@ -298,7 +308,7 @@
                 };
             }
             const seed = document.getElementById('setSeed').checked ? document.getElementById('inputSeed').value : undefined;
-            const flags = document.getElementById('setFlags').checked ? ('000000' + document.getElementById('inputFlags').value).slice(-6).toUpperCase() : generateFlags().toString(16);
+            const flags = ('000000' + (document.getElementById('setFlags').checked ? document.getElementById('inputFlags').value : generateFlags().toString(16))).slice(-6).toUpperCase();
             const response = await fetch(`https://sml2r-generator.herokuapp.com/?flags=${flags}${seed === undefined ? '' : `&seed=${seed}`}`);
             const buffer = await response.arrayBuffer();
             const values = getROMValues(buffer);
