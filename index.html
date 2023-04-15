@@ -309,7 +309,7 @@
             }
             const seed = document.getElementById('setSeed').checked ? document.getElementById('inputSeed').value : undefined;
             const flags = ('000000' + (document.getElementById('setFlags').checked ? document.getElementById('inputFlags').value : generateFlags().toString(16))).slice(-6).toUpperCase();
-            const response = await fetch(`https://sml2r-generator.herokuapp.com/?flags=${flags}${seed === undefined ? '' : `&seed=${seed}`}`);
+            const response = await fetch(`https://brave-bandanna-mite.cyclic.app/?flags=${flags}${seed === undefined ? '' : `&seed=${seed}`}`);
             const buffer = await response.arrayBuffer();
             const values = getROMValues(buffer);
             saveAs(new Blob([buffer], {type: 'octet/stream'}), `sml2r-${values.seed}-${values.flags}.${values.extension}`);
