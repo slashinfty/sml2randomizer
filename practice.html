@@ -90,12 +90,15 @@
             <div class="u-full-width">
                 <p>After the title screen, a menu is available where you can pick a level and power-up. The ROM remembers your last choice through a soft reset. If you are using a v1.0 ROM, you can press select to have the pipe glitch active.</p>
                 <p>Saving is done by pressing Down and Start, or Select and A. Loading is done by pressing Up and Start, or Select and B.</p>
-                <p>This tool is available thanks to <a href="https://github.com/mattcurrie/gb-save-states" target="blank">Matt Currie's gb-save-states</a> and lightbulbsun's work in creating the practice menu, v1.0 save states, and IPS patches.</p>
+                <p>The Tatanga Training ROM contains only the boss fight of Space Zone, with an analysis screen that shows the number of frames between each relevant action (shooting fireballs, hitting Tatanga, etc.).</p>
+                <p>These tools are available thanks to <a href="https://github.com/mattcurrie/gb-save-states" target="blank">Matt Currie's gb-save-states</a> and lightbulbsun's work in creating the practice menu, v1.0 save states, and IPS patches.</p>
             </div>
         </div>
         <div class="row">
             <div class="u-full-width">
                 <button id="generate" onclick="generate()" disabled>Generate Practice ROM</button>
+                &nbsp;&nbsp;
+                <button id="tatanga" onclick="tatanga()" disabled>Generate Tatanga Training ROM</button>
             </div>
         </div>
     </div>
@@ -120,24 +123,24 @@
             reader.readAsArrayBuffer(file);
         });
 
-        const generate = () => {
-            const checksum = rom => {
-                let csum = 0;
-                let comp = 0;
-                for (let i = 0x00; i < 0x14E; i++) {
-                    csum += rom[i];
-                }
-                for (let j = 0x150, e = rom[0x148] == 0x05 ? 0xFFFFF : 0x7FFFF; j <= e; j++) {
-                    csum += rom[j];
-                }
-                rom[0x14E] = (csum >> 8) & 0xFF;
-                rom[0x14F] = csum & 0xFF;
-                for (let k = 0x134; k <= 0x14C; k++) {
-                    comp += rom[k];
-                }
-                comp += 25;
-                rom[0x14D] = 0 - (comp & 0xFF);
+        const checksum = rom => {
+            let csum = 0;
+            let comp = 0;
+            for (let i = 0x00; i < 0x14E; i++) {
+                csum += rom[i];
             }
+            for (let j = 0x150, e = rom[0x148] == 0x05 ? 0xFFFFF : 0x7FFFF; j <= e; j++) {
+                csum += rom[j];
+            }
+            rom[0x14E] = (csum >> 8) & 0xFF;
+            rom[0x14F] = csum & 0xFF;
+            for (let k = 0x134; k <= 0x14C; k++) {
+                comp += rom[k];
+            }
+            comp += 25;
+            rom[0x14D] = 0 - (comp & 0xFF);
+        }
+        const generate = () => {
             const patch = async buffer => {
                 let rom = new Uint8Array(buffer);
                 const version = rom[0x14C] === 0x00 ? '0' : '2';
@@ -151,7 +154,22 @@
                 checksum(rom);
                 saveAs(new Blob([buffer], {type: 'octet/stream'}), 'sml2-practice.gb');
             }
-            const file = document.getElementById('rom').files[0];
+            const [file] = document.getElementById('rom').files;
+            const reader = new FileReader();
+            reader.onloadend = () => patch(reader.result);
+            reader.readAsArrayBuffer(file);
+        }
+        const tatanga = () => {
+            const patch = async buffer => {
+                let rom = new Uint8Array(buffer);
+                const tatangaPatch = await fetch(`patches/tatanga.ips`);
+                const tatangaBuffer = await tatangaPatch.arrayBuffer();
+                buffer = patchRom(buffer, tatangaBuffer);
+                rom = new Uint8Array(buffer);
+                checksum(rom);
+                saveAs(new Blob([buffer], {type: 'octet/stream'}), 'sml2-tatanga.gb');
+            }
+            const [file] = document.getElementById('rom').files;
             const reader = new FileReader();
             reader.onloadend = () => patch(reader.result);
             reader.readAsArrayBuffer(file);
