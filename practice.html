@@ -90,7 +90,7 @@
             <div class="u-full-width">
                 <p>After the title screen, a menu is available where you can pick a level and power-up. The ROM remembers your last choice through a soft reset. If you are using a v1.0 ROM, you can press select to have the pipe glitch active.</p>
                 <p>Saving is done by pressing Down and Start, or Select and A. Loading is done by pressing Up and Start, or Select and B.</p>
-                <p>The Tatanga Training ROM contains only the boss fight of Space Zone, with an analysis screen that shows the number of frames between each relevant action (shooting fireballs, hitting Tatanga, etc.).</p>
+                <p>The Tatanga Training ROM contains only the boss fight of Space Zone, with an analysis screen that shows the number of frames between each relevant action (shooting fireballs, hitting Tatanga, etc.). Note: requires a v1.0 ROM.</p>
                 <p>These tools are available thanks to <a href="https://github.com/mattcurrie/gb-save-states" target="blank">Matt Currie's gb-save-states</a> and lightbulbsun's work in creating the practice menu, v1.0 save states, and IPS patches.</p>
             </div>
         </div>
@@ -113,8 +113,10 @@
                 document.getElementById('verify').innerHTML = `ROM is ${count > 0 || rom[0x148 === 0x05] ? `<span class="bold">not</span>` : ''} valid. ${count === 0 && rom[0x148] !== 0x05 ? `<img src="images/FriendlyFinger.png" height="38"/>` : ''}`;
                 if (count > 0 || rom[0x148 === 0x05]) {
                     document.getElementById('generate').disabled = true;
+                    document.getElementById('tatanga').disabled = true;
                 } else {
                     document.getElementById('generate').disabled = false;
+                    document.getElementById('tatanga').disabled = false;
                 }
             }
             const file = document.getElementById('rom').files[0];
