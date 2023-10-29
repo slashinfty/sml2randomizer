@@ -9,3 +9,5 @@ In order to play, you need a ROM of SML2 (either v1.0 or v1.2) and a way to play
 All research that was done in creating this randomizer has been saved and can be found in the research folder (WIP).
 
 Source code for the randomizer can be found in the [sml2r-node](https://github.com/slashinfty/sml2r-node) NPM package.
+
+You can discuss this repository more in my [Discord](https://discord.gg/Q8t9gcZ77s).
